@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-display: 'Cinzel', 'Playfair Display', serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    
+    /* Dark Royal Indian Luxury Palette Tokens */
+    --color-bg-primary: #0A0909;       /* Deep Obsidian */
+    --color-bg-secondary: #121011;     /* Charcoal */
+    --color-surface: #181516;          /* Elevated Surface */
+    --color-surface-elevated: #201C1E; /* Higher Surface */
+    --color-wine: #4A1724;             /* Burgundy / Wine */
+    --color-wine-deep: #351019;        /* Deep Wine */
+    --color-gold: #B89A5A;             /* Antique Gold */
+    --color-gold-soft: #D1B875;        /* Soft Gold */
+    --color-text-primary: #F4EEE4;     /* Warm Ivory */
+    --color-text-secondary: #BDB3A5;   /* Muted Champagne */
+    --color-border: rgba(184, 154, 90, 0.20);
+    --color-border-subtle: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #0A0909;
+    color: #F4EEE4;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  .font-editorial {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Custom Dark Luxury Utilities */
+.bg-obsidian {
+  background-color: #0A0909;
+}
+
+.bg-charcoal {
+  background-color: #121011;
+}
+
+.bg-surface {
+  background-color: #181516;
+}
+
+.bg-surface-elevated {
+  background-color: #201C1E;
+}
+
+.text-warm-ivory {
+  color: #F4EEE4;
+}
+
+.text-muted-champagne {
+  color: #BDB3A5;
+}
+
+.text-antique-gold {
+  color: #B89A5A;
+}
+
+.text-soft-gold {
+  color: #D1B875;
+}
+
+.border-antique-gold {
+  border-color: rgba(184, 154, 90, 0.20);
+}
+
+.border-subtle-light {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.bg-royal-wine {
+  background: linear-gradient(135deg, #351019 0%, #4A1724 55%, #5C1E2E 100%);
+}
+
+.bg-royal-gradient {
+  background: linear-gradient(180deg, #121011 0%, #0A0909 100%);
+}
+
+/* Luxury Royal Buttons */
+.btn-royal-primary {
+  background-color: #4A1724;
+  color: #F4EEE4;
+  border: 1px solid rgba(184, 154, 90, 0.40);
+  transition: all 0.3s ease;
+}
+.btn-royal-primary:hover {
+  background-color: #351019;
+  border-color: #D1B875;
+}
+
+.btn-royal-secondary {
+  background-color: transparent;
+  color: #F4EEE4;
+  border: 1px solid rgba(184, 154, 90, 0.30);
+  transition: all 0.3s ease;
+}
+.btn-royal-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #B89A5A;
+}
+
+/* Subtle Indian Heritage Divider */
+.heritage-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.heritage-divider::before,
+.heritage-divider::after {
+  content: '';
+  height: 1px;
+  width: 40px;
+  background: linear-gradient(90deg, transparent, rgba(184, 154, 90, 0.5), transparent);
+}
+
+/* Continuous Blink Animation */
+@keyframes blink-continuous {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.75), 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0), 0 4px 10px -2px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.animate-blink-continuous {
+  animation: blink-continuous 1.4s ease-in-out infinite;
+}
+
+/* Subtle Gold Text Shimmer */
+.gold-gradient-text {
+  background: linear-gradient(90deg, #B89A5A, #E4D29E, #B89A5A);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hide scrollbar for clean horizontal digital rack */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-invoice, #printable-invoice * {
+    visibility: visible;
+  }
+  #printable-invoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    background: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
