@@ -14,7 +14,7 @@ export interface AdminSession {
 // In-memory active sessions map
 const activeSessions = new Map<string, AdminSession>();
 
-const MAX_FAILED_ATTEMPTS = 4;
+const MAX_FAILED_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MS = 5 * 60 * 1000; // 5 minutes
 
 export async function checkLoginLockout(ip: string): Promise<{ isLocked: boolean; remainingSeconds: number; attemptsCount: number }> {

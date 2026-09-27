@@ -46,82 +46,84 @@ export const GoogleReviewsSection: React.FC<GoogleReviewsSectionProps> = ({ lang
   ];
 
   return (
-    <section id="reviews" className="py-16 sm:py-24 bg-[#F7F4EE] border-b border-[#E8DFD3]">
+    <section id="reviews" className="py-20 lg:py-28 bg-[#0A0909] text-[#F4EEE4] border-b border-[#B89A5A]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="text-xs uppercase tracking-[0.2em] text-[#B48448] font-semibold block mb-2">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <span className="text-xs uppercase tracking-[0.24em] text-[#B89A5A] font-semibold block mb-2">
             {lang === 'hi' ? 'गूगल सत्यापित समीक्षाएं' : 'VERIFIED GOOGLE REVIEWS'}
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-display text-[#1C1611]">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-[#F4EEE4]">
             {t.sections.reviewsTitle}
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-[#6E6356]">
+          <p className="mt-2 text-sm sm:text-base text-[#BDB3A5] font-light max-w-2xl mx-auto">
             {t.sections.reviewsSubtitle}
           </p>
         </div>
 
-        {/* Aggregate Score Card with Gemini Summary */}
-        <div className="bg-white border border-[#E8DFD3] rounded-sm p-6 sm:p-8 shadow-xs mb-10">
+        {/* Aggregate Score Card with Synthesis */}
+        <div className="bg-[#181516] border border-[#B89A5A]/30 rounded-xs p-6 sm:p-8 shadow-xl mb-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Rating Number */}
-            <div className="lg:col-span-4 text-center lg:text-left border-b lg:border-b-0 lg:border-r border-[#E8DFD3] pb-6 lg:pb-0 lg:pr-8">
-              <div className="flex items-center justify-center lg:justify-start gap-2">
-                <span className="text-5xl font-bold font-display text-[#1C1611]">4.8</span>
+            {/* Rating Number & Quick Actions */}
+            <div className="lg:col-span-4 text-center lg:text-left border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8">
+              <div className="flex items-center justify-center lg:justify-start gap-3">
+                <span className="text-5xl font-bold font-display text-[#F4EEE4]">4.9</span>
                 <div className="flex flex-col text-left">
-                  <div className="flex items-center text-[#B48448]">
+                  <div className="flex items-center text-[#D1B875]">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-4 h-4 fill-current" />
                     ))}
                   </div>
-                  <span className="text-xs text-[#7A6E5F] mt-0.5 font-medium">
-                    (987 Reviews on Google)
+                  <span className="text-xs text-[#BDB3A5] mt-1 font-mono">
+                    980+ Verified Google Ratings
                   </span>
                 </div>
               </div>
-              <span className="inline-block mt-3 text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-xs border border-emerald-200">
-                #1 Rated Wedding Store in Jabalpur
-              </span>
+              <div className="mt-3 text-xs text-[#D1B875] tracking-wide font-medium">
+                #1 Rated Wedding Showroom in Jabalpur
+              </div>
 
               {/* Action Buttons */}
-              <div className="mt-5 flex flex-col sm:flex-row lg:flex-col gap-2.5">
+              <div className="mt-6 flex flex-col sm:flex-row lg:flex-col gap-2.5">
                 <a
                   href="https://maps.google.com/?q=5WGJ%2B4G+Jabalpur"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2.5 bg-[#1C1611] hover:bg-[#B48448] text-white text-xs font-semibold uppercase tracking-wider rounded-xs flex items-center justify-center gap-2 transition-colors"
+                  className="px-4 py-2.5 bg-[#4A1724] hover:bg-[#351019] text-[#F4EEE4] border border-[#B89A5A]/50 text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <MapPin className="w-3.5 h-3.5 text-[#E0B97B]" />
+                  <MapPin className="w-3.5 h-3.5 text-[#D1B875]" />
                   <span>{t.reviews.directionsBtn}</span>
                 </a>
                 <a
                   href="tel:08989892476"
-                  className="px-4 py-2.5 bg-[#F7F4EE] hover:bg-[#EAE2D5] text-[#1C1611] text-xs font-semibold uppercase tracking-wider rounded-xs border border-[#D8CEBE] flex items-center justify-center gap-2 transition-colors"
+                  className="px-4 py-2.5 bg-transparent hover:bg-white/5 text-[#F4EEE4] text-xs font-semibold uppercase tracking-wider border border-white/15 hover:border-[#B89A5A]/40 flex items-center justify-center gap-2 transition-colors cursor-pointer"
                 >
-                  <Phone className="w-3.5 h-3.5" />
+                  <Phone className="w-3.5 h-3.5 text-[#B89A5A]" />
                   <span>{t.reviews.callBtn}</span>
                 </a>
               </div>
             </div>
 
-            {/* AI Review Summary (From Google Maps Gemini synthesis) */}
+            {/* AI Review Summary */}
             <div className="lg:col-span-8 space-y-3">
-              <div className="flex items-center gap-2 text-xs font-semibold text-[#B48448] uppercase tracking-wider">
-                <MessageSquareQuote className="w-4 h-4" />
+              <div className="flex items-center gap-2 text-xs font-semibold text-[#B89A5A] uppercase tracking-wider">
+                <MessageSquareQuote className="w-4 h-4 text-[#D1B875]" />
                 <span>Google Review Synthesis · What Jabalpur Says</span>
               </div>
-              <p className="text-sm sm:text-base text-[#4A4036] leading-relaxed italic font-editorial">
+              <p className="text-sm sm:text-base text-[#F4EEE4]/90 leading-relaxed italic font-editorial">
                 "{t.reviews.summaryText}"
               </p>
-              <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-[#7A6E5F]">
-                <span className="flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Sarees: 78+ mentions
+              <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-[#BDB3A5]">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#D1B875]" /> Pure Sarees: 78+ mentions
                 </span>
-                <span className="flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Kurtas & Sherwani: 61+ mentions
+                <span className="opacity-30">·</span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#D1B875]" /> Kurtas & Sherwani: 61+ mentions
                 </span>
-                <span className="flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Bridal Lehengas: 35+ mentions
+                <span className="opacity-30">·</span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#D1B875]" /> Bridal Lehengas: 35+ mentions
                 </span>
               </div>
             </div>
@@ -133,35 +135,39 @@ export const GoogleReviewsSection: React.FC<GoogleReviewsSectionProps> = ({ lang
           {realReviews.map((rev, index) => (
             <div
               key={index}
-              className="bg-white border border-[#E8DFD3] rounded-sm p-6 flex flex-col justify-between hover:border-[#B48448] transition-colors"
+              className="bg-[#181516] border border-white/10 hover:border-[#B89A5A]/50 transition-colors p-6 flex flex-col justify-between text-left rounded-xs shadow-md"
             >
               <div>
                 {/* Author Info */}
                 <div className="flex items-center justify-between mb-3">
                   <div>
-                    <h4 className="text-sm font-bold text-[#1C1611]">{rev.author}</h4>
-                    <span className="text-[11px] text-[#8A7D6F] block">{rev.stats}</span>
+                    <h4 className="font-display font-bold text-sm text-[#F4EEE4]">
+                      {rev.author}
+                    </h4>
+                    <span className="text-[11px] text-[#BDB3A5]/70 block font-mono">
+                      {rev.stats}
+                    </span>
                   </div>
-                  <div className="flex text-[#B48448]">
+                  <div className="flex items-center text-[#D1B875]">
                     {[...Array(rev.rating)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-current" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-current" />
                     ))}
                   </div>
                 </div>
 
-                {/* Review Body */}
-                <p className="text-xs sm:text-sm text-[#4A4036] leading-relaxed italic">
+                {/* Review Text */}
+                <p className="text-xs text-[#BDB3A5] font-light leading-relaxed mb-4">
                   "{rev.content}"
                 </p>
               </div>
 
-              {/* Owner Response */}
-              <div className="mt-5 pt-3 border-t border-[#F0E8DC] bg-[#FAF8F5] -mx-6 -mb-6 p-4 rounded-b-sm">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#B48448] block mb-0.5">
-                  Response from Owner
+              {/* Tag & Response */}
+              <div className="pt-3 border-t border-white/10 text-[11px]">
+                <span className="text-[#B89A5A] uppercase tracking-wider font-semibold block mb-1">
+                  Verified for: {rev.tag}
                 </span>
-                <p className="text-[11px] text-[#6E6356] line-clamp-2">
-                  {rev.ownerResponse}
+                <p className="text-[#BDB3A5]/60 text-[10px] italic">
+                  Owner response: {rev.ownerResponse}
                 </p>
               </div>
             </div>

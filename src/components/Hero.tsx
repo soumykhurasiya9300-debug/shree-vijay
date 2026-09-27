@@ -11,45 +11,96 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ lang, settings, onOpenEnquiry }) => {
+  const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
+    const audio = audioRef.current;
     const video = videoRef.current;
-    if (!video) return;
+    if (!audio) return;
 
-    // Enforce muted for browser autoplay policy
-    video.muted = true;
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Fallback retry muted if autoplay is restricted
-        if (videoRef.current) {
-          videoRef.current.muted = true;
-          videoRef.current.play().catch(() => {});
-        }
-      });
+    // Ensure rich, audible volume
+    audio.volume = 0.9;
+
+    // Ensure background visual video loops smoothly without audio collisions
+    if (video) {
+      video.muted = true;
+      video.play().catch(() => {});
     }
 
-    // Ensure continuous repetitive playback
-    const handleEnded = () => {
-      video.currentTime = 0;
-      video.play().catch(() => {});
+    // Attempt automatic playback as soon as the site opens
+    const tryAutoplay = () => {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch(() => {
+            // Browser blocked unmuted autoplay prior to user interaction
+            setIsPlaying(false);
+
+            const startAudioOnFirstInteraction = () => {
+              if (audioRef.current) {
+                audioRef.current
+                  .play()
+                  .then(() => {
+                    setIsPlaying(true);
+                    cleanup();
+                  })
+                  .catch(() => {});
+              }
+            };
+
+            const cleanup = () => {
+              document.removeEventListener('click', startAudioOnFirstInteraction, true);
+              document.removeEventListener('pointerdown', startAudioOnFirstInteraction, true);
+              document.removeEventListener('touchstart', startAudioOnFirstInteraction, true);
+              document.removeEventListener('keydown', startAudioOnFirstInteraction, true);
+            };
+
+            // Capture phase listeners so any tap/click on Brand Intro or page immediately starts audio
+            document.addEventListener('click', startAudioOnFirstInteraction, { capture: true, once: true });
+            document.addEventListener('pointerdown', startAudioOnFirstInteraction, { capture: true, once: true });
+            document.addEventListener('touchstart', startAudioOnFirstInteraction, { capture: true, once: true });
+            document.addEventListener('keydown', startAudioOnFirstInteraction, { capture: true, once: true });
+          });
+      }
     };
 
-    video.addEventListener('ended', handleEnded);
+    tryAutoplay();
+
+    // Loop background video seamlessly
+    const handleEnded = () => {
+      if (video) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      }
+    };
+
+    video?.addEventListener('ended', handleEnded);
     return () => {
-      video.removeEventListener('ended', handleEnded);
+      video?.removeEventListener('ended', handleEnded);
     };
   }, []);
 
   const toggleSound = () => {
-    if (!videoRef.current) return;
-    const nextMuted = !isMuted;
-    videoRef.current.muted = nextMuted;
-    setIsMuted(nextMuted);
-    if (!nextMuted) {
-      videoRef.current.play().catch(() => {});
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((err) => {
+          console.error('Audio play error:', err);
+        });
     }
   };
 
@@ -58,6 +109,16 @@ export const Hero: React.FC<HeroProps> = ({ lang, settings, onOpenEnquiry }) => 
       id="home"
       className="relative min-h-[90vh] lg:min-h-[94vh] flex items-end justify-center overflow-hidden bg-[#0A0909] text-[#F4EEE4]"
     >
+      {/* Dedicated Luxury Ambient Audio Element */}
+      <audio
+        ref={audioRef}
+        src="/audio/hero_music.mp3"
+        loop
+        preload="auto"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
+
       {/* Immersive Full-Frame Continuous Background Video */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video
@@ -94,19 +155,33 @@ export const Hero: React.FC<HeroProps> = ({ lang, settings, onOpenEnquiry }) => 
         <button
           onClick={toggleSound}
           type="button"
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#181516]/80 hover:bg-[#201C1E] border border-white/20 text-[#F4EEE4] text-xs backdrop-blur-md transition-all cursor-pointer shadow-lg"
-          title={isMuted ? 'Unmute video audio' : 'Mute video audio'}
-          aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
+          className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs backdrop-blur-md transition-all duration-300 cursor-pointer shadow-xl active:scale-95 ${
+            !isPlaying
+              ? 'bg-[#181516]/85 hover:bg-[#201C1E] border border-white/20 text-[#BDB3A5] hover:border-[#B89A5A]/50 hover:text-[#F4EEE4]'
+              : 'bg-[#351019]/90 hover:bg-[#4A1724] border border-[#D1B875] text-[#F4EEE4] ring-1 ring-[#D1B875]/50 shadow-[0_0_20px_rgba(209,184,117,0.35)]'
+          }`}
+          title={isPlaying ? (lang === 'hi' ? 'संगीत बंद करें' : 'Turn Sound Off') : (lang === 'hi' ? 'संगीत चालू करें' : 'Turn Sound On')}
+          aria-label={isPlaying ? 'Turn Sound Off' : 'Turn Sound On'}
         >
-          {isMuted ? (
+          {!isPlaying ? (
             <>
               <VolumeX className="w-3.5 h-3.5 text-[#B89A5A]" />
-              <span className="text-[11px] font-medium tracking-wider uppercase text-[#BDB3A5]">Sound Off</span>
+              <span className="text-[11px] font-medium tracking-wider uppercase text-[#BDB3A5]">
+                {lang === 'hi' ? 'संगीत बंद' : 'Sound Off'}
+              </span>
             </>
           ) : (
             <>
               <Volume2 className="w-3.5 h-3.5 text-[#D1B875] animate-pulse" />
-              <span className="text-[11px] font-medium tracking-wider uppercase text-[#F4EEE4]">Sound On</span>
+              {/* Animated audio equalizer wave */}
+              <div className="flex items-center gap-0.5 h-3 px-0.5">
+                <span className="w-0.5 bg-[#D1B875] h-3 rounded-full animate-pulse" />
+                <span className="w-0.5 bg-[#D1B875] h-2 rounded-full animate-pulse [animation-delay:150ms]" />
+                <span className="w-0.5 bg-[#D1B875] h-3.5 rounded-full animate-pulse [animation-delay:300ms]" />
+              </div>
+              <span className="text-[11px] font-bold tracking-wider uppercase text-[#F4EEE4]">
+                {lang === 'hi' ? 'संगीत चालू' : 'Sound On'}
+              </span>
             </>
           )}
         </button>

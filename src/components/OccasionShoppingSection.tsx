@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Sparkles,
   ArrowRight,
   Crown,
-  Calendar,
-  Layers
+  Calendar
 } from 'lucide-react';
 import { Product } from '../types/index.ts';
 import { Language } from '../lib/translations.ts';
@@ -18,6 +17,9 @@ import bridalImg from '../assets/images/bridal_lehenga_collection_1790317477737.
 import sareeImg from '../assets/images/designer_banarasi_saree_1790317467169.jpg';
 import sherwaniImg from '../assets/images/groom_royal_sherwani_1790317453744.jpg';
 import familyImg from '../assets/images/family_wedding_ensemble_1790325566253.jpg';
+import mehendiImg from '../assets/images/ceremony_mehendi.jpg';
+import sangeetImg from '../assets/images/ceremony_sangeet.jpg';
+import occasionsBgImg from '../assets/images/occasions_bg.jpg';
 
 interface OccasionShoppingSectionProps {
   products: Product[];
@@ -67,14 +69,14 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
   const occasions: OccasionMeta[] = [
     {
       id: 'haldi',
-      name: 'HALDI CEREMONY',
+      name: 'Haldi Ceremony',
       name_hi: 'हल्दी सेरेमनी',
       hindiAura: 'पीत वर्ण अनुष्ठान एवं मांगलिक हल्दी रस्म',
       palette: 'Sunlit Yellows, Gota Patti, Floral Silks',
       paletteHex: ['#F59E0B', '#FBBF24', '#FEF08A', '#B45309'],
       description: 'Joyous turmeric yellows, breezy mulmul, and light gota patti for intimate rituals.',
       description_hi: 'शुभ पीत वर्ण के परिधान — गोटा पत्ती, हल्के मलमल व फ्लोरल वर्क।',
-      bannerTagline: 'Haldi Ceremony Special: Sunshine lehengas, sarees, suits, kurtis, gowns & kurtas.',
+      bannerTagline: 'Haldi Ceremony Special: Sunshine lehengas, sarees, suits, kurtis, gowns, kurtas & sherwanis.',
       bannerTagline_hi: 'हल्दी रस्म के लिए खास सुंदर पीताम्बरी लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन व कुर्ते।',
       image: haldiImg,
       subcategories: [
@@ -159,16 +161,16 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
     },
     {
       id: 'mehendi',
-      name: 'MEHENDI UTSAV',
-      name_hi: 'मेहंदी उत्सव',
+      name: 'Mehendi Ceremony',
+      name_hi: 'मेहंदी सेरेमनी',
       hindiAura: 'मरकत हरित, आभला दर्पण व उत्सव परिधान',
       palette: 'Emerald Greens, Mirror Work, Fluid Georgette',
       paletteHex: ['#047857', '#10B981', '#6EE7B7', '#064E3B'],
       description: 'Vibrant emerald greens and mirror embellishments crafted for effortless movement.',
       description_hi: 'हरे व फिरोजी रंग के आरामदायक लहंगे, मिरर वर्क कुर्ते व फ्लोरल साड़ियाँ।',
-      bannerTagline: 'Mehendi Ceremony Special: Henna-friendly lehengas, sarees, suits, kurtis, gowns & kurtas.',
-      bannerTagline_hi: 'मेहंदी रस्म के लिए खास हरे रंग के लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन व कुर्ते।',
-      image: bridalImg,
+      bannerTagline: 'Mehendi Ceremony Special: Henna-friendly lehengas, sarees, suits, kurtis, gowns, kurtas & sherwanis.',
+      bannerTagline_hi: 'मेहंदी रस्म के लिए खास हरे रंग के लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन, कुर्ते व शेरवानी।',
+      image: mehendiImg,
       subcategories: [
         {
           id: 'lehenga',
@@ -251,16 +253,16 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
     },
     {
       id: 'sangeet',
-      name: 'SANGEET NIGHT',
-      name_hi: 'संगीत नाइट',
+      name: 'Sangeet Ceremony',
+      name_hi: 'संगीत सेरेमनी',
       hindiAura: 'नक्षत्र रात्रि — ३६०° ट्विर्ल व सीक्विन्स',
       palette: 'Jewel Tones, Glittering Sequins, 360° Twirl',
       paletteHex: ['#1E3A8A', '#3B82F6', '#831843', '#E0E7FF'],
       description: 'Glamorous twilight jewel hues with high-impact sparkle designed for the stage.',
       description_hi: 'ग्लैमरस सीक्विन्स लहंगे, इंडो-वेस्टर्न बंदगला व कॉकटेल गाउन।',
-      bannerTagline: 'Sangeet Night Special: Glamorous lehengas, sarees, suits, kurtis, gowns & bandhgalas.',
-      bannerTagline_hi: 'संगीत नाइट के लिए खास चमकदार लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन व बंदगला।',
-      image: sherwaniImg,
+      bannerTagline: 'Sangeet Night Special: Glamorous lehengas, sarees, suits, kurtis, gowns, kurtas & sherwanis.',
+      bannerTagline_hi: 'संगीत नाइट के लिए खास चमकदार लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन, कुर्ते व शेरवानी।',
+      image: sangeetImg,
       subcategories: [
         {
           id: 'lehenga',
@@ -343,15 +345,15 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
     },
     {
       id: 'wedding',
-      name: 'WEDDING / MANDAP',
-      name_hi: 'विवाह मंडप / फेरे',
+      name: 'Wedding Ceremony',
+      name_hi: 'विवाह सेरेमनी',
       hindiAura: 'शाश्वत वैदिक फेरे व राजसी सिंदूरी परिधान',
       palette: 'Heritage Crimson, Royal Zardozi, Pure Brocade',
       paletteHex: ['#991B1B', '#DC2626', '#B45309', '#FDE68A'],
       description: 'Heirloom vermilion reds, beaten gold zardozi, and regal raw silks for sacred vows.',
       description_hi: 'शाश्वत राजपूताना लाल लहंगे, सिल्क शेरवानी व बनारसी कतान साड़ियाँ।',
-      bannerTagline: 'Mandap Vows Special: Sacred bridal lehengas, sarees, suits, kurtis, gowns & groom sherwanis.',
-      bannerTagline_hi: 'शुभ विवाह फेरों के लिए राजसी दुल्हन लहंगा, बनारसी साड़ी, सूट, कुर्ती, गाउन व दूल्हा शेरवानी।',
+      bannerTagline: 'Wedding Ceremony Special: Sacred bridal lehengas, sarees, suits, kurtis, gowns, kurtas & groom sherwanis.',
+      bannerTagline_hi: 'शुभ विवाह फेरों के लिए राजसी दुल्हन लहंगा, बनारसी साड़ी, सूट, कुर्ती, गाउन, कुर्ता व दूल्हा शेरवानी।',
       image: weddingImg,
       subcategories: [
         {
@@ -434,15 +436,15 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
       ],
     },
     {
-      id: 'royal',
-      name: 'ROYAL RECEPTION',
-      name_hi: 'रॉयल रिसेप्शन',
+      id: 'reception',
+      name: 'Reception Ceremony',
+      name_hi: 'रिसेप्शन सेरेमनी',
       hindiAura: 'शाही रिसेप्शन एवं आधुनिक भव्यता',
       palette: 'Champagne Gold, Deep Wine, Velvet Bandhgalas',
       paletteHex: ['#701A75', '#831843', '#D97706', '#FEF3C7'],
       description: 'Contemporary grandeur, sculpted velvet silhouettes, and opulent champagne gold tones.',
       description_hi: 'आधुनिक भव्यता — मखमली गाउन, जोधपुरी सूट व मेटैलिक साड़ियाँ।',
-      bannerTagline: 'Royal Reception Special: Grand lehengas, sarees, suits, kurtis, gowns, kurtas & bandhgalas.',
+      bannerTagline: 'Reception Ceremony Special: Grand lehengas, sarees, suits, kurtis, gowns, kurtas & bandhgalas.',
       bannerTagline_hi: 'रॉयल रिसेप्शन के लिए भव्य लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन, कुर्ते व जोधपुरी बंदगला।',
       image: familyImg,
       subcategories: [
@@ -527,14 +529,14 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
     },
     {
       id: 'festival',
-      name: 'FESTIVAL & PUJA',
-      name_hi: 'फेस्टिव व पूजन',
+      name: 'Festival Ceremony',
+      name_hi: 'फेस्टिवल सेरेमनी',
       hindiAura: 'मांगल्य एवं पारम्परिक देव पूजन संग्रह',
       palette: 'Pure Banarasi Katan, Tussar, Chanderi Silks',
       paletteHex: ['#EA580C', '#C2410C', '#CA8A04', '#FEF9C3'],
       description: 'Authentic master-woven Banarasi silk sarees, temple borders, and festive cottons.',
       description_hi: 'असली हथकरघा साड़ियाँ, चंदेरी जरी बॉर्डर व पारम्परिक धोती कुर्ता।',
-      bannerTagline: 'Festival Special: Auspicious lehengas, sarees, suits, kurtis, gowns, kurtas & achkans.',
+      bannerTagline: 'Festival Ceremony Special: Auspicious lehengas, sarees, suits, kurtis, gowns, kurtas & achkans.',
       bannerTagline_hi: 'दीपावली, करवाचौथ व पूजन हेतु हथकरघा साड़ियाँ, लहंगे, सूट, कुर्ती, गाउन व कुर्ते।',
       image: sareeImg,
       subcategories: [
@@ -619,7 +621,28 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
     },
   ];
 
-  const currentOccasion = occasions.find((o) => o.id === selectedOccasion) || occasions[0];
+  const currentOccasion =
+    occasions.find(
+      (o) => o.id === selectedOccasion || (o.id === 'reception' && selectedOccasion === 'royal')
+    ) || occasions[0];
+
+  const subsectionsRef = useRef<HTMLDivElement>(null);
+
+  const handleSelectOccasion = (occId: string) => {
+    setSelectedOccasion(occId);
+    // Smoothly and automatically reveal sub-sections right in front of user's eyes immediately
+    setTimeout(() => {
+      if (subsectionsRef.current) {
+        const headerOffset = 85;
+        const elementPosition = subsectionsRef.current.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
+      }
+    }, 40);
+  };
 
   const handleSubcategoryClick = (sub: SubcategoryCard) => {
     // Primary Objective: Retrieve item's assigned Instagram Reel, validate destination and redirect
@@ -648,11 +671,29 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
   return (
     <section
       id="occasions"
-      className="py-20 lg:py-28 bg-[#121011] text-[#F4EEE4] border-b border-[#B89A5A]/20 overflow-hidden"
+      className="relative py-20 lg:py-28 bg-[#0D0B0C] text-[#F4EEE4] border-b border-[#B89A5A]/20 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Editorial Ceremonial Background Layer */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+        <img
+          src={occasionsBgImg}
+          alt="Curated Ceremony Background"
+          aria-hidden="true"
+          className="w-full h-full object-cover object-center filter brightness-[0.82] contrast-[1.08] saturate-[1.12] transition-all duration-700"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src =
+              'https://i.pinimg.com/originals/f5/32/2f/f5322f735b693c70b06d5637e19b4752.jpg';
+          }}
+        />
+        {/* Soft, balanced scrims to maintain high background visibility while preserving crisp text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0909]/70 via-[#0A0909]/30 to-[#0A0909]/75" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(10,9,9,0.55)_100%)]" />
+        <div className="absolute inset-0 bg-[#351019]/10 mix-blend-multiply" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="text-center max-w-6xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-[#B89A5A] font-semibold mb-2">
             <Sparkles className="w-3.5 h-3.5" />
             <span>{lang === 'hi' ? 'सेरेमनी एवं मांगलिक उत्सव' : 'OCCASION-FIRST CEREMONIAL STYLING'}</span>
@@ -663,35 +704,78 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
             {lang === 'hi' ? 'मांगलिक सेरेमनी संग्रह' : 'Curated by Ceremony'}
           </h2>
 
-          <p className="mt-4 text-sm sm:text-base text-[#BDB3A5] font-light max-w-xl mx-auto">
+          <p className="mt-4 text-sm sm:text-base text-[#BDB3A5] font-light max-w-2xl mx-auto">
             {lang === 'hi'
-              ? 'हल्दी, मेहंदी, संगीत, विवाह मंडप, रॉयल रिसेप्शन एवं पूजन उत्सव के लिए हर श्रेणी का मुख्य विज़ुअल डिस्प्ले।'
-              : 'Select your ceremony to view the complete ensemble showcase: Lehenga, Saree, Suits, Kurti, Gown, Kurta & Sherwani.'}
+              ? 'हल्दी, मेहंदी, संगीत, विवाह मंडप, रिसेप्शन एवं पूजन उत्सव के लिए हर श्रेणी का मुख्य विज़ुअल डिस्प्ले।'
+              : 'Select any ceremony below to instantly reveal its dedicated sub-sections: Lehenga, Saree, Suits, Kurti, Gown, Kurta & Sherwani.'}
           </p>
 
-          {/* Ceremony Selectors Bar */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-8">
-            {occasions.map((occ) => {
-              const isSelected = selectedOccasion === occ.id;
+          {/* Ceremony Selectors Bar (Attractive Ceremonial Cards with Photo on Top & Name Below) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-5 mt-8 sm:mt-10">
+            {occasions.map((occ, idx) => {
+              const isSelected =
+                selectedOccasion === occ.id || (occ.id === 'reception' && selectedOccasion === 'royal');
               return (
                 <button
                   key={occ.id}
-                  onClick={() => setSelectedOccasion(occ.id)}
-                  className={`px-4 sm:px-5 py-2 sm:py-2.5 text-xs uppercase tracking-[0.16em] font-semibold transition-all duration-300 cursor-pointer rounded-xs border ${
+                  type="button"
+                  onClick={() => handleSelectOccasion(occ.id)}
+                  className={`group relative flex flex-col items-center p-3 sm:p-4 rounded-xs border transition-all duration-300 cursor-pointer text-center overflow-hidden active:scale-95 ${
                     isSelected
-                      ? 'bg-[#4A1724] text-[#F4EEE4] border-[#B89A5A] shadow-md scale-105'
-                      : 'bg-[#181516] text-[#BDB3A5] border-white/10 hover:border-[#B89A5A]/50 hover:text-[#F4EEE4]'
+                      ? 'bg-[#351019]/90 border-[#D1B875] ring-2 ring-[#D1B875]/70 shadow-[0_0_24px_rgba(209,184,117,0.35)] scale-[1.03]'
+                      : 'bg-[#181516]/85 hover:bg-[#201C1E] border-white/10 hover:border-[#B89A5A]/60 hover:scale-[1.01]'
                   }`}
+                  title={`${lang === 'hi' ? occ.name_hi : occ.name} - ${lang === 'hi' ? '७ सब-सेक्शन देखें' : 'View 7 Sub-sections'}`}
                 >
-                  <span>{lang === 'hi' ? occ.name_hi : occ.name}</span>
+                  {/* Top Image Frame according to the ceremony */}
+                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-26 md:h-26 rounded-full overflow-hidden border-2 mb-3 transition-transform duration-500 ease-out group-hover:scale-105 shadow-xl">
+                    <img
+                      src={occ.image}
+                      alt={occ.name}
+                      className="w-full h-full object-cover object-center filter brightness-[0.88] group-hover:brightness-105 group-hover:scale-110 transition-all duration-700 ease-out"
+                      loading="lazy"
+                    />
+                    {/* Subtle gradient wash */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity" />
+
+                    {/* Active golden border pulse */}
+                    {isSelected && (
+                      <div className="absolute inset-0 border-2 border-[#D1B875] rounded-full animate-pulse pointer-events-none" />
+                    )}
+
+                    {/* Step Tag */}
+                    <div className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/80 border border-[#B89A5A]/60 flex items-center justify-center text-[10px] text-[#D1B875] font-bold shadow-xs">
+                      0{idx + 1}
+                    </div>
+                  </div>
+
+                  {/* Written ceremony name below image */}
+                  <div className="w-full">
+                    <span className="block text-xs sm:text-sm font-bold uppercase tracking-[0.14em] text-[#F4EEE4] group-hover:text-[#D1B875] transition-colors leading-tight">
+                      {lang === 'hi' ? occ.name_hi : occ.name}
+                    </span>
+                    <span className="inline-flex items-center justify-center gap-1 text-[10px] text-[#B89A5A] mt-1 font-mono tracking-wider">
+                      <span>7 Sub-sections</span>
+                      <span className="text-[9px] text-[#D1B875]">↓</span>
+                    </span>
+                  </div>
+
+                  {/* Active selection indicator line */}
+                  {isSelected ? (
+                    <div className="mt-2.5 w-10 h-1 bg-[#D1B875] rounded-full shadow-[0_0_8px_#D1B875]" />
+                  ) : (
+                    <div className="mt-2.5 w-4 h-0.5 bg-transparent group-hover:bg-[#B89A5A]/50 rounded-full transition-all" />
+                  )}
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Selected Ceremony Header Banner */}
-        <div className="bg-gradient-to-r from-[#351019] via-[#4A1724] to-[#181516] text-[#F4EEE4] p-6 sm:p-8 rounded-xs shadow-xl border border-[#B89A5A]/30 mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        {/* Selected Ceremony Subsections Reveal Container */}
+        <div ref={subsectionsRef} id="ceremony-subsections" className="scroll-mt-24 sm:scroll-mt-28">
+          {/* Selected Ceremony Header Banner */}
+          <div className="bg-gradient-to-r from-[#351019] via-[#4A1724] to-[#181516] text-[#F4EEE4] p-5 sm:p-7 rounded-xs shadow-xl border border-[#B89A5A]/30 mb-8 sm:mb-10 flex flex-col md:flex-row md:items-center justify-between gap-5 transition-all duration-300">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-[10px] font-bold tracking-[0.25em] uppercase px-2.5 py-0.5 bg-[#B89A5A] text-[#0A0909] rounded-xs">
@@ -761,16 +845,16 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
 
                 {/* Subcategory Sequence Marker & Badge */}
                 <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                  <span className="w-5 h-5 rounded-full bg-[#B89455] text-[#2A0A12] text-[10px] font-bold flex items-center justify-center shadow-xs">
+                  <span className="w-5 h-5 rounded-full bg-[#B89A5A] text-[#0A0909] text-[10px] font-bold flex items-center justify-center shadow-xs">
                     0{index + 1}
                   </span>
-                  <span className="bg-black/80 backdrop-blur-xs text-[10px] uppercase tracking-wider text-[#B89455] font-semibold px-2 py-0.5 border border-[#B89455]/40 shadow-xs">
+                  <span className="bg-black/80 backdrop-blur-xs text-[10px] uppercase tracking-wider text-[#D1B875] font-semibold px-2 py-0.5 border border-[#B89A5A]/40 shadow-xs">
                     {lang === 'hi' ? sub.badge_hi : sub.badge}
                   </span>
                 </div>
 
                 {/* Hover Arrow Icon */}
-                <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-[#B89455] text-[#2A0A12] flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-md">
+                <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-[#B89A5A] text-[#0A0909] flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-md">
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -778,7 +862,7 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
               {/* Subcategory Details Below Image */}
               <div className="p-5 flex-1 flex flex-col justify-between text-left bg-[#181516]">
                 <div>
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-[#B89455] font-semibold mb-1">
+                  <div className="text-[10px] uppercase tracking-[0.24em] text-[#B89A5A] font-semibold mb-1">
                     {currentOccasion.name.split(' ')[0]} · {sub.name.toUpperCase()}
                   </div>
 
@@ -807,6 +891,7 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
             </div>
           ))}
         </div>
+      </div>
 
         {/* Ceremony Concierge Assistance Bar */}
         <div className="bg-[#181516] border border-[#B89A5A]/30 p-6 sm:p-8 rounded-xs shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">

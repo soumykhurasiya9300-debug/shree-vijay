@@ -152,13 +152,24 @@ export const WebsiteManager: React.FC<WebsiteManagerProps> = ({ onRefresh }) => 
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs pt-2">
           <div>
             <label className="block font-semibold mb-1">Instagram Profile URL</label>
             <input
               type="text"
               value={settings['instagram_url'] || ''}
               onChange={(e) => handleSettingChange('instagram_url', e.target.value)}
+              className="w-full px-3 py-2 bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs font-mono"
+            />
+          </div>
+
+          <div>
+            <label className="block font-semibold mb-1">YouTube Channel URL</label>
+            <input
+              type="text"
+              placeholder="https://www.youtube.com/channel/..."
+              value={settings['youtube_url'] || ''}
+              onChange={(e) => handleSettingChange('youtube_url', e.target.value)}
               className="w-full px-3 py-2 bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs font-mono"
             />
           </div>

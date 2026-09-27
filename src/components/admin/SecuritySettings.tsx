@@ -20,8 +20,8 @@ export const SecuritySettings: React.FC = () => {
       return;
     }
 
-    if (newPassword.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (newPassword.length < 4) {
+      setError('Password must be at least 4 characters');
       return;
     }
 
@@ -126,14 +126,14 @@ export const SecuritySettings: React.FC = () => {
           <div className="space-y-3 text-xs text-[#5A5044] leading-relaxed">
             <div className="p-3 bg-white rounded-xs border border-[#E8DFD3]">
               <span className="font-bold text-[#1C1611] block mb-1">
-                4-Attempt Failed Login Lockout:
+                5-Attempt Failed Login Lockout:
               </span>
               <p>
-                After 4 consecutive incorrect login attempts, the account is locked for 5 minutes.
+                After 5 consecutive incorrect login attempts, the account is locked for 5 minutes.
                 Display: <code className="bg-[#F0E8DC] px-1 py-0.5 rounded">"Too many failed attempts. Please try again in MM:SS."</code>
               </p>
               <span className="text-[10px] text-emerald-700 font-semibold block mt-1">
-                ✓ Enforced server-side via SQLite login_attempts table.
+                ✓ Enforced server-side via SQLite login_attempts table (5 attempts limit).
               </span>
             </div>
 

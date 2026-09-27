@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import showroomAmbianceImg from '../assets/images/showroom_interior_ambiance_1790317495781.jpg';
+import brandIntroBgImg from '../assets/images/brand_intro_bg.jpg';
 
 interface BrandIntroPreloaderProps {
   /** Callback triggered after intro and exit transition finishes */
@@ -24,10 +24,10 @@ export const BrandIntroPreloader: React.FC<BrandIntroPreloaderProps> = ({
       setPhase('ready');
     }, 1100);
 
-    // Auto transition after 3.2s if user doesn't click
+    // Auto transition after 6.5s if user doesn't click
     const autoExit = setTimeout(() => {
       handleEnter();
-    }, 3200);
+    }, 6500);
 
     return () => {
       clearTimeout(t1);
@@ -54,15 +54,22 @@ export const BrandIntroPreloader: React.FC<BrandIntroPreloaderProps> = ({
           : 'opacity-100 scale-100'
       }`}
     >
-      {/* Cinematic subtle showroom background with dark vignette scrim */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Royal Heritage Brand Background (fitted to frame with high visibility and perfect responsive framing) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
         <img
-          src={showroomAmbianceImg}
-          alt=""
-          className="w-full h-full object-cover opacity-15 filter blur-[2px] scale-105"
+          src={brandIntroBgImg}
+          alt="Shree Vijay Heritage Brand Intro Background"
+          aria-hidden="true"
+          className="w-full h-full object-cover object-center sm:object-[center_35%] filter brightness-[0.78] contrast-[1.08] saturate-[1.05] transition-all duration-700"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src =
+              'https://i.pinimg.com/originals/72/9a/0a/729a0a8f422356d51a4c2cfc05cffa72.jpg';
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0909]/95 via-[#121011]/90 to-[#0A0909]/98" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#4A1724]/20 via-transparent to-transparent" />
+        {/* Balanced Atmospheric Scrims tuned for high visibility and high contrast text */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0909]/70 via-[#0A0909]/30 to-[#0A0909]/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(10,9,9,0.65)_100%)]" />
+        <div className="absolute inset-0 bg-[#351019]/25 mix-blend-multiply" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center justify-center px-6 text-center max-w-xl">

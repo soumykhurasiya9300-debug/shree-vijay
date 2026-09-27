@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, MessageCircle, Check, MapPin } from 'lucide-react';
+import { X, MessageCircle, MapPin } from 'lucide-react';
 import { Product } from '../types/index.ts';
 import { Language, translations } from '../lib/translations.ts';
 
@@ -36,29 +36,29 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waText)}`;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
-      <div className="relative bg-white w-full max-w-4xl rounded-sm shadow-2xl border border-[#E8DFD3] overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+      <div className="relative bg-[#181516] text-[#F4EEE4] w-full max-w-4xl rounded-xs shadow-2xl border border-[#B89A5A]/30 overflow-hidden my-8">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/90 text-[#1C1611] hover:bg-[#1C1611] hover:text-white transition-colors flex items-center justify-center shadow-xs"
+          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-[#121011]/90 text-[#BDB3A5] hover:text-[#F4EEE4] hover:bg-[#201C1E] border border-white/10 transition-colors flex items-center justify-center shadow-xs cursor-pointer"
           aria-label="Close product modal"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-12 max-h-[85vh] overflow-y-auto">
-          {/* Left Column: Image Gallery (Contiguous purchase module sticky pattern) */}
-          <div className="md:col-span-6 bg-[#F7F4EE] p-6 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#E8DFD3]">
+          {/* Left Column: Image Gallery */}
+          <div className="md:col-span-6 bg-[#121011] p-6 flex flex-col justify-between border-b md:border-b-0 md:border-r border-white/10">
             {/* Primary Main Image Frame */}
-            <div className="relative h-80 sm:h-96 w-full rounded-sm overflow-hidden bg-[#ECE4D8] border border-[#E0D6C8]">
+            <div className="relative h-80 sm:h-96 w-full rounded-xs overflow-hidden bg-[#0A0909] border border-white/10">
               <img
                 src={images[activeImageIndex]}
                 alt={product.name}
                 className="w-full h-full object-cover object-top"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute top-3 left-3 bg-white/95 px-2.5 py-1 text-xs font-semibold text-[#1C1611] border border-[#E8DFD3]">
+              <div className="absolute top-3 left-3 bg-[#0A0909]/90 px-2.5 py-1 text-xs font-semibold text-[#D1B875] border border-[#B89A5A]/40 backdrop-blur-xs font-mono">
                 {product.stock_status}
               </div>
             </div>
@@ -71,8 +71,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     key={idx}
                     type="button"
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`relative w-16 h-16 rounded-xs overflow-hidden border-2 transition-all shrink-0 ${
-                      activeImageIndex === idx ? 'border-[#B48448] scale-105' : 'border-[#D8CEBE] opacity-70 hover:opacity-100'
+                    className={`relative w-16 h-16 rounded-xs overflow-hidden border transition-all shrink-0 cursor-pointer ${
+                      activeImageIndex === idx ? 'border-[#D1B875] scale-105 ring-1 ring-[#B89A5A]' : 'border-white/15 opacity-60 hover:opacity-100'
                     }`}
                   >
                     <img src={img} alt="" className="w-full h-full object-cover" />
@@ -82,17 +82,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             )}
 
             {/* In-Store Guarantee Note */}
-            <div className="mt-4 pt-4 border-t border-[#E5DC CF] flex items-center gap-2 text-xs text-[#6B5E50]">
-              <MapPin className="w-4 h-4 text-[#B48448] shrink-0" />
+            <div className="mt-4 pt-4 border-t border-white/10 flex items-center gap-2 text-xs text-[#BDB3A5]">
+              <MapPin className="w-4 h-4 text-[#B89A5A] shrink-0" />
               <span>Available for physical trial & fitting at Bada Fuhara, Jabalpur showroom.</span>
             </div>
           </div>
 
           {/* Right Column: Contiguous Purchase Module */}
-          <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+          <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between space-y-6 text-left">
             <div>
               {/* Clean Unboxed Metadata */}
-              <div className="flex items-center gap-2 text-xs text-[#7A6E5F] uppercase tracking-wider mb-2">
+              <div className="flex items-center gap-2 text-xs text-[#BDB3A5] uppercase tracking-wider mb-2 font-mono">
                 <span>SKU: {product.sku}</span>
                 <span aria-hidden="true">·</span>
                 <span>{product.stock_status}</span>
@@ -101,99 +101,99 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
 
               {/* Product Title */}
-              <h2 className="text-xl sm:text-2xl font-bold font-display text-[#1C1611] leading-tight">
+              <h2 className="text-xl sm:text-2xl font-bold font-display text-[#F4EEE4] leading-tight">
                 {lang === 'hi' ? product.name_hi : product.name}
               </h2>
 
               {/* Price Banner */}
               <div className="mt-3 flex items-baseline gap-3">
-                <span className="text-2xl sm:text-3xl font-bold text-[#1C1611] font-mono tabular-nums">
+                <span className="text-2xl sm:text-3xl font-bold text-[#F4EEE4] font-mono tabular-nums">
                   ₹{effectivePrice.toLocaleString('en-IN')}
                 </span>
                 {product.offer_price && product.offer_price < product.price && (
-                  <span className="text-sm text-[#8A7D6F] line-through font-mono tabular-nums">
+                  <span className="text-sm text-[#BDB3A5] line-through font-mono tabular-nums">
                     ₹{product.price.toLocaleString('en-IN')}
                   </span>
                 )}
                 {product.offer_price && product.offer_price < product.price && (
-                  <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-xs border border-emerald-200">
+                  <span className="text-xs font-semibold text-[#D1B875] bg-[#4A1724]/50 px-2 py-0.5 rounded-xs border border-[#B89A5A]/40">
                     Save ₹{(product.price - product.offer_price).toLocaleString('en-IN')}
                   </span>
                 )}
               </div>
 
               {/* Description */}
-              <p className="mt-4 text-xs sm:text-sm text-[#5A5044] leading-relaxed">
+              <p className="mt-4 text-xs sm:text-sm text-[#BDB3A5] leading-relaxed font-light">
                 {lang === 'hi' ? product.description_hi : product.description}
               </p>
 
               {/* Key Specifications Table */}
-              <div className="mt-6 border-t border-b border-[#E8DFD3] py-3 text-xs space-y-2">
+              <div className="mt-6 border-t border-b border-white/10 py-3 text-xs space-y-2">
                 {product.fabric && (
                   <div className="flex justify-between">
-                    <span className="text-[#7A6E5F]">{t.product.fabric}:</span>
-                    <span className="font-medium text-[#1C1611]">{product.fabric}</span>
+                    <span className="text-[#BDB3A5]">{t.product.fabric}:</span>
+                    <span className="font-medium text-[#F4EEE4]">{product.fabric}</span>
                   </div>
                 )}
                 {product.material && (
                   <div className="flex justify-between">
-                    <span className="text-[#7A6E5F]">{t.product.material}:</span>
-                    <span className="font-medium text-[#1C1611]">{product.material}</span>
+                    <span className="text-[#BDB3A5]">{t.product.material}:</span>
+                    <span className="font-medium text-[#F4EEE4]">{product.material}</span>
                   </div>
                 )}
-                {product.size && (
+                {product.occasion && (
                   <div className="flex justify-between">
-                    <span className="text-[#7A6E5F]">{t.product.size}:</span>
-                    <span className="font-medium text-[#1C1611]">{product.size}</span>
+                    <span className="text-[#BDB3A5]">Occasion:</span>
+                    <span className="font-medium text-[#F4EEE4]">{product.occasion}</span>
                   </div>
                 )}
               </div>
 
-              {/* Color / Variant Selector */}
-              <div className="mt-4">
-                <label className="block text-xs font-semibold text-[#1C1611] uppercase tracking-wider mb-2">
-                  {t.product.colour}: <span className="text-[#B48448]">{selectedVariant}</span>
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {[product.colour, 'Deep Maroon', 'Royal Gold', 'Emerald Green']
-                    .filter((c, i, arr) => c && arr.indexOf(c) === i)
-                    .map((col) => (
+              {/* Variant Selector */}
+              {product.colour && (
+                <div className="mt-4">
+                  <label className="text-xs font-semibold text-[#BDB3A5] block uppercase tracking-wider mb-1.5">
+                    {t.product.colour}: <span className="text-[#F4EEE4]">{selectedVariant}</span>
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {[product.colour].map((c) => (
                       <button
-                        key={col}
+                        key={c}
                         type="button"
-                        onClick={() => setSelectedVariant(col as string)}
-                        className={`px-3 py-1.5 text-xs rounded-xs border transition-colors ${
-                          selectedVariant === col
-                            ? 'border-[#1C1611] bg-[#1C1611] text-white font-medium'
-                            : 'border-[#D8CEBE] bg-white text-[#5A5044] hover:border-[#1C1611]'
+                        onClick={() => setSelectedVariant(c)}
+                        className={`px-3 py-1 text-xs rounded-xs border transition-colors cursor-pointer ${
+                          selectedVariant === c
+                            ? 'border-[#D1B875] bg-[#4A1724] text-[#F4EEE4]'
+                            : 'border-white/15 bg-[#121011] text-[#BDB3A5] hover:border-[#B89A5A]/50'
                         }`}
                       >
-                        {col}
+                        {c}
                       </button>
                     ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Quantity Stepper */}
-              <div className="mt-4 flex items-center gap-4">
-                <label className="text-xs font-semibold text-[#1C1611] uppercase tracking-wider">
+              {/* Quantity */}
+              <div className="mt-4 flex items-center gap-3">
+                <label className="text-xs font-semibold text-[#BDB3A5] uppercase tracking-wider">
                   {t.product.qty}:
                 </label>
-                <div className="flex items-center border border-[#D8CEBE] rounded-xs bg-[#FCFAF7]">
+                <div className="flex items-center border border-white/20">
                   <button
                     type="button"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-2.5 py-1 text-sm font-semibold hover:bg-[#EAE2D5]"
+                    className="px-2.5 py-1 text-xs hover:bg-white/10 text-[#F4EEE4] cursor-pointer"
                   >
                     -
                   </button>
-                  <span className="px-3 py-1 text-xs font-mono font-semibold tabular-nums">
+                  <span className="px-3 py-1 text-xs font-mono font-semibold text-[#F4EEE4] bg-[#121011]">
                     {quantity}
                   </span>
                   <button
                     type="button"
                     onClick={() => setQuantity(quantity + 1)}
-                    className="px-2.5 py-1 text-sm font-semibold hover:bg-[#EAE2D5]"
+                    className="px-2.5 py-1 text-xs hover:bg-white/10 text-[#F4EEE4] cursor-pointer"
                   >
                     +
                   </button>
@@ -201,15 +201,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
             </div>
 
-            {/* Action Buttons (Strict Contiguous Purchase Module) */}
-            <div className="pt-4 border-t border-[#E8DFD3] space-y-2">
+            {/* CTAs */}
+            <div className="space-y-3 pt-4 border-t border-white/10">
               <button
                 type="button"
-                onClick={() => {
-                  onClose();
-                  onEnquire(product, selectedVariant, quantity);
-                }}
-                className="w-full py-3.5 px-4 text-xs font-semibold tracking-wider uppercase text-white bg-[#1C1611] hover:bg-[#B48448] transition-colors rounded-sm flex items-center justify-center gap-2 shadow-xs"
+                onClick={() => onEnquire(product, selectedVariant, quantity)}
+                className="w-full py-3.5 px-6 bg-[#4A1724] hover:bg-[#351019] text-[#F4EEE4] text-xs font-semibold uppercase tracking-[0.2em] border border-[#B89A5A]/50 transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>{t.product.enquireNow}</span>
               </button>
@@ -218,23 +215,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 px-4 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors rounded-sm flex items-center justify-center gap-2"
+                className="w-full py-3 px-6 bg-transparent hover:bg-white/5 text-[#D1B875] hover:text-[#F4EEE4] text-xs font-semibold uppercase tracking-wider border border-[#B89A5A]/30 transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
-                <MessageCircle className="w-4 h-4 text-emerald-600" />
+                <MessageCircle className="w-4 h-4 text-[#25D366]" />
                 <span>{t.product.chatWhatsApp}</span>
               </a>
-
-              <div className="pt-2 flex items-center justify-center gap-4 text-[11px] text-[#7A6E5F]">
-                <span className="flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-emerald-600" /> 100% Genuine Fabrics
-                </span>
-                <span className="flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-emerald-600" /> Free In-Store Trial
-                </span>
-                <span className="flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-emerald-600" /> Doorstep Delivery
-                </span>
-              </div>
             </div>
           </div>
         </div>

@@ -546,10 +546,10 @@ function seedDefaultData(db: Database) {
   if (count === 0) {
     console.log('Seeding initial database with Shree Vijay Showroom data...');
 
-    // Initial password requested by client: clothing9300
+    // Initial password requested by client: 1234
     // We securely hash it with bcrypt salt:
     const salt = bcrypt.genSaltSync(10);
-    const passwordHash = bcrypt.hashSync('clothing9300', salt);
+    const passwordHash = bcrypt.hashSync('1234', salt);
 
     db.run(`
       INSERT INTO admins (username, password_hash, role, name, phone, email)
@@ -596,6 +596,7 @@ function seedDefaultData(db: Database) {
       ['accent_color', '#B48448'],
       ['instagram_url', 'https://instagram.com/shreevijayshowroom'],
       ['facebook_url', 'https://facebook.com/shreevijayshowroom'],
+      ['youtube_url', 'https://www.youtube.com/channel/UCRSKEwjmz4xltTpOoubrLJw'],
       ['theme_style', 'royal-luxury']
     ];
 
@@ -608,6 +609,7 @@ function seedDefaultData(db: Database) {
       INSERT INTO social_links (platform, url, is_enabled, extra_config) VALUES
       ('whatsapp', 'https://wa.me/918989892476', 1, '{"label":"Chat on WhatsApp"}'),
       ('instagram', 'https://instagram.com/shreevijayshowroom', 1, '{"label":"Follow on Instagram"}'),
+      ('youtube', 'https://www.youtube.com/channel/UCRSKEwjmz4xltTpOoubrLJw', 1, '{"label":"Subscribe on YouTube"}'),
       ('facebook', 'https://facebook.com/shreevijayshowroom', 1, '{"label":"Follow on Facebook"}'),
       ('google_maps', 'https://maps.google.com/?q=5WGJ%2B4G+Jabalpur', 1, '{"label":"Get Directions"}');
     `);

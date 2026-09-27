@@ -4,6 +4,7 @@ import { Language } from '../lib/translations.ts';
 
 // High-fidelity image assets
 import showroomInteriorImg from '../assets/images/showroom_interior_ambiance_1790317495781.jpg';
+import showroomFloorBgImg from '../assets/images/showroom_floor_bg.jpg';
 import bridalImg from '../assets/images/bridal_lehenga_collection_1790317477737.jpg';
 import womenImg from '../assets/images/designer_banarasi_saree_1790317467169.jpg';
 import menImg from '../assets/images/groom_royal_sherwani_1790317453744.jpg';
@@ -72,7 +73,25 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
       id="showroom-floor"
       className="relative py-20 lg:py-28 bg-[#0A0909] text-[#F4EEE4] border-b border-[#B89A5A]/20 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Background Ambience Layer with Pinterest Reference Image (fitted and paced to section frame) */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        <img
+          src={showroomFloorBgImg}
+          alt="Shree Vijay Showroom Floor Background"
+          aria-hidden="true"
+          className="w-full h-full object-cover object-center filter brightness-[0.65] contrast-[1.1] saturate-[1.05]"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src =
+              'https://i.pinimg.com/originals/8b/cb/c9/8bcbc95913b65061cc3b8f2e2edd674e.jpg';
+          }}
+        />
+        {/* Editorial Multi-stop Atmospheric Scrims tuned for high image visibility and text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0909]/70 via-[#0A0909]/30 to-[#0A0909]/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(10,9,9,0.65)_100%)]" />
+        <div className="absolute inset-0 bg-[#351019]/20 mix-blend-multiply" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16 gap-6">
           <div>

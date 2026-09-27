@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, Menu, X, Shield, Phone, Compass, MapPin } from 'lucide-react';
+import { MessageCircle, Menu, X, Shield, Compass, MapPin, Youtube, Instagram } from 'lucide-react';
 import { Language, translations } from '../lib/translations.ts';
 import { WebsiteSettings } from '../types/index.ts';
 import { BrandLogo } from './BrandLogo.tsx';
@@ -26,6 +26,8 @@ export const Header: React.FC<HeaderProps> = ({
 
   const phone = settings?.phone || '089898 92476';
   const whatsappNumber = settings?.whatsapp_number || '918989892476';
+  const instagramUrl = settings?.instagram_url || 'https://instagram.com/shreevijayshowroom';
+  const youtubeUrl = settings?.youtube_url || 'https://www.youtube.com/channel/UCRSKEwjmz4xltTpOoubrLJw';
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     settings?.whatsapp_default_message ||
       'Namaste Shree Vijay Showroom, I would like to book a bridal/wedding consultation.'
@@ -97,36 +99,6 @@ export const Header: React.FC<HeaderProps> = ({
             : 'bg-[#0A0909]/80 backdrop-blur-sm border-b border-white/10 text-[#F4EEE4]'
         }`}
       >
-        {/* Top Micro Line (Quiet Editorial Heritage Marker) */}
-        <div
-          className={`text-[11px] py-1.5 px-4 text-center font-medium tracking-wider flex items-center justify-between border-b transition-colors ${
-            isScrolled
-              ? 'bg-[#121011] text-[#BDB3A5] border-[#B89A5A]/15'
-              : 'bg-[#0E0C0D] text-[#BDB3A5]/85 border-white/5'
-          }`}
-        >
-          <div className="hidden md:flex items-center gap-2">
-            <MapPin className="w-3 h-3 text-[#B89A5A]" />
-            <span>Bada Fuhara, Jabalpur</span>
-            <span className="opacity-40">·</span>
-            <span>10:30 AM – 10:00 PM (All 7 Days)</span>
-          </div>
-          <div className="mx-auto truncate max-w-xl text-center text-[#F4EEE4]">
-            {lang === 'hi'
-              ? '✨ श्री विजय शोरूम — जबलपुर का प्रतिष्ठित वेडिंग व ब्राइडल हाउस'
-              : '✨ Shree Vijay Showroom — The Premier Wedding House of Jabalpur'}
-          </div>
-          <div className="hidden sm:flex items-center gap-3 text-[11px]">
-            <a
-              href={`tel:${phone.replace(/\s+/g, '')}`}
-              className="text-[#D1B875] hover:text-[#F4EEE4] hover:underline flex items-center gap-1 font-medium transition-colors"
-            >
-              <Phone className="w-3 h-3 text-[#B89A5A]" />
-              <span>{phone}</span>
-            </a>
-          </div>
-        </div>
-
         {/* Main 3-Zone Top Bar Contract */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           {/* Zone 1: Royal Brand Wordmark */}
@@ -280,6 +252,27 @@ export const Header: React.FC<HeaderProps> = ({
                 <MessageCircle className="w-4 h-4 text-emerald-400" />
                 <span>{lang === 'hi' ? 'व्हाट्सएप चैट' : 'WhatsApp Consultation'}</span>
               </a>
+
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <a
+                  href={instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-2 px-3 text-[11px] font-semibold text-[#F4EEE4] bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <Instagram className="w-3.5 h-3.5 text-[#D1B875]" />
+                  <span>Instagram</span>
+                </a>
+                <a
+                  href={youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-2 px-3 text-[11px] font-semibold text-[#F4EEE4] bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <Youtube className="w-3.5 h-3.5 text-red-500" />
+                  <span>YouTube</span>
+                </a>
+              </div>
             </div>
           </div>
         )}

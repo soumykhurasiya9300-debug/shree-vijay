@@ -249,6 +249,7 @@ export interface WebsiteSettings {
   accent_color: string;
   instagram_url: string;
   facebook_url: string;
+  youtube_url?: string;
 }
 
 export interface ActivityLog {

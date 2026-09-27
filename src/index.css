@@ -7,16 +7,29 @@
     --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     
     /* Dark Royal Indian Luxury Palette Tokens */
-    --color-bg-primary: #0A0909;       /* Deep Obsidian */
-    --color-bg-secondary: #121011;     /* Charcoal */
-    --color-surface: #181516;          /* Elevated Surface */
-    --color-surface-elevated: #201C1E; /* Higher Surface */
-    --color-wine: #4A1724;             /* Burgundy / Wine */
-    --color-wine-deep: #351019;        /* Deep Wine */
-    --color-gold: #B89A5A;             /* Antique Gold */
-    --color-gold-soft: #D1B875;        /* Soft Gold */
-    --color-text-primary: #F4EEE4;     /* Warm Ivory */
-    --color-text-secondary: #BDB3A5;   /* Muted Champagne */
+    --sv-bg: #0A0909;                  /* Deep Obsidian */
+    --sv-bg-secondary: #121011;        /* Charcoal */
+    --sv-surface: #181516;             /* Elevated Surface */
+    --sv-surface-elevated: #201C1E;    /* Higher Surface */
+    --sv-wine: #4A1724;                /* Burgundy / Wine */
+    --sv-wine-deep: #351019;           /* Deep Wine */
+    --sv-gold: #B89A5A;                /* Antique Gold */
+    --sv-gold-soft: #D1B875;           /* Soft Gold */
+    --sv-text: #F4EEE4;                /* Warm Ivory */
+    --sv-text-muted: #BDB3A5;          /* Muted Champagne */
+    --sv-border: rgba(184, 154, 90, 0.20);
+    --sv-border-subtle: rgba(255, 255, 255, 0.08);
+
+    --color-bg-primary: #0A0909;
+    --color-bg-secondary: #121011;
+    --color-surface: #181516;
+    --color-surface-elevated: #201C1E;
+    --color-wine: #4A1724;
+    --color-wine-deep: #351019;
+    --color-gold: #B89A5A;
+    --color-gold-soft: #D1B875;
+    --color-text-primary: #F4EEE4;
+    --color-text-secondary: #BDB3A5;
     --color-border: rgba(184, 154, 90, 0.20);
     --color-border-subtle: rgba(255, 255, 255, 0.08);
   }

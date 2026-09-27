@@ -15,6 +15,7 @@ import { InstagramSection } from './components/InstagramSection.tsx';
 import { ContactSection } from './components/ContactSection.tsx';
 import { FloatingActions } from './components/FloatingActions.tsx';
 import { Footer } from './components/Footer.tsx';
+import { SectionBorderDivider } from './components/SectionBorderDivider.tsx';
 import { ProductDetailModal } from './components/ProductDetailModal.tsx';
 import { EnquiryModal } from './components/EnquiryModal.tsx';
 import { AdminLogin } from './components/admin/AdminLogin.tsx';
@@ -158,8 +159,12 @@ export default function App() {
           />
         )}
 
+        <SectionBorderDivider />
+
         {/* 4. Showroom Floor: Department Directory (01 Bridal, 02 Women, 03 Men, 04 Family, 05 Occasions) */}
         <ShowroomFloor lang={lang} />
+
+        <SectionBorderDivider />
 
         {/* 5. The Bridal Edit: "For the Moment You'll Remember Forever" */}
         <BridalEditSection
@@ -170,6 +175,8 @@ export default function App() {
           whatsappNumber={settings?.whatsapp_number}
         />
 
+        <SectionBorderDivider />
+
         {/* 6. The Digital Rack Experience: Horizontal Scrolling Showroom Rails */}
         <DigitalRackSection
           products={products}
@@ -177,6 +184,8 @@ export default function App() {
           onViewProduct={(p) => setViewingProduct(p)}
           onEnquireProduct={(p) => handleOpenEnquiryForProduct(p)}
         />
+
+        <SectionBorderDivider />
 
         {/* 7. Occasion-First Styling: "What Are You Dressing For?" */}
         <OccasionShoppingSection
@@ -186,6 +195,8 @@ export default function App() {
           onEnquireProduct={(p) => handleOpenEnquiryForProduct(p)}
         />
 
+        <SectionBorderDivider />
+
         {/* 8. The Groom's Edit: Royal Sherwanis & Silk Bandhgalas */}
         <GroomEditSection
           products={products}
@@ -194,6 +205,8 @@ export default function App() {
           onEnquireProduct={(p) => handleOpenEnquiryForProduct(p)}
           whatsappNumber={settings?.whatsapp_number}
         />
+
+        <SectionBorderDivider />
 
         {/* 9. The Complete Family Wedding: "One Wedding. Everyone's Look." */}
         <FamilyWeddingSection
@@ -205,6 +218,8 @@ export default function App() {
           whatsappNumber={settings?.whatsapp_number}
         />
 
+        <SectionBorderDivider />
+
         {/* 10. Curator's Choice: Look of the Week Spotlight */}
         <FeaturedLookSpotlight
           products={products}
@@ -213,6 +228,8 @@ export default function App() {
           onEnquireProduct={(p) => handleOpenEnquiryForProduct(p)}
         />
 
+        <SectionBorderDivider />
+
         {/* 11. Walk Through the Showroom: Multi-Floor Interactive Hotspots */}
         <ShowroomWalkthrough
           lang={lang}
@@ -220,25 +237,47 @@ export default function App() {
         />
 
         {/* 12. 30+ Years Heritage Story: The Journey from 1990s to Today */}
-        {isSectionActive('craft_story') && <ShowroomStory lang={lang} />}
+        {isSectionActive('craft_story') && (
+          <>
+            <SectionBorderDivider />
+            <ShowroomStory lang={lang} />
+          </>
+        )}
 
         {/* 13. Real Google Reviews (4.9★ Customer Voice) */}
-        {isSectionActive('reviews') && <GoogleReviewsSection lang={lang} />}
+        {isSectionActive('reviews') && (
+          <>
+            <SectionBorderDivider />
+            <GoogleReviewsSection lang={lang} />
+          </>
+        )}
 
         {/* 14. Instagram Showcase: Real Brides & Showroom Reels */}
         {isSectionActive('instagram') && (
-          <InstagramSection lang={lang} instagramUrl={settings?.instagram_url} />
+          <>
+            <SectionBorderDivider />
+            <InstagramSection
+              lang={lang}
+              instagramUrl={settings?.instagram_url}
+              youtubeUrl={settings?.youtube_url}
+            />
+          </>
         )}
 
         {/* 15. Showroom Visit & "Let's Find Your Look" Consultation Booking */}
         {isSectionActive('contact') && (
-          <ContactSection
-            lang={lang}
-            settings={settings}
-            onOpenEnquiry={handleOpenGeneralEnquiry}
-          />
+          <>
+            <SectionBorderDivider />
+            <ContactSection
+              lang={lang}
+              settings={settings}
+              onOpenEnquiry={handleOpenGeneralEnquiry}
+            />
+          </>
         )}
       </main>
+
+      <SectionBorderDivider />
 
       {/* 16. Minimal Luxury Editorial Footer */}
       <Footer

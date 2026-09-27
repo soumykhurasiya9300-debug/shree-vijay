@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Users, ArrowRight, Sparkles, Shirt } from 'lucide-react';
+import { ArrowRight, Sparkles, Shirt, Crown, Check } from 'lucide-react';
 import { Language } from '../lib/translations.ts';
 import { Product } from '../types/index.ts';
 import { getFamilyWeddingReelUrl, openInstagramReel } from '../lib/instagramReels.ts';
 
-// Curated high-fidelity imagery for each category display
+// High-fidelity curated imagery for editorial wardrobe entries & categories
 import weddingBgImg from '../assets/images/family_wedding_bg.jpg';
-import menImg from '../assets/images/groom_royal_sherwani_1790317453744.jpg';
-import bridalImg from '../assets/images/bridal_lehenga_collection_1790317477737.jpg';
+import maleModelImg from '../assets/images/groom_royal_sherwani_1790317453744.jpg';
+import femaleModelImg from '../assets/images/bridal_lehenga_collection_1790317477737.jpg';
 import sareeImg from '../assets/images/designer_banarasi_saree_1790317467169.jpg';
 import familyImg from '../assets/images/family_wedding_ensemble_1790325566253.jpg';
 import occasionImg from '../assets/images/occasion_haldi_festive_1790325578682.jpg';
@@ -55,7 +55,7 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
         tagline: 'Festive raw silk kurtas, Nehru jackets & churidar sets',
         tagline_hi: 'रॉ सिल्क व टसर कुर्ते, कढ़ाईदार बंडी जैकेट एवं चूड़ीदार',
         image: occasionImg,
-        badge: "Groom & Family",
+        badge: 'Groom & Family',
         badge_hi: 'उत्सव व हल्दी',
         filterQuery: 'kurta',
       },
@@ -65,8 +65,8 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
         name_hi: 'शाही शेरवानी',
         tagline: 'Hand-embroidered zardozi raw silk & Jamawar royal sherwanis',
         tagline_hi: 'जरदोजी, कटदाना व जामावार वीव में सजी राजसी शेरवानी',
-        image: menImg,
-        badge: "Royal Heritage",
+        image: maleModelImg,
+        badge: 'Royal Heritage',
         badge_hi: 'शाही फेरे व बारात',
         filterQuery: 'sherwani',
       },
@@ -77,7 +77,7 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
         tagline: 'Bespoke tailored wool & velvet high-neck royal suits',
         tagline_hi: 'इटैलियन वूल व वेलवेट में मास्टर-टेलर जोधपुरी बंदगला',
         image: weddingBgImg,
-        badge: "Bespoke Cut",
+        badge: 'Bespoke Cut',
         badge_hi: 'रिसेप्शन व संगीत',
         filterQuery: 'blazer',
       },
@@ -88,7 +88,7 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
         tagline: 'Contemporary asymmetric pleated drape fusion silhouettes',
         tagline_hi: 'आधुनिक असिमेट्रिक ड्रेप व मेटैलिक ब्रोकेड अचकन',
         image: familyImg,
-        badge: "Couture Fusion",
+        badge: 'Couture Fusion',
         badge_hi: 'कॉकटेल व संगीत',
         filterQuery: 'indo',
       },
@@ -101,7 +101,7 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
         tagline: 'Authentic Banarasi Katan silk, Kadwa zari & pure Chanderi weaves',
         tagline_hi: 'शुद्ध बनारसी कतान, कड़वा जरी, चंदेरी व महेश्वरी सिल्क साड़ियां',
         image: sareeImg,
-        badge: "Pure Silk Weave",
+        badge: 'Pure Silk Weave',
         badge_hi: 'विरासत बनारसी',
         filterQuery: 'saree',
       },
@@ -112,7 +112,7 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
         tagline: 'Trail silhouette evening gowns with Swarovski & metallic threadwork',
         tagline_hi: 'स्वरावेस्की, कटदाना व ट्रेल फ्लेयर में सजे डिजाइनर गाउन',
         image: occasionImg,
-        badge: "Evening Glamour",
+        badge: 'Evening Glamour',
         badge_hi: 'रिसेप्शन व कॉकटेल',
         filterQuery: 'gown',
       },
@@ -122,8 +122,8 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
         name_hi: 'ब्राइडल लहंगा',
         tagline: 'Heirloom zardozi crimson velvet & pastel floral bridal lehengas',
         tagline_hi: 'शाही जरदोजी वेलवेट, डबल दुपट्टा व पेस्टल सिल्क लहंगा',
-        image: bridalImg,
-        badge: "Master Bridal",
+        image: femaleModelImg,
+        badge: 'Master Bridal',
         badge_hi: 'राजपूताना ब्राइडल',
         filterQuery: 'lehenga',
       },
@@ -134,7 +134,7 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
         tagline: 'Festive silk anarkalis, embroidered sharara sets & straight suits',
         tagline_hi: 'सिल्क अनारकली, गोटा-पट्टी शरारा सेट्स एवं फेस्टिव सूट',
         image: familyImg,
-        badge: "Celebration Wear",
+        badge: 'Celebration Wear',
         badge_hi: 'मेहंदी व उत्सव',
         filterQuery: 'kurti',
       },
@@ -168,92 +168,301 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
     }
   };
 
+  const scrollToCategories = () => {
+    const el = document.getElementById('wardrobe-collection-grid');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleSelectGender = (gender: GenderType) => {
+    setActiveGender(gender);
+  };
+
   return (
     <section
       id="family-wedding"
-      className="relative py-20 lg:py-28 text-[#F4EEE4] border-b border-[#B89A5A]/20 overflow-hidden"
+      className="relative py-20 lg:py-32 bg-[#0A0909] text-[#F4EEE4] border-b border-[#B89A5A]/20 overflow-hidden"
     >
-      {/* Background Image Layer (from https://pin.it/35jHrOzcs) with high visibility */}
+      {/* Background Atmosphere Layer */}
       <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
         <img
           src={weddingBgImg}
           alt="Shree Vijay Complete Wedding Wardrobe Atmosphere"
           aria-hidden="true"
-          className="w-full h-full object-cover object-center filter brightness-[1.02] contrast-[1.05]"
+          className="w-full h-full object-cover object-center filter brightness-[0.68] contrast-[1.1] saturate-[1.05]"
         />
-        {/* Delicate edge blend so the background photo is vividly visible throughout the section */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0909]/60 via-transparent to-[#0A0909]/70" />
-        <div className="absolute inset-0 bg-black/20" />
+        {/* Tuned Scrims for high background visibility while preserving typography legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0909]/75 via-[#0A0909]/35 to-[#0A0909]/85" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(10,9,9,0.65)_100%)]" />
+        <div className="absolute inset-0 bg-[#4A1724]/20 mix-blend-multiply" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header with frosted luxury backdrop ensuring sharp legibility over the vivid background */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 bg-[#181516]/90 backdrop-blur-md py-8 px-6 sm:px-10 rounded-xs border border-[#B89A5A]/35 shadow-2xl">
-          <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-[#B89A5A] font-semibold mb-2">
-            <Users className="w-3.5 h-3.5" />
-            <span>{lang === 'hi' ? 'मेंस व विमेन्स वेडिंग परिधान' : 'MALE & FEMALE WEDDING WARDROBE'}</span>
-            <Users className="w-3.5 h-3.5" />
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-[#B89A5A]/30 bg-[#121011]/80 backdrop-blur-md mb-3 text-xs uppercase tracking-[0.28em] text-[#D1B875] font-semibold">
+            <Crown className="w-3.5 h-3.5 text-[#B89A5A]" />
+            <span>{lang === 'hi' ? 'वार्डरोब चयन' : 'THE WARDROBE'}</span>
+            <Crown className="w-3.5 h-3.5 text-[#B89A5A]" />
           </div>
 
-          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#F4EEE4] leading-[1.1]">
+          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#F4EEE4] leading-[1.08] text-balance">
             {lang === 'hi' ? (
               <>
-                मेंस एवं विमेन्स परिधान <br />
+                अपना परिधान संसार चुनें <br />
                 <span className="font-editorial italic font-normal text-[#D1B875]">
-                  विवाह व उत्सव की संपूर्ण खरीदारी।
+                  मेंस व विमेन्स कूट्यूर।
                 </span>
               </>
             ) : (
               <>
-                MALE & FEMALE <br />
+                CHOOSE YOUR WARDROBE <br />
                 <span className="font-editorial italic font-normal text-[#D1B875]">
-                  COMPLETE WEDDING COLLECTION.
+                  DISCOVER YOUR STYLE.
                 </span>
               </>
             )}
           </h2>
 
-          <p className="mt-4 text-sm sm:text-base text-[#BDB3A5] font-light max-w-xl mx-auto">
+          <p className="mt-4 text-sm sm:text-base text-[#BDB3A5] font-light max-w-xl mx-auto leading-relaxed">
             {lang === 'hi'
-              ? 'पुरुषों के लिए कुर्ता, शेरवानी, ब्लेजर्स व इंडो-वेस्टर्न एवं महिलाओं के लिए साड़ी, गाउन, लहंगा व कुर्ती का विशेष मुख्य संग्रह।'
-              : 'Explore each signature category with high-definition visuals tailored for both men and women under one heritage roof in Jabalpur.'}
+              ? 'जबलपुर के प्रतिष्ठित श्री विजय शोरूम में वर-वधू एवं संपूर्ण परिवार के लिए विशेष रूप से क्यूरेट किए गए दो राजसी संग्रह।'
+              : 'Two distinguished worlds of Indian festive fashion. Step into our tailored men’s lounge or our heritage bridal atelier.'}
           </p>
+        </div>
 
-          {/* Primary Gender Segmented Switch: MALE & FEMALE */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-8">
-            <button
-              onClick={() => setActiveGender('male')}
-              className={`px-7 py-3 text-xs sm:text-sm uppercase tracking-[0.2em] font-bold transition-all duration-300 cursor-pointer flex items-center gap-2 border ${
-                activeGender === 'male'
-                  ? 'bg-[#4A1724] text-[#F4EEE4] border-[#B89A5A] shadow-lg scale-105'
-                  : 'bg-[#121011]/85 hover:bg-[#181516] text-[#BDB3A5] border-white/10 hover:border-[#B89A5A]/50 hover:text-[#F4EEE4]'
-              }`}
-            >
-              <Shirt className="w-4 h-4 text-[#B89A5A]" />
-              <span>{lang === 'hi' ? 'पुरुष (मेंस सेक्शन)' : 'MALE SECTION'}</span>
-            </button>
+        {/* TWO LARGE EDITORIAL WARDROBE CAMPAIGN ENTRIES */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start mb-20">
+          {/* 1. MALE WARDROBE CAMPAIGN ENTRY */}
+          <div
+            onClick={() => handleSelectGender('male')}
+            className={`group relative cursor-pointer transition-all duration-500 rounded-xs overflow-hidden border ${
+              activeGender === 'male'
+                ? 'border-[#D1B875] ring-2 ring-[#B89A5A]/50 shadow-[0_20px_60px_rgba(0,0,0,0.9)] bg-[#181516]'
+                : 'border-white/10 hover:border-[#B89A5A]/60 opacity-80 hover:opacity-100 bg-[#121011]'
+            }`}
+          >
+            {/* Architectural Gold Corner Details */}
+            <div className="absolute top-4 left-4 w-7 h-7 border-t border-l border-[#B89A5A]/80 z-20 pointer-events-none transition-transform group-hover:scale-110" />
+            <div className="absolute bottom-4 right-4 w-7 h-7 border-b border-r border-[#B89A5A]/80 z-20 pointer-events-none transition-transform group-hover:scale-110" />
 
-            <button
-              onClick={() => setActiveGender('female')}
-              className={`px-7 py-3 text-xs sm:text-sm uppercase tracking-[0.2em] font-bold transition-all duration-300 cursor-pointer flex items-center gap-2 border ${
-                activeGender === 'female'
-                  ? 'bg-[#4A1724] text-[#F4EEE4] border-[#B89A5A] shadow-lg scale-105'
-                  : 'bg-[#121011]/85 hover:bg-[#181516] text-[#BDB3A5] border-white/10 hover:border-[#B89A5A]/50 hover:text-[#F4EEE4]'
-              }`}
-            >
-              <Sparkles className="w-4 h-4 text-[#B89A5A]" />
-              <span>{lang === 'hi' ? 'महिला (विमेन्स सेक्शन)' : 'FEMALE SECTION'}</span>
-            </button>
+            {/* Campaign Portrait Frame */}
+            <div className="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-[#0A0909]">
+              <img
+                src={maleModelImg}
+                alt="Shree Vijay Male Royal Groom & Festive Wardrobe"
+                className="w-full h-full object-cover object-top filter brightness-[0.88] contrast-[1.04] transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-100"
+                referrerPolicy="no-referrer"
+              />
+
+              {/* Editorial Gradient Scrims */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909] via-transparent to-black/30 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0A0909]/40 via-transparent to-transparent pointer-events-none" />
+
+              {/* Floating Chapter Tag */}
+              <div className="absolute top-5 right-5 z-20 bg-[#0A0909]/90 border border-[#B89A5A]/40 text-[#F4EEE4] font-mono text-[10px] tracking-widest px-3 py-1 uppercase backdrop-blur-md">
+                CHAPTER 01 · MEN
+              </div>
+
+              {/* Active Selection Badge */}
+              {activeGender === 'male' && (
+                <div className="absolute top-5 left-14 z-20 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#B89A5A] text-[#0A0909] text-[10px] font-bold uppercase tracking-wider shadow-md">
+                  <Check className="w-3 h-3 stroke-[3]" />
+                  <span>Selected</span>
+                </div>
+              )}
+
+              {/* Hover Cue Watermark */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <span className="px-6 py-2.5 bg-[#0A0909]/85 border border-[#D1B875] text-[#F4EEE4] font-display text-xs uppercase tracking-[0.26em] backdrop-blur-md shadow-2xl">
+                  {lang === 'hi' ? 'मेंस कलेक्शन देखें' : 'EXPLORE MEN’S COLLECTION'}
+                </span>
+              </div>
+            </div>
+
+            {/* Editorial Label & Supporting Information */}
+            <div className="p-6 sm:p-8 bg-[#181516] flex flex-col justify-between border-t border-white/10 text-left">
+              <div>
+                <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.24em] text-[#B89A5A] font-semibold mb-1">
+                  <span>MALE WARDROBE</span>
+                  <span className="font-mono text-[#BDB3A5] text-[10px]">4 CATEGORIES</span>
+                </div>
+
+                <h3 className="font-display text-2xl sm:text-3xl font-bold text-[#F4EEE4] group-hover:text-[#D1B875] transition-colors">
+                  {lang === 'hi' ? 'पुरुष संग्रह (मेंस कूट्यूर)' : "Men's Collection"}
+                </h3>
+
+                <p className="text-xs text-[#BDB3A5] font-light mt-2 leading-relaxed">
+                  {lang === 'hi'
+                    ? 'शाही शेरवानी, जोधपुरी बंदगला, इंडो-वेस्टर्न व सिल्क कुर्ता बंडी — दूल्हा एवं परिजनों के लिए विशेष रूप से तैयार।'
+                    : 'Handcrafted zardozi sherwanis, Italian wool bandhgalas, asymmetrical Indo-Western cuts, and pure raw silk kurta sets.'}
+                </p>
+              </div>
+
+              {/* Interaction Indicator */}
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#D1B875] group-hover:text-[#F4EEE4] inline-flex items-center gap-2 transition-colors">
+                  <span>{lang === 'hi' ? 'मेंस परिधान देखें' : "Explore Men's Wardrobe"}</span>
+                  <ArrowRight className="w-4 h-4 text-[#B89A5A] transition-transform duration-300 group-hover:translate-x-1.5" />
+                </span>
+
+                <span
+                  className={`text-[10px] font-mono uppercase tracking-widest px-2.5 py-0.5 border ${
+                    activeGender === 'male'
+                      ? 'border-[#B89A5A] text-[#D1B875] bg-[#4A1724]'
+                      : 'border-white/10 text-[#BDB3A5]'
+                  }`}
+                >
+                  {activeGender === 'male' ? 'VIEWING' : 'CLICK TO VIEW'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 2. FEMALE WARDROBE CAMPAIGN ENTRY */}
+          <div
+            onClick={() => handleSelectGender('female')}
+            className={`group relative cursor-pointer transition-all duration-500 rounded-xs overflow-hidden border lg:translate-y-6 ${
+              activeGender === 'female'
+                ? 'border-[#D1B875] ring-2 ring-[#B89A5A]/50 shadow-[0_20px_60px_rgba(0,0,0,0.9)] bg-[#181516]'
+                : 'border-white/10 hover:border-[#B89A5A]/60 opacity-80 hover:opacity-100 bg-[#121011]'
+            }`}
+          >
+            {/* Architectural Gold Corner Details */}
+            <div className="absolute top-4 left-4 w-7 h-7 border-t border-l border-[#B89A5A]/80 z-20 pointer-events-none transition-transform group-hover:scale-110" />
+            <div className="absolute bottom-4 right-4 w-7 h-7 border-b border-r border-[#B89A5A]/80 z-20 pointer-events-none transition-transform group-hover:scale-110" />
+
+            {/* Campaign Portrait Frame */}
+            <div className="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-[#0A0909]">
+              <img
+                src={femaleModelImg}
+                alt="Shree Vijay Female Bridal & Festive Wardrobe"
+                className="w-full h-full object-cover object-top filter brightness-[0.88] contrast-[1.04] transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-100"
+                referrerPolicy="no-referrer"
+              />
+
+              {/* Editorial Gradient Scrims */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909] via-transparent to-black/30 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0A0909]/40 via-transparent to-transparent pointer-events-none" />
+
+              {/* Floating Chapter Tag */}
+              <div className="absolute top-5 right-5 z-20 bg-[#0A0909]/90 border border-[#B89A5A]/40 text-[#F4EEE4] font-mono text-[10px] tracking-widest px-3 py-1 uppercase backdrop-blur-md">
+                CHAPTER 02 · WOMEN
+              </div>
+
+              {/* Active Selection Badge */}
+              {activeGender === 'female' && (
+                <div className="absolute top-5 left-14 z-20 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#B89A5A] text-[#0A0909] text-[10px] font-bold uppercase tracking-wider shadow-md">
+                  <Check className="w-3 h-3 stroke-[3]" />
+                  <span>Selected</span>
+                </div>
+              )}
+
+              {/* Hover Cue Watermark */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <span className="px-6 py-2.5 bg-[#0A0909]/85 border border-[#D1B875] text-[#F4EEE4] font-display text-xs uppercase tracking-[0.26em] backdrop-blur-md shadow-2xl">
+                  {lang === 'hi' ? 'विमेन्स कलेक्शन देखें' : 'EXPLORE WOMEN’S COLLECTION'}
+                </span>
+              </div>
+            </div>
+
+            {/* Editorial Label & Supporting Information */}
+            <div className="p-6 sm:p-8 bg-[#181516] flex flex-col justify-between border-t border-white/10 text-left">
+              <div>
+                <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.24em] text-[#B89A5A] font-semibold mb-1">
+                  <span>FEMALE WARDROBE</span>
+                  <span className="font-mono text-[#BDB3A5] text-[10px]">4 CATEGORIES</span>
+                </div>
+
+                <h3 className="font-display text-2xl sm:text-3xl font-bold text-[#F4EEE4] group-hover:text-[#D1B875] transition-colors">
+                  {lang === 'hi' ? 'महिला संग्रह (विमेन्स कूट्यूर)' : "Women's Collection"}
+                </h3>
+
+                <p className="text-xs text-[#BDB3A5] font-light mt-2 leading-relaxed">
+                  {lang === 'hi'
+                    ? 'राजपूताना जरदोजी दुल्हन लहंगा, शुद्ध बनारसी कतान साड़ियां, ट्रेल रिसेप्शन गाउन व अनारकली सूट।'
+                    : 'Heirloom crimson bridal lehengas, pure Banarasi silk weaves, Swarovski reception evening gowns, and festive shararas.'}
+                </p>
+              </div>
+
+              {/* Interaction Indicator */}
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#D1B875] group-hover:text-[#F4EEE4] inline-flex items-center gap-2 transition-colors">
+                  <span>{lang === 'hi' ? 'विमेन्स परिधान देखें' : "Explore Women's Wardrobe"}</span>
+                  <ArrowRight className="w-4 h-4 text-[#B89A5A] transition-transform duration-300 group-hover:translate-x-1.5" />
+                </span>
+
+                <span
+                  className={`text-[10px] font-mono uppercase tracking-widest px-2.5 py-0.5 border ${
+                    activeGender === 'female'
+                      ? 'border-[#B89A5A] text-[#D1B875] bg-[#4A1724]'
+                      : 'border-white/10 text-[#BDB3A5]'
+                  }`}
+                >
+                  {activeGender === 'female' ? 'VIEWING' : 'CLICK TO VIEW'}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Main Display of Subcategories: Image on top, Subcategory Details Below */}
+        {/* SUBCATEGORY REVEAL CHAPTER HEADER */}
+        <div id="wardrobe-collection-grid" className="pt-8 mb-10 border-t border-[#B89A5A]/30">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.28em] text-[#B89A5A] font-semibold mb-1 flex items-center gap-2">
+                <span>ACTIVE CHAPTER:</span>
+                <span className="font-mono text-[#D1B875]">
+                  {activeGender === 'male' ? '01 / 02' : '02 / 02'}
+                </span>
+              </div>
+              <h3 className="font-display text-2xl sm:text-4xl font-bold text-[#F4EEE4]">
+                {activeGender === 'male'
+                  ? lang === 'hi'
+                    ? 'मेंस कलेक्शन: 4 मुख्य श्रेणियां'
+                    : "Men's Collection: 4 Curated Categories"
+                  : lang === 'hi'
+                  ? 'विमेन्स कलेक्शन: 4 मुख्य श्रेणियां'
+                  : "Women's Collection: 4 Curated Categories"}
+              </h3>
+            </div>
+
+            {/* Quick Switcher Control */}
+            <div className="flex items-center gap-2 bg-[#181516] p-1 border border-white/10 rounded-full self-start sm:self-auto">
+              <button
+                type="button"
+                onClick={() => handleSelectGender('male')}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-colors cursor-pointer ${
+                  activeGender === 'male'
+                    ? 'bg-[#B89A5A] text-[#0A0909] font-bold shadow-xs'
+                    : 'text-[#BDB3A5] hover:text-[#F4EEE4]'
+                }`}
+              >
+                Men's Wear
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectGender('female')}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-colors cursor-pointer ${
+                  activeGender === 'female'
+                    ? 'bg-[#B89A5A] text-[#0A0909] font-bold shadow-xs'
+                    : 'text-[#BDB3A5] hover:text-[#F4EEE4]'
+                }`}
+              >
+                Women's Wear
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* REVEALED SUBCATEGORIES MAIN DISPLAY GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-16">
-          {currentDisplayList.map((sub) => (
+          {currentDisplayList.map((sub, index) => (
             <div
-              key={sub.id}
+              key={`${activeGender}-${sub.id}`}
               onClick={() => handleSubcategoryClick(sub)}
-              className="group bg-[#181516]/95 hover:bg-[#201C1E] border border-white/10 hover:border-[#B89A5A]/60 rounded-xs overflow-hidden flex flex-col transition-all duration-500 shadow-md hover:shadow-2xl cursor-pointer"
+              className="group bg-[#181516] hover:bg-[#201C1E] border border-white/10 hover:border-[#B89A5A]/60 rounded-xs overflow-hidden flex flex-col transition-all duration-500 shadow-md hover:shadow-2xl cursor-pointer hover:-translate-y-1"
             >
               {/* Main Subcategory Image Display */}
               <div className="relative aspect-[3/4] overflow-hidden bg-[#0A0909]">
@@ -267,9 +476,14 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
                 {/* Decorative Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity" />
 
-                {/* Subcategory Badge on Image Top-Left */}
-                <div className="absolute top-3 left-3 bg-[#121011]/90 backdrop-blur-xs text-[10px] uppercase tracking-wider text-[#D1B875] font-semibold px-2.5 py-1 border border-[#B89A5A]/40 shadow-xs">
-                  {lang === 'hi' ? sub.badge_hi : sub.badge}
+                {/* Subcategory Index & Badge on Image Top-Left */}
+                <div className="absolute top-3 left-3 flex items-center gap-1.5">
+                  <span className="w-5 h-5 rounded-full bg-[#B89A5A] text-[#0A0909] text-[10px] font-bold flex items-center justify-center shadow-xs font-mono">
+                    0{index + 1}
+                  </span>
+                  <span className="bg-[#121011]/90 backdrop-blur-xs text-[10px] uppercase tracking-wider text-[#D1B875] font-semibold px-2 py-0.5 border border-[#B89A5A]/40 shadow-xs">
+                    {lang === 'hi' ? sub.badge_hi : sub.badge}
+                  </span>
                 </div>
 
                 {/* Hover Indicator Icon */}
@@ -278,17 +492,17 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
                 </div>
               </div>
 
-              {/* Subcategory Details Displayed Clearly Below Image */}
+              {/* Subcategory Details Below Image */}
               <div className="p-5 flex-1 flex flex-col justify-between text-left bg-[#181516]">
                 <div>
                   <div className="text-[10px] uppercase tracking-[0.22em] text-[#B89A5A] font-semibold mb-1">
-                    {activeGender === 'male' ? "MALE COLLECTION" : "FEMALE COLLECTION"}
+                    {activeGender === 'male' ? "MALE COLLECTION" : "FEMALE COLLECTION"} · 0{index + 1}
                   </div>
 
                   {/* Subcategory Title */}
-                  <h3 className="font-display text-xl sm:text-2xl font-bold text-[#F4EEE4] group-hover:text-[#D1B875] transition-colors">
+                  <h4 className="font-display text-xl sm:text-2xl font-bold text-[#F4EEE4] group-hover:text-[#D1B875] transition-colors">
                     {lang === 'hi' ? sub.name_hi : sub.name}
-                  </h3>
+                  </h4>
 
                   {/* Subcategory Short Description / Tagline */}
                   <p className="text-xs text-[#BDB3A5] mt-2 line-clamp-2 font-light leading-relaxed">
@@ -302,7 +516,7 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
                     <span>{lang === 'hi' ? 'संग्रह देखें' : 'Explore Category'}</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </span>
-                  <span className="text-[10px] text-[#BDB3A5] font-mono">
+                  <span className="text-[10px] text-[#BDB3A5]/60 font-mono">
                     SV · 2026
                   </span>
                 </div>
@@ -349,3 +563,5 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
     </section>
   );
 };
+
+export default FamilyWeddingSection;

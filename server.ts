@@ -340,9 +340,9 @@ app.post('/api/auth/login', async (req: Request, res: Response) => {
       return;
     }
 
-    const remainingAttempts = 4 - record.attemptsCount;
+    const remainingAttempts = Math.max(0, 5 - record.attemptsCount);
     res.status(401).json({
-      error: `Incorrect password. ${remainingAttempts} attempt(s) remaining before temporary 5-minute lockout.`,
+      error: 'incorrect password',
       remainingAttempts
     });
     return;
@@ -407,8 +407,8 @@ app.post('/api/auth/change-password', requireAuth(), async (req: Request, res: R
       return;
     }
 
-    if (newPassword.length < 6) {
-      res.status(400).json({ error: 'New password must be at least 6 characters' });
+    if (newPassword.length < 4) {
+      res.status(400).json({ error: 'New password must be at least 4 characters' });
       return;
     }
 
@@ -1664,6 +1664,9 @@ async function startServer() {
   // Initialize database first
   await getDb();
   console.log('✓ SQLite database initialized and ready at data/shree_vijay.db');
+
+  // Serve static public assets (audio, video, images) with full HTTP Range request support
+  app.use(express.static(path.resolve(process.cwd(), 'public')));
 
   if (process.env.NODE_ENV === 'production' && fs.existsSync(path.resolve(process.cwd(), 'dist'))) {
     app.use(express.static(path.resolve(process.cwd(), 'dist')));

@@ -3,6 +3,7 @@ import { ArrowRight, Sparkles, MessageCircle } from 'lucide-react';
 import { Product } from '../types/index.ts';
 import { Language } from '../lib/translations.ts';
 import bridalHeroImg from '../assets/images/bridal_lehenga_collection_1790317477737.jpg';
+import bridalSectionBgImg from '../assets/images/bridal_section_bg.png';
 
 interface BridalEditSectionProps {
   products: Product[];
@@ -61,9 +62,27 @@ export const BridalEditSection: React.FC<BridalEditSectionProps> = ({
   return (
     <section
       id="bridal-edit"
-      className="py-20 lg:py-28 bg-[#121011] text-[#F4EEE4] border-b border-[#B89A5A]/20 overflow-hidden"
+      className="relative py-20 lg:py-28 bg-[#0A0909] text-[#F4EEE4] border-b border-[#B89A5A]/20 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Background Ambience Layer with Pinterest Reference Image (fitted to frame and properly visible) */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        <img
+          src={bridalSectionBgImg}
+          alt="Shree Vijay Bridal Edit Background"
+          aria-hidden="true"
+          className="w-full h-full object-cover object-center filter brightness-[0.65] contrast-[1.1] saturate-[1.05]"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src =
+              'https://i.pinimg.com/originals/4e/81/3d/4e813dacf02cbfa695a891a3bb55327b.png';
+          }}
+        />
+        {/* Editorial Atmospheric Scrims tuned for high visibility and contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0909]/75 via-[#0A0909]/30 to-[#0A0909]/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(10,9,9,0.65)_100%)]" />
+        <div className="absolute inset-0 bg-[#4A1724]/20 mix-blend-multiply" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Editorial Section Kicker */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-[#B89A5A] font-semibold mb-2">

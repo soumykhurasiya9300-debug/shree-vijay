@@ -78,21 +78,21 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
-      <div className="relative bg-white w-full max-w-2xl rounded-sm shadow-2xl border border-[#E8DFD3] overflow-hidden my-6">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+      <div className="relative bg-[#181516] text-[#F4EEE4] w-full max-w-2xl rounded-xs shadow-2xl border border-[#B89A5A]/30 overflow-hidden my-6">
         {/* Header */}
-        <div className="p-6 bg-[#F7F4EE] border-b border-[#E8DFD3] flex items-center justify-between">
+        <div className="p-6 bg-[#121011] border-b border-white/10 flex items-center justify-between">
           <div>
-            <span className="text-[11px] uppercase tracking-[0.2em] text-[#B48448] font-semibold block">
+            <span className="text-[10px] uppercase tracking-[0.24em] text-[#B89A5A] font-semibold block">
               SHREE VIJAY SHOWROOM · JABALPUR
             </span>
-            <h2 className="text-xl sm:text-2xl font-bold font-display text-[#1C1611]">
+            <h2 className="text-xl sm:text-2xl font-bold font-display text-[#F4EEE4] mt-0.5">
               {t.enquiry.modalTitle}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white text-[#1C1611] hover:bg-[#1C1611] hover:text-white transition-colors flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-[#181516] text-[#BDB3A5] hover:text-[#F4EEE4] hover:bg-[#201C1E] border border-white/10 transition-colors flex items-center justify-center cursor-pointer"
             aria-label="Close"
           >
             <X className="w-4 h-4" />
@@ -104,29 +104,29 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
           {successResult ? (
             /* Success Confirmation Screen */
             <div className="py-6 text-center space-y-4">
-              <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto border border-emerald-200">
+              <div className="w-16 h-16 bg-[#4A1724]/40 text-[#D1B875] rounded-full flex items-center justify-center mx-auto border border-[#B89A5A]/40">
                 <CheckCircle className="w-8 h-8" />
               </div>
 
-              <h3 className="text-2xl font-bold font-display text-[#1C1611]">
+              <h3 className="text-2xl font-bold font-display text-[#F4EEE4]">
                 {t.enquiry.successTitle}
               </h3>
 
-              <p className="text-sm text-[#5A5044] max-w-md mx-auto">
+              <p className="text-sm text-[#BDB3A5] max-w-md mx-auto font-light">
                 {t.enquiry.successDesc}
               </p>
 
               {/* Unique Enquiry Code Box */}
-              <div className="bg-[#F7F4EE] border border-[#B48448]/40 py-3 px-6 rounded-sm inline-block my-2">
-                <span className="text-xs text-[#7A6E5F] block uppercase tracking-wider">
+              <div className="bg-[#121011] border border-[#B89A5A]/40 py-3 px-6 rounded-xs inline-block my-2">
+                <span className="text-[10px] text-[#B89A5A] block uppercase tracking-widest font-mono">
                   Enquiry Reference Code
                 </span>
-                <span className="text-xl font-mono font-bold text-[#1C1611] tracking-wider">
+                <span className="text-xl font-mono font-bold text-[#F4EEE4] tracking-wider">
                   {successResult.enquiry_code}
                 </span>
               </div>
 
-              <p className="text-xs text-[#7A6E5F] max-w-md mx-auto">
+              <p className="text-xs text-[#BDB3A5] max-w-md mx-auto font-light">
                 {lang === 'hi'
                   ? 'हमारे जबलपुर शोरूम के वेडिंग सलाहकार आपसे शीघ्र संपर्क करेंगे। त्वरित फोटो एवं वीडियो कॉल के लिए नीचे व्हाट्सएप पर चैट शुरू करें।'
                   : 'Our Jabalpur showroom wedding consultant has received your request. For instant video-trial or fabric swatches, tap below to chat on WhatsApp.'}
@@ -137,146 +137,120 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                   href={successResult.whatsapp_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold uppercase tracking-wider rounded-xs flex items-center justify-center gap-2 shadow-sm transition-colors"
+                  className="w-full sm:w-auto px-6 py-3 bg-[#4A1724] hover:bg-[#351019] border border-[#B89A5A]/50 text-[#F4EEE4] text-xs font-semibold uppercase tracking-wider rounded-xs flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer"
                 >
-                  <MessageCircle className="w-4 h-4" />
+                  <MessageCircle className="w-4 h-4 text-[#D1B875]" />
                   <span>{t.enquiry.instantWhatsAppBtn}</span>
                 </a>
-
                 <button
+                  type="button"
                   onClick={onClose}
-                  className="w-full sm:w-auto px-6 py-3 bg-[#EFE9DF] hover:bg-[#E0D6C8] text-[#1C1611] text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors"
+                  className="w-full sm:w-auto px-6 py-3 bg-transparent hover:bg-white/5 border border-white/15 text-[#BDB3A5] hover:text-[#F4EEE4] text-xs font-semibold uppercase tracking-wider rounded-xs transition-colors cursor-pointer"
                 >
                   {t.enquiry.close}
                 </button>
               </div>
             </div>
           ) : (
-            /* Submission Form */
-            <form onSubmit={handleSubmit} className="space-y-4">
+            /* CRM Enquiry Form */
+            <form onSubmit={handleSubmit} className="space-y-4 text-left">
               {error && (
-                <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xs flex items-center gap-2">
+                <div className="p-3 bg-red-950/60 border border-red-800 text-red-200 text-xs flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   <span>{error}</span>
+                </div>
+              )}
+
+              {/* Product Reference Banner */}
+              {initialProduct && (
+                <div className="p-3 bg-[#121011] border border-[#B89A5A]/30 flex items-center justify-between text-xs">
+                  <div>
+                    <span className="text-[#B89A5A] uppercase text-[10px] tracking-wider font-semibold block">
+                      Enquiring For Ensemble
+                    </span>
+                    <span className="font-display font-bold text-[#F4EEE4] text-sm">
+                      {initialProduct.name}
+                    </span>
+                    <span className="text-[#BDB3A5] ml-2 font-mono text-[11px]">
+                      (SKU: {initialProduct.sku})
+                    </span>
+                  </div>
+                  <span className="font-display font-bold text-sm text-[#D1B875] font-mono">
+                    ₹{(initialProduct.offer_price || initialProduct.price).toLocaleString('en-IN')}
+                  </span>
                 </div>
               )}
 
               {/* Row 1: Name and Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#1C1611] mb-1">
+                  <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
                     {t.enquiry.fullName} *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Ramesh Patel / Dr. Meenakshi"
                     value={formData.customer_name}
                     onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs focus:outline-hidden focus:border-[#B48448]"
+                    placeholder="e.g. Ananya Tiwari"
+                    className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#1C1611] mb-1">
+                  <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
                     {t.enquiry.phone} *
                   </label>
                   <input
                     type="tel"
                     required
-                    placeholder="e.g. 089898 92476"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs focus:outline-hidden focus:border-[#B48448]"
+                    placeholder="10-digit mobile number"
+                    className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
                   />
                 </div>
               </div>
 
-              {/* Row 2: Email and Category */}
+              {/* Row 2: Category and Preferred Contact */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#1C1611] mb-1">
-                    {t.enquiry.email}
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="name@gmail.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs focus:outline-hidden focus:border-[#B48448]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-[#1C1611] mb-1">
+                  <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
                     {t.enquiry.category}
                   </label>
                   <select
                     value={formData.category_id}
-                    onChange={(e) => setFormData({ ...formData, category_id: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 text-sm bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs focus:outline-hidden focus:border-[#B48448]"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        category_id: Number(e.target.value),
+                        product_name:
+                          categories.find((c) => c.id === Number(e.target.value))?.name || '',
+                      })
+                    }
+                    className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none cursor-pointer transition-colors"
                   >
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {lang === 'hi' ? c.name_hi : c.name}
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {lang === 'hi' ? cat.name_hi : cat.name}
                       </option>
                     ))}
                   </select>
                 </div>
-              </div>
-
-              {/* Row 3: Product Name & Quantity */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="sm:col-span-2">
-                  <label className="block text-xs font-semibold text-[#1C1611] mb-1">
-                    {t.enquiry.product}
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Banarasi Silk Saree or Crimson Bridal Lehenga"
-                    value={formData.product_name}
-                    onChange={(e) => setFormData({ ...formData, product_name: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs focus:outline-hidden focus:border-[#B48448]"
-                  />
-                </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#1C1611] mb-1">
-                    {t.enquiry.quantity}
-                  </label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={formData.quantity}
-                    onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) || 1 })}
-                    className="w-full px-3 py-2 text-sm bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs focus:outline-hidden focus:border-[#B48448]"
-                  />
-                </div>
-              </div>
-
-              {/* Row 4: Budget Range & Preferred Contact Method */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-[#1C1611] mb-1">
-                    {t.enquiry.budget}
-                  </label>
-                  <input
-                    type="text"
-                    placeholder={t.enquiry.budgetPlaceholder}
-                    value={formData.budget}
-                    onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs focus:outline-hidden focus:border-[#B48448]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-[#1C1611] mb-1">
+                  <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
                     {t.enquiry.preferredContact}
                   </label>
                   <select
                     value={formData.preferred_contact}
-                    onChange={(e) => setFormData({ ...formData, preferred_contact: e.target.value as any })}
-                    className="w-full px-3 py-2 text-sm bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs focus:outline-hidden focus:border-[#B48448]"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        preferred_contact: e.target.value as any,
+                      })
+                    }
+                    className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none cursor-pointer transition-colors"
                   >
                     <option value="WhatsApp">{t.enquiry.contactOptions.whatsapp}</option>
                     <option value="Call">{t.enquiry.contactOptions.call}</option>
@@ -285,21 +259,66 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                 </div>
               </div>
 
-              {/* Row 5: Notes & Customization Message */}
+              {/* Row 3: Variant / Colour and Quantity */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="sm:col-span-2">
+                  <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
+                    {t.product.colour} / {t.product.size}
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.variant_info}
+                    onChange={(e) => setFormData({ ...formData, variant_info: e.target.value })}
+                    placeholder="e.g. Crimson Red / Gold Zari / Size 38"
+                    className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
+                    {t.enquiry.quantity}
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="50"
+                    value={formData.quantity}
+                    onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) || 1 })}
+                    className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Row 4: Budget Range */}
               <div>
-                <label className="block text-xs font-semibold text-[#1C1611] mb-1">
+                <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
+                  {t.enquiry.budget}
+                </label>
+                <select
+                  value={formData.budget}
+                  onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none cursor-pointer transition-colors"
+                >
+                  <option value="">{t.enquiry.budgetPlaceholder}</option>
+                  <option value="Under ₹15,000">Under ₹15,000</option>
+                  <option value="₹15,000 - ₹35,000">₹15,000 - ₹35,000</option>
+                  <option value="₹35,000 - ₹75,000">₹35,000 - ₹75,000</option>
+                  <option value="₹75,000 - ₹1,50,000">₹75,000 - ₹1,50,000</option>
+                  <option value="Above ₹1,50,000 (Royal Bridal / Groom)">Above ₹1,50,000 (Royal Bridal / Groom)</option>
+                </select>
+              </div>
+
+              {/* Row 5: Notes / Message */}
+              <div>
+                <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
                   {t.enquiry.message}
                 </label>
                 <textarea
                   rows={3}
-                  placeholder={
-                    lang === 'hi'
-                      ? 'विवाह की तारीख, पसंद का रंग या विशेष सिलाई संबंधी आवश्यकताएं यहाँ लिखें...'
-                      : 'Wedding date, color preferences, sizing, or in-store appointment request...'
-                  }
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-3 py-2 text-sm bg-[#FCFAF7] border border-[#D8CEBE] rounded-xs focus:outline-hidden focus:border-[#B48448]"
+                  placeholder="e.g. Looking for pure velvet crimson lehenga with double dupatta..."
+                  className="w-full px-3.5 py-2 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
                 />
               </div>
 
@@ -308,17 +327,14 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full py-3.5 px-6 text-xs font-semibold uppercase tracking-wider text-white bg-[#1C1611] hover:bg-[#B48448] disabled:opacity-50 transition-colors rounded-xs flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                  className="w-full py-3.5 bg-[#4A1724] hover:bg-[#351019] border border-[#B89A5A]/50 text-[#F4EEE4] text-xs font-semibold uppercase tracking-[0.2em] transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
-                  {submitting ? (
-                    <span>{t.enquiry.submitting}</span>
-                  ) : (
-                    <>
-                      <span>{t.enquiry.submitBtn}</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
+                  <span>{submitting ? t.enquiry.submitting : t.enquiry.submitBtn}</span>
+                  <ArrowRight className="w-4 h-4 text-[#D1B875]" />
                 </button>
+                <p className="text-[10px] text-[#BDB3A5]/60 text-center mt-2">
+                  🔒 We respect your privacy. Inquiries are handled directly by our Jabalpur showroom bridal consultants.
+                </p>
               </div>
             </form>
           )}
