@@ -34,7 +34,7 @@ export default function App() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [showBrandIntro, setShowBrandIntro] = useState(false);
+  const [showBrandIntro, setShowBrandIntro] = useState(true);
   const [categories, setCategories] = useState<Category[]>((initialData.categories as any) || []);
   const [subcategories, setSubcategories] = useState<Subcategory[]>((initialData.subcategories as any) || []);
   const [products, setProducts] = useState<Product[]>((initialData.products as any) || []);
@@ -102,6 +102,13 @@ export default function App() {
         .play()
         .then(() => setIsPlaying(true))
         .catch((err) => console.error('Audio play error:', err));
+    }
+  };
+
+  const handleIntroComplete = () => {
+    setShowBrandIntro(false);
+    if (audioRef.current && !isPlaying) {
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
     }
   };
 
@@ -188,7 +195,7 @@ export default function App() {
       {/* 1. Opening Experience: Brand Intro & Enter Showroom */}
       {showBrandIntro && (
         <BrandIntroPreloader
-          onComplete={() => setShowBrandIntro(false)}
+          onComplete={handleIntroComplete}
           isDataReady={!loading}
         />
       )}
