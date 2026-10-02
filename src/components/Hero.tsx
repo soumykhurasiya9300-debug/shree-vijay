@@ -212,26 +212,26 @@ export const Hero: React.FC<HeroProps> = ({ lang, settings, onOpenEnquiry }) => 
             </>
           ) : (
             <>
-              YOUR WEDDING DESERVES <br />
+              Your Wedding Deserves <br />
               <span className="font-editorial italic font-normal text-[#D1B875]">
-                A LOOK TO REMEMBER.
+                a look to remember.
               </span>
             </>
           )}
         </h1>
 
         {/* Editorial Supporting Subtitle */}
-        <p className="mt-4 sm:mt-5 text-sm sm:text-base lg:text-lg text-[#BDB3A5]/90 font-light tracking-wide max-w-2xl">
+        <p className="mt-4 sm:mt-5 text-sm sm:text-base lg:text-lg text-[#BDB3A5] font-light tracking-wide max-w-2xl">
           {lang === 'hi'
             ? 'दुल्हन लहंगा · शाही शेरवानी · असली बनारसी साड़ियाँ · संपूर्ण परिवार का वेडिंग कलेक्शन'
             : 'Bridal Couture · Royal Groom · Pure Banarasi Brocades · Complete Family Wedding Wear'}
         </p>
 
-        {/* Minimal High-End CTAs */}
-        <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+        {/* Minimal High-End CTAs with Clear Visual Hierarchy */}
+        <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
           <a
             href="#showroom-floor"
-            className="group inline-flex items-center gap-3 px-7 sm:px-8 py-3.5 sm:py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#0A0909] bg-[#F4EEE4] hover:bg-[#EDE2D2] transition-all duration-300 shadow-2xl cursor-pointer"
+            className="btn-primary group"
           >
             <span>{lang === 'hi' ? 'शोरूम एक्सप्लोर करें' : 'Explore The Collection'}</span>
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 text-[#4A1724]" />
@@ -239,16 +239,17 @@ export const Hero: React.FC<HeroProps> = ({ lang, settings, onOpenEnquiry }) => 
 
           <a
             href="#visit"
-            className="inline-flex items-center px-7 sm:px-8 py-3.5 sm:py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#F4EEE4] bg-transparent hover:bg-white/5 border border-[#B89A5A]/50 hover:border-[#D1B875] transition-all duration-300 cursor-pointer"
+            className="btn-secondary"
           >
             {lang === 'hi' ? 'शोरूम पधारें' : 'Visit Showroom'}
           </a>
 
           <button
             onClick={onOpenEnquiry}
-            className="hidden md:inline-flex items-center px-6 py-3.5 sm:py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#D1B875] hover:text-[#F4EEE4] underline underline-offset-8 transition-colors cursor-pointer"
+            className="btn-ghost hidden md:inline-flex"
           >
-            {lang === 'hi' ? 'स्टाइलिश परामर्श' : 'Book Consultation'}
+            <span>{lang === 'hi' ? 'स्टाइलिश परामर्श' : 'Book Consultation'}</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 

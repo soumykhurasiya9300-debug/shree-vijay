@@ -87,9 +87,9 @@ export const ShowroomStory: React.FC<ShowroomStoryProps> = ({ lang }) => {
               </>
             ) : (
               <>
-                30+ YEARS OF <br />
+                30+ Years of <br />
                 <span className="font-editorial italic font-normal text-[#D1B875]">
-                  DRESSING CELEBRATIONS.
+                  dressing celebrations.
                 </span>
               </>
             )}
@@ -118,7 +118,7 @@ export const ShowroomStory: React.FC<ShowroomStoryProps> = ({ lang }) => {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909]/90 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-5 left-6 right-6 text-[#F4EEE4] flex items-end justify-between">
                 <div>
-                  <span className="text-[10px] uppercase tracking-widest text-[#B89A5A] font-semibold block">
+                  <span className="text-xs uppercase tracking-widest text-[#B89A5A] font-semibold block">
                     BADA FUHARA LANDMARK
                   </span>
                   <h3 className="font-display text-lg font-bold text-[#F4EEE4]">
@@ -143,7 +143,7 @@ export const ShowroomStory: React.FC<ShowroomStoryProps> = ({ lang }) => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909]/90 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-5 left-6 right-6 text-[#F4EEE4]">
-                <span className="text-[10px] uppercase tracking-widest text-[#B89A5A] font-semibold block">
+                <span className="text-xs uppercase tracking-widest text-[#B89A5A] font-semibold block">
                   HEREDITARY WEAVING CLUSTERS
                 </span>
                 <h3 className="font-display text-lg font-bold text-[#F4EEE4]">
@@ -163,14 +163,14 @@ export const ShowroomStory: React.FC<ShowroomStoryProps> = ({ lang }) => {
             >
               <div className="flex items-center justify-between text-[#B89A5A] font-mono text-xs font-bold mb-3 pb-2 border-b border-white/10">
                 <span>{item.period}</span>
-                <span className="text-[#BDB3A5] font-normal text-[10px] uppercase tracking-wider">
+                <span className="text-[#BDB3A5] font-normal text-xs uppercase tracking-wider">
                   CHAPTER {item.step}
                 </span>
               </div>
 
-              <h4 className="font-display text-base font-bold text-[#F4EEE4] group-hover:text-[#D1B875] mb-2 transition-colors">
+              <h3 className="font-display text-base font-bold text-[#F4EEE4] group-hover:text-[#D1B875] mb-2 transition-colors">
                 {item.title}
-              </h4>
+              </h3>
 
               <p className="text-xs text-[#BDB3A5] font-light leading-relaxed">
                 {item.desc}

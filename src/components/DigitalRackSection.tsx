@@ -46,7 +46,7 @@ export const DigitalRackSection: React.FC<DigitalRackSectionProps> = ({
           <span>{lang === 'hi' ? 'शोरूम हैंगर एक्सपीरियंस' : 'THE DIGITAL RACK EXPERIENCE'}</span>
         </div>
 
-        <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#F4EEE4] uppercase max-w-4xl mx-auto leading-tight">
+        <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#F4EEE4] max-w-4xl mx-auto leading-tight">
           {lang === 'hi' ? 'द शोरूम कूट्यूर रैक' : 'Browse the Couture Rack'}
         </h2>
 
@@ -62,25 +62,25 @@ export const DigitalRackSection: React.FC<DigitalRackSectionProps> = ({
         </div>
       </div>
 
-      {/* React Bits DepthCarousel 3D Component */}
+      {/* Clean Carousel with Non-Overlapping Spacing (Fix for Issue 19) */}
       <div className="relative w-full max-w-6xl mx-auto px-4 pb-20">
         <div style={{ height: '520px', position: 'relative' }} className="w-full">
           <DepthCarousel
             items={depthItems}
-            depth={220}
-            spread={90}
-            tilt={22}
+            depth={120}
+            spread={135}
+            tilt={8}
             tiltDirection="right"
             perspective={1400}
-            visibleCards={4}
-            falloff={0.2}
-            blur={6}
+            visibleCards={3}
+            falloff={0.25}
+            blur={4}
             autoplay
-            autoplayDelay={3200}
+            autoplayDelay={3600}
             loop
             cardWidth={310}
             cardHeight={410}
-            radius={16}
+            radius={0}
             tint="#0A0909"
             showControls
             showIndicators
@@ -90,12 +90,13 @@ export const DigitalRackSection: React.FC<DigitalRackSectionProps> = ({
 
         {/* Active Garment Spotlight Details Bar */}
         {depthItems[activeDepthIndex] && (
-          <div className="mt-6 max-w-xl mx-auto p-4 bg-[#141112]/95 border border-[#B89A5A]/40 rounded-xs shadow-2xl backdrop-blur-md flex items-center justify-between gap-4">
+          <div className="mt-6 max-w-xl mx-auto p-4 bg-[#141112]/95 border border-[#B89A5A]/40 rounded-none shadow-2xl backdrop-blur-md flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <span className="text-[10px] text-[#B89A5A] uppercase tracking-[0.2em] font-bold block mb-0.5">
+              <span className="text-xs text-[#B89A5A] uppercase tracking-[0.18em] font-bold block mb-0.5">
                 {depthItems[activeDepthIndex].category}
               </span>
-              <h3 className="font-display text-base sm:text-lg font-bold text-[#F4EEE4] truncate">
+              {/* Natural multi-line wrapping without truncating ellipsis (Fix for Issue 12) */}
+              <h3 className="font-display text-base sm:text-lg font-bold text-[#F4EEE4] line-clamp-2 break-words">
                 {depthItems[activeDepthIndex].title}
               </h3>
               <span className="font-mono text-sm text-[#D1B875] font-bold">
@@ -106,16 +107,16 @@ export const DigitalRackSection: React.FC<DigitalRackSectionProps> = ({
               <button
                 type="button"
                 onClick={() => depthItems[activeDepthIndex].onView?.()}
-                className="px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#F4EEE4] bg-white/10 hover:bg-white/20 border border-[#B89A5A]/30 rounded-xs cursor-pointer transition-colors"
+                className="btn-wine"
               >
-                {lang === 'hi' ? 'लुक देखें' : 'View Look'}
+                <span>{lang === 'hi' ? 'लुक देखें' : 'View Look'}</span>
               </button>
               <button
                 type="button"
                 onClick={() => depthItems[activeDepthIndex].onEnquire?.()}
-                className="px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#0A0909] bg-[#D1B875] hover:bg-[#B89A5A] rounded-xs cursor-pointer transition-colors shadow-sm"
+                className="btn-primary"
               >
-                {lang === 'hi' ? 'पूछताछ' : 'Enquire'}
+                <span>{lang === 'hi' ? 'पूछताछ' : 'Enquire'}</span>
               </button>
             </div>
           </div>

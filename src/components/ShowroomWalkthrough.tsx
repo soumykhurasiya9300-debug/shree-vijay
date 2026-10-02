@@ -125,14 +125,30 @@ export const ShowroomWalkthrough: React.FC<ShowroomWalkthroughProps> = ({
             );
           })}
 
-          {/* Active Hotspot Floating Card */}
-          <div className="absolute bottom-6 left-6 right-6 sm:right-auto sm:max-w-md bg-[#181516]/95 text-[#F4EEE4] border border-[#B89A5A]/40 shadow-2xl p-5 backdrop-blur-md">
+          {/* Active Hotspot Proximal Popover Card (Fix for Issue 21: Spacing & alignment) */}
+          <div
+            className="absolute z-30 transition-all duration-300 pointer-events-auto
+              bottom-4 left-4 right-4 sm:bottom-auto sm:right-auto sm:max-w-sm
+              bg-[#181516]/95 text-[#F4EEE4] border border-[#B89A5A]/60 shadow-2xl p-4 sm:p-5 backdrop-blur-md rounded-none"
+            style={{
+              // On desktop/tablet, position contextual card right beside the active hotspot
+              ...(typeof window !== 'undefined' && window.innerWidth >= 640
+                ? {
+                    left: `clamp(1rem, ${currentZone.x}, calc(100% - 24rem))`,
+                    top: `clamp(1rem, calc(${currentZone.y} - 8rem), calc(100% - 15rem))`,
+                  }
+                : {}),
+            }}
+          >
+            {/* Visual Pointer Callout Notch */}
+            <div className="hidden sm:block absolute -top-1.5 left-6 w-3 h-3 bg-[#181516] border-t border-l border-[#B89A5A]/60 transform rotate-45" />
+
             <div className="flex items-center justify-between text-xs text-[#B89A5A] uppercase tracking-widest font-semibold pb-2 border-b border-white/10">
-              <span>{currentZone.code}</span>
-              <span className="font-mono text-[10px] text-[#BDB3A5]">HOTSPOT #{activeZone + 1} OF 4</span>
+              <span className="font-mono text-xs font-bold text-[#D1B875]">{currentZone.code}</span>
+              <span className="font-mono text-xs text-[#BDB3A5]">ACTIVE HOTSPOT #{activeZone + 1} OF 4</span>
             </div>
 
-            <h3 className="font-display text-lg sm:text-xl font-bold text-[#F4EEE4] mt-2">
+            <h3 className="font-display text-base sm:text-lg font-bold text-[#F4EEE4] mt-2">
               {currentZone.title}
             </h3>
 
@@ -140,19 +156,19 @@ export const ShowroomWalkthrough: React.FC<ShowroomWalkthroughProps> = ({
               {currentZone.desc}
             </p>
 
-            <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+            <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between gap-3">
               <a
                 href={currentZone.anchor}
-                className="text-xs font-semibold uppercase tracking-wider text-[#D1B875] hover:text-[#F4EEE4] inline-flex items-center gap-1.5 transition-colors"
+                className="btn-wine py-1.5 px-3 text-xs"
               >
                 <span>{lang === 'hi' ? 'विभाग में जाएं' : 'Enter Department'}</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#B89A5A]" />
+                <ArrowRight className="w-3.5 h-3.5" />
               </a>
               <button
                 onClick={onOpenEnquiry}
-                className="text-xs text-[#BDB3A5] hover:text-[#F4EEE4] hover:underline cursor-pointer"
+                className="btn-ghost text-xs"
               >
-                {lang === 'hi' ? 'पूछताछ करें' : 'Enquire'}
+                <span>{lang === 'hi' ? 'पूछताछ करें' : 'Enquire'}</span>
               </button>
             </div>
           </div>

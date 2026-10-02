@@ -240,7 +240,7 @@ export const BridalEditSection: React.FC<BridalEditSectionProps> = ({
                     </span>
                     <button
                       onClick={() => onViewProduct(prod)}
-                      className="text-xs font-semibold uppercase tracking-wider text-[#D1B875] hover:text-[#F4EEE4] inline-flex items-center gap-1 cursor-pointer transition-colors"
+                      className="btn-wine text-xs py-1.5 px-3"
                     >
                       <span>{lang === 'hi' ? 'विवरण' : 'Explore'}</span>
                       <ArrowRight className="w-3.5 h-3.5" />

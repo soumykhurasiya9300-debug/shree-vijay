@@ -22,7 +22,7 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
     {
       id: 0,
       code: '01',
-      title: lang === 'hi' ? 'द ब्राइडल सुइट' : 'THE BRIDAL SUITE',
+      title: lang === 'hi' ? 'द ब्राइडल सुइट' : 'The Bridal Suite',
       subtitle: lang === 'hi' ? 'राजसी दुल्हन लहंगा, मंडप व रिसेप्शन' : 'Heritage Bridal Lehengas & Reception Gowns',
       anchor: '#bridal-edit',
       image: bridalImg,
@@ -31,7 +31,7 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
     {
       id: 1,
       code: '02',
-      title: lang === 'hi' ? 'विमेन्स हेरिटेज' : "WOMEN'S HERITAGE",
+      title: lang === 'hi' ? 'विमेन्स हेरिटेज' : "Women's Heritage",
       subtitle: lang === 'hi' ? 'शुद्ध बनारसी, कांजीवरम जरी व अनारकली' : 'Pure Banarasi Brocades, Katan Silks & Sarees',
       anchor: '#showroom-floor',
       image: womenImg,
@@ -40,7 +40,7 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
     {
       id: 2,
       code: '03',
-      title: lang === 'hi' ? 'द ग्रूम्स लाउंज' : "THE GROOM'S LOUNGE",
+      title: lang === 'hi' ? 'द ग्रूम्स लाउंज' : "The Groom's Lounge",
       subtitle: lang === 'hi' ? 'शाही शेरवानी, जोधपुरी सूट व साफा' : 'Royal Sherwanis, Silk Bandhgalas & Stoles',
       anchor: '#groom-edit',
       image: menImg,
@@ -49,7 +49,7 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
     {
       id: 3,
       code: '04',
-      title: lang === 'hi' ? 'फैमिली वेडिंग' : 'FAMILY WEDDING',
+      title: lang === 'hi' ? 'फैमिली वेडिंग' : 'Family Wedding',
       subtitle: lang === 'hi' ? 'माता-पिता, भाई-बहन व संपूर्ण परिवार' : 'Coordinated Ceremonial Ensembles for All',
       anchor: '#family-wedding',
       image: familyImg,
@@ -58,7 +58,7 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
     {
       id: 4,
       code: '05',
-      title: lang === 'hi' ? 'वेडिंग ऑकेजन' : 'WEDDING OCCASIONS',
+      title: lang === 'hi' ? 'वेडिंग ऑकेजन' : 'Wedding Occasions',
       subtitle: lang === 'hi' ? 'हल्दी, मेहंदी, संगीत व फेरे' : 'Haldi, Mehendi, Sangeet & Reception Edits',
       anchor: '#occasions',
       image: occasionImg,
@@ -165,6 +165,12 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
                   >
                     {dept.subtitle}
                   </p>
+
+                  {/* Immediate Enter Floor affordance inside selection card (Fix for Issue 18) */}
+                  <div className="mt-3 pt-2 border-t border-white/10 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#D1B875] group-hover:text-[#F4EEE4] transition-colors">
+                    <span>{lang === 'hi' ? 'फ्लोर में प्रवेश करें' : 'Enter Floor'}</span>
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                  </div>
                 </a>
               );
             })}
@@ -193,9 +199,9 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
               <div className="absolute bottom-4 right-4 border-b border-r border-[#B89A5A]/70 w-8 h-8 pointer-events-none" />
 
               {/* Department Overlay Caption */}
-              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-4">
                 <div>
-                  <span className="text-[11px] uppercase tracking-[0.24em] text-[#B89A5A] font-semibold block">
+                  <span className="text-xs uppercase tracking-[0.2em] text-[#B89A5A] font-semibold block">
                     {currentDisplay.tag}
                   </span>
                   <h4 className="font-display text-xl sm:text-2xl font-bold text-[#F4EEE4] mt-1">
@@ -207,7 +213,7 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
                 </div>
                 <a
                   href={currentDisplay.anchor}
-                  className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 bg-[#F4EEE4] text-[#0A0909] hover:bg-[#EDE2D2] text-xs font-semibold uppercase tracking-wider transition-colors shadow-md shrink-0 cursor-pointer"
+                  className="btn-primary shrink-0"
                 >
                   <span>{lang === 'hi' ? 'प्रवेश करें' : 'Enter'}</span>
                   <span>→</span>

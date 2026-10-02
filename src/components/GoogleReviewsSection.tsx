@@ -141,10 +141,11 @@ export const GoogleReviewsSection: React.FC<GoogleReviewsSectionProps> = ({ lang
                 {/* Author Info */}
                 <div className="flex items-center justify-between mb-3">
                   <div>
-                    <h4 className="font-display font-bold text-sm text-[#F4EEE4]">
+                    {/* H3 maintains clean document outline following H2 (Fix for Issue 15) */}
+                    <h3 className="font-display font-bold text-sm text-[#F4EEE4]">
                       {rev.author}
-                    </h4>
-                    <span className="text-[11px] text-[#BDB3A5]/70 block font-mono">
+                    </h3>
+                    <span className="text-xs text-[#BDB3A5] block font-mono">
                       {rev.stats}
                     </span>
                   </div>
@@ -162,11 +163,12 @@ export const GoogleReviewsSection: React.FC<GoogleReviewsSectionProps> = ({ lang
               </div>
 
               {/* Tag & Response */}
-              <div className="pt-3 border-t border-white/10 text-[11px]">
+              <div className="pt-3 border-t border-white/10 text-xs">
                 <span className="text-[#B89A5A] uppercase tracking-wider font-semibold block mb-1">
                   Verified for: {rev.tag}
                 </span>
-                <p className="text-[#BDB3A5]/60 text-[10px] italic">
+                {/* 12px body copy ensures readability (Fix for Issue 13) */}
+                <p className="text-[#BDB3A5] text-xs italic">
                   Owner response: {rev.ownerResponse}
                 </p>
               </div>

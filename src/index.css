@@ -100,6 +100,89 @@
   background: linear-gradient(180deg, #121011 0%, #0A0909 100%);
 }
 
+/* Standardized Design System Buttons (Fix for Issue 4: Many button styles) */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  background-color: #F4EEE4;
+  color: #0A0909;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  border-radius: 0;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background-color: #EDE2D2;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  background-color: transparent;
+  color: #F4EEE4;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  border: 1px solid rgba(184, 154, 90, 0.45);
+  border-radius: 0;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #D1B875;
+}
+
+.btn-wine {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background-color: #4A1724;
+  color: #F4EEE4;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  border: 1px solid rgba(184, 154, 90, 0.40);
+  border-radius: 0;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.btn-wine:hover {
+  background-color: #5C1D2D;
+  border-color: #D1B875;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: #D1B875;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+.btn-ghost:hover {
+  color: #F4EEE4;
+}
+
 /* Luxury Royal Buttons */
 .btn-royal-primary {
   background-color: #4A1724;

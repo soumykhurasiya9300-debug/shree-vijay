@@ -66,9 +66,9 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 text-xs text-left">
           {/* Departments */}
           <div>
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B89A5A] mb-3">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#B89A5A] mb-3">
               Departments
-            </h4>
+            </h3>
             <ul className="space-y-2 text-[#BDB3A5] font-light">
               <li>
                 <a href="#bridal-edit" className="hover:text-[#F4EEE4] transition-colors">
@@ -95,9 +95,9 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Occasions */}
           <div>
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B89A5A] mb-3">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#B89A5A] mb-3">
               Occasions
-            </h4>
+            </h3>
             <ul className="space-y-2 text-[#BDB3A5] font-light">
               <li>
                 <a href="#occasions" className="hover:text-[#F4EEE4] transition-colors">
@@ -124,9 +124,9 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Experience */}
           <div>
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B89A5A] mb-3">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#B89A5A] mb-3">
               Experience
-            </h4>
+            </h3>
             <ul className="space-y-2 text-[#BDB3A5] font-light">
               <li>
                 <a href="#digital-rack" className="hover:text-[#F4EEE4] transition-colors">
@@ -153,9 +153,9 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Connect & Social */}
           <div>
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B89A5A] mb-3">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#B89A5A] mb-3">
               Connect
-            </h4>
+            </h3>
             <div id="SocailIcons" className="pt-2 pb-2">
               <a
                 href={instagramUrl}

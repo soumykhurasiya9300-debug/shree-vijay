@@ -427,21 +427,21 @@ export const DepthCarousel: React.FC<DepthCarouselProps> = ({
             {(item.title || item.subtitle || item.price) && (
               <div className="depth-carousel__card-overlay transition-opacity duration-300">
                 {item.category && (
-                  <span className="text-[10px] text-[#B89A5A] uppercase tracking-[0.2em] font-semibold block mb-0.5">
+                  <span className="text-xs text-[#B89A5A] uppercase tracking-[0.16em] font-semibold block mb-0.5">
                     {item.category}
                   </span>
                 )}
                 {item.title && (
-                  <h4 className="font-display text-sm font-bold text-[#F4EEE4] line-clamp-1">
+                  <h3 className="font-display text-sm font-bold text-[#F4EEE4] line-clamp-1">
                     {item.title}
-                  </h4>
+                  </h3>
                 )}
                 {item.price && (
                   <div className="flex items-center justify-between mt-1 text-xs">
                     <span className="font-mono text-[#D1B875] font-bold">
                       ₹{item.price.toLocaleString('en-IN')}
                     </span>
-                    <span className="text-[10px] uppercase tracking-wider text-[#A89D8F] bg-[#181516]/80 px-2 py-0.5 rounded-xs border border-[#B89A5A]/30">
+                    <span className="text-xs uppercase tracking-wider text-[#BDB3A5] bg-[#181516]/80 px-2 py-0.5 border border-[#B89A5A]/30">
                       View Look
                     </span>
                   </div>

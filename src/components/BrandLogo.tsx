@@ -74,9 +74,9 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
         {/* English Name */}
         <span
-          className="font-display text-base sm:text-lg font-bold tracking-[0.2em] uppercase leading-tight text-[#F4EEE4]"
+          className="font-display text-base sm:text-lg font-bold tracking-[0.08em] leading-tight text-[#F4EEE4]"
         >
-          SHREE VIJAY SHOWROOM
+          Shree Vijay Showroom
         </span>
 
         {/* Hindi Name */}
@@ -87,8 +87,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         </span>
 
         {/* Subtitle */}
-        <span className="text-[9px] sm:text-[10px] tracking-[0.26em] text-[#BDB3A5] uppercase font-sans mt-1.5 font-medium">
-          JABALPUR · WEDDING & BRIDAL EMPIRE
+        <span className="text-xs tracking-[0.18em] text-[#BDB3A5] uppercase font-sans mt-1 font-medium">
+          Jabalpur · Wedding & Bridal Empire
         </span>
       </div>
     );
@@ -137,13 +137,13 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       <div className="flex flex-col text-left">
         <div className="flex items-baseline gap-1.5">
           <span
-            className="text-base sm:text-lg font-bold tracking-[0.14em] font-display uppercase leading-tight text-[#F4EEE4]"
+            className="text-base sm:text-lg font-bold tracking-[0.06em] font-display leading-tight text-[#F4EEE4]"
           >
-            {lang === 'hi' ? 'श्री विजय शोरूम' : 'SHREE VIJAY SHOWROOM'}
+            {lang === 'hi' ? 'श्री विजय शोरूम' : 'Shree Vijay Showroom'}
           </span>
         </div>
-        <span className="text-[9px] sm:text-[10px] tracking-[0.24em] uppercase font-sans text-[#BDB3A5]">
-          JABALPUR · WEDDING & BRIDAL EMPIRE
+        <span className="text-xs tracking-[0.14em] uppercase font-sans text-[#BDB3A5]">
+          Jabalpur · Wedding & Bridal Empire
         </span>
       </div>
     </div>
