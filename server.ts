@@ -15,24 +15,6 @@ import {
 } from './server/auth.ts';
 
 const app = express();
-function getTargetPort(): number {
-  const argvPortIndex = process.argv.indexOf('--port');
-  if (argvPortIndex !== -1 && process.argv[argvPortIndex + 1]) {
-    const parsed = parseInt(process.argv[argvPortIndex + 1], 10);
-    if (!isNaN(parsed) && parsed > 0) return parsed;
-  }
-
-  if (process.env.PORT) {
-    const parsed = parseInt(process.env.PORT, 10);
-    if (!isNaN(parsed) && parsed > 0) {
-      return parsed;
-    }
-  }
-
-  return 3000;
-}
-
-const PORT = getTargetPort();
 
 // Immediate container health checks for Cloud Run and Nginx
 app.get('/_healthz', (_req, res) => res.status(200).send('OK'));
@@ -1680,54 +1662,44 @@ app.get('/api/admin/activity-logs', requireAuth(['SUPER ADMIN']), async (req: Re
 });
 
 // ----------------------------------------------------
-// VITE INTEGRATION FOR FULL-STACK
+// SERVER STARTUP & STATIC SERVING
 // ----------------------------------------------------
 
-async function startServer() {
-  // 1. Health check endpoints for Cloud Run container monitoring (must respond immediately)
-  app.get('/_healthz', (req, res) => res.status(200).send('OK'));
-  app.get('/healthz', (req, res) => res.status(200).send('OK'));
-  app.get('/api/health', (req, res) => res.status(200).json({ status: 'ok', uptime: process.uptime() }));
+// 1. Synchronously mount public assets
+const publicDir = path.resolve(process.cwd(), 'public');
+if (fs.existsSync(publicDir)) {
+  app.use(express.static(publicDir));
+}
 
-  // 2. Serve static public assets (audio, video, images) with full HTTP Range request support
-  app.use(express.static(path.resolve(process.cwd(), 'public')));
+// 2. Determine environment and mount production bundle or Vite
+const distDir = path.resolve(process.cwd(), 'dist');
+const distIndex = path.resolve(distDir, 'index.html');
+const isDevScript = process.env.npm_lifecycle_event === 'dev';
+const isCloudRun = Boolean(process.env.K_SERVICE || process.env.K_REVISION);
+const isProduction = !isDevScript || isCloudRun || process.env.NODE_ENV === 'production';
 
-  // 3. Mount production static files or Vite dev middleware
-  const isDevScript = process.env.npm_lifecycle_event === 'dev';
-  const isCloudRun = Boolean(process.env.K_SERVICE || process.env.K_REVISION);
-  const distDir = path.resolve(process.cwd(), 'dist');
-  const distIndex = path.resolve(distDir, 'index.html');
-  let hasDist = fs.existsSync(distIndex);
-
-  // If in Cloud Run or production and dist is somehow missing, build it on the fly
-  if (!hasDist && (isCloudRun || process.env.NODE_ENV === 'production')) {
-    try {
-      console.log('Building production bundle on startup...');
-      const { build } = await import('vite');
-      await build();
-      hasDist = fs.existsSync(distIndex);
-    } catch (e) {
-      console.error('Failed to build client bundle on startup:', e);
+if (fs.existsSync(distIndex)) {
+  console.log('✓ Mounting production static files from dist');
+  app.use(express.static(distDir));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
     }
-  }
-
-  // In production (Cloud Run, npm start, or any non-dev script when dist is built), serve pre-built static bundle
-  const isProduction = hasDist && (!isDevScript || isCloudRun || process.env.NODE_ENV === 'production');
-
-  if (isProduction) {
-    console.log('✓ Serving production build from dist');
-    app.use(express.static(distDir));
-    app.get('*', (req, res, next) => {
-      if (req.path.startsWith('/api')) {
-        return next();
-      }
-      res.sendFile(distIndex);
-    });
-  } else {
-    // Development mode with Vite
-    const { createServer: createViteServer } = await import('vite');
+    res.sendFile(distIndex);
+  });
+} else if (isProduction) {
+  // Graceful fallback for production if distIndex is temporarily absent
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.status(200).send('<!DOCTYPE html><html><head><title>Shree Vijay Showroom</title></head><body>Loading...</body></html>');
+  });
+} else {
+  // Development mode: mount Vite dev middleware
+  import('vite').then(async ({ createServer }) => {
     const isHmrDisabled = process.env.DISABLE_HMR === 'true';
-    const vite = await createViteServer({
+    const vite = await createServer({
       server: {
         middlewareMode: true,
         hmr: false,
@@ -1737,8 +1709,6 @@ async function startServer() {
       appType: 'spa',
     });
     app.use(vite.middlewares);
-
-    // Guaranteed SPA HTML transform route for all page navigations
     app.use('*', async (req, res, next) => {
       if (req.method !== 'GET' || req.originalUrl.startsWith('/api')) {
         return next();
@@ -1753,40 +1723,60 @@ async function startServer() {
         next(e);
       }
     });
-  }
-
-  // 4. Initialize database asynchronously in background without blocking server startup
-  getDb().then(() => {
-    console.log('✓ SQLite database initialized and ready at data/shree_vijay.db');
+    console.log('✓ Vite development middleware active');
   }).catch((err) => {
-    console.error('Non-fatal error initializing database:', err);
+    console.error('Vite dev server init error:', err);
+  });
+}
+
+// 3. Initialize SQLite database in background without blocking server startup
+getDb().then(() => {
+  console.log('✓ SQLite database initialized and ready');
+}).catch((err) => {
+  console.error('Database initialization note:', err);
+});
+
+// 4. Start HTTP Server Listeners IMMEDIATELY
+// In Google Cloud Run, incoming traffic is routed to process.env.PORT (default 8080).
+// In AI Studio Dev, Nginx proxies requests to process.env.DEFAULT_APP_PORT (default 3000).
+// Binding both ensures immediate health checks pass in Cloud Run deployments and dev environments.
+function bindHttpListener(port: number, role: string) {
+  const s = http.createServer(app);
+  s.on('error', (err: any) => {
+    if (err.code === 'EADDRINUSE') {
+      console.warn(`[Server] ${role} port ${port} is in use (handled gracefully).`);
+    } else {
+      console.error(`[Server] ${role} port ${port} error:`, err);
+    }
   });
 
-  // 5. Dual-Port Listen:
-  // - In Google Cloud Run: PORT is set (typically 8080) and Cloud Run probes port 8080.
-  // - In AI Studio Dev: Nginx listens on 8080 and reverse-proxies to 3000.
-  // Listening on both (with EADDRINUSE handled gracefully) guarantees immediate readiness in both environments.
-  const portsToListen = new Set<number>();
-  if (!isNaN(PORT) && PORT > 0) {
-    portsToListen.add(PORT);
-  }
-  portsToListen.add(3000);
-
-  for (const port of portsToListen) {
-    const srv = http.createServer(app);
-    srv.on('error', (err: any) => {
-      if (err.code === 'EADDRINUSE') {
-        console.log(`[Server] Port ${port} is currently bound by another process (handled gracefully).`);
-      } else {
-        console.error(`[Server] Error on port ${port}:`, err);
-      }
-    });
-
-    srv.listen(port, '0.0.0.0', () => {
-      console.log(`✓ Shree Vijay Showroom server running on http://0.0.0.0:${port}`);
-    });
-  }
+  s.listen(port, '0.0.0.0', () => {
+    console.log(`✓ Shree Vijay Showroom server running on http://0.0.0.0:${port} (${role})`);
+  });
+  return s;
 }
+
+const cloudRunPort = parseInt(process.env.PORT || '8080', 10);
+const studioDevPort = parseInt(process.env.DEFAULT_APP_PORT || '3000', 10);
+
+// Bind primary Cloud Run container port
+bindHttpListener(cloudRunPort, 'Cloud Run Ingress');
+
+// Bind AI Studio internal dev proxy port if distinct
+if (studioDevPort !== cloudRunPort) {
+  bindHttpListener(studioDevPort, 'AI Studio Internal Proxy');
+}
+
+// 5. Process Lifecycle Management
+process.on('SIGTERM', () => {
+  console.log('Received SIGTERM, shutting down gracefully');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('Received SIGINT, shutting down gracefully');
+  process.exit(0);
+});
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
@@ -1794,8 +1784,4 @@ process.on('uncaughtException', (err) => {
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-});
-
-startServer().catch((err) => {
-  console.error('Server startup warning (continuing execution):', err);
 });

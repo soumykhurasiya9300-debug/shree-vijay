@@ -220,9 +220,9 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
               </>
             ) : (
               <>
-                CHOOSE YOUR WARDROBE <br />
+                Choose Your Wardrobe <br />
                 <span className="font-editorial italic font-normal text-[#D1B875]">
-                  DISCOVER YOUR STYLE.
+                  Discover your festive style.
                 </span>
               </>
             )}

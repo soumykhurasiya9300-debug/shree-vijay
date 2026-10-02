@@ -143,7 +143,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             </div>
 
             <div className="p-6 bg-[#181516] border border-white/10">
-              <h3 className="font-display font-bold text-sm uppercase tracking-wider text-[#B89A5A] mb-2">
+              <h3 className="font-display font-bold text-sm tracking-wide text-[#B89A5A] mb-2">
                 {lang === 'hi' ? 'निःशुल्क विशेष सुविधाएं' : 'Exclusive In-Store Amenities'}
               </h3>
               <ul className="text-xs text-[#BDB3A5] space-y-2">

@@ -156,14 +156,17 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Zone 3: 1-2 Primary Actions + Language Switcher */}
           <div className="flex items-center gap-2.5 sm:gap-3">
-            {/* Showroom Directory Trigger */}
+            {/* Showroom Floor Directory Trigger (Fix for Issue 13) */}
             <button
               onClick={() => setDirectoryOpen(true)}
-              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] uppercase tracking-[0.14em] font-medium border border-[#B89A5A]/40 text-[#F4EEE4] hover:bg-[#181516] hover:border-[#D1B875] transition-all cursor-pointer"
-              title="Open Showroom Directory"
+              aria-haspopup="dialog"
+              aria-expanded={directoryOpen}
+              aria-label={lang === 'hi' ? 'शोरूम फ्लोर गाइड खोलें' : 'Open Store Floor Directory'}
+              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs uppercase tracking-wider font-medium border border-[#B89A5A]/40 text-[#F4EEE4] hover:bg-[#181516] hover:border-[#D1B875] transition-all cursor-pointer"
+              title={lang === 'hi' ? 'शोरूम फ्लोर गाइड' : 'Store Floor Directory'}
             >
               <Compass className="w-3.5 h-3.5 text-[#B89A5A]" />
-              <span>{lang === 'hi' ? 'निर्देशिका' : 'Directory'}</span>
+              <span>{lang === 'hi' ? 'फ्लोर गाइड' : 'Store Directory'}</span>
             </button>
 
             {/* Ambient Sound Toggle Switch - Uiverse.io by faxriddin20 */}

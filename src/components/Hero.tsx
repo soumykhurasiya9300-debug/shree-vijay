@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { ArrowDown, ArrowRight } from 'lucide-react';
+import { ArrowDown, ArrowRight, MapPin } from 'lucide-react';
 import { Language } from '../lib/translations.ts';
 import { WebsiteSettings } from '../types/index.ts';
 import heroImg from '../assets/images/hero_bridal_wedding_1790317438926.jpg';
@@ -122,9 +122,10 @@ export const Hero: React.FC<HeroProps> = ({ lang, settings, onOpenEnquiry }) => 
 
           <a
             href="#visit"
-            className="btn-secondary"
+            className="btn-secondary group"
           >
-            {lang === 'hi' ? 'शोरूम पधारें' : 'Visit Showroom'}
+            <MapPin className="w-4 h-4 text-[#D1B875] transition-transform duration-300 group-hover:scale-110" />
+            <span>{lang === 'hi' ? 'शोरूम पधारें' : 'Visit Showroom'}</span>
           </a>
 
           <button

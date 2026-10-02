@@ -62,23 +62,23 @@ export const DigitalRackSection: React.FC<DigitalRackSectionProps> = ({
         </div>
       </div>
 
-      {/* Clean Carousel with Non-Overlapping Spacing (Fix for Issue 19) */}
+      {/* Clean Carousel with Non-Overlapping Spacing (Fix for Issue 8) */}
       <div className="relative w-full max-w-6xl mx-auto px-4 pb-20">
         <div style={{ height: '520px', position: 'relative' }} className="w-full">
           <DepthCarousel
             items={depthItems}
-            depth={120}
-            spread={135}
-            tilt={8}
+            depth={60}
+            spread={330}
+            tilt={4}
             tiltDirection="right"
             perspective={1400}
-            visibleCards={3}
-            falloff={0.25}
-            blur={4}
+            visibleCards={2}
+            falloff={0.15}
+            blur={2}
             autoplay
             autoplayDelay={3600}
             loop
-            cardWidth={310}
+            cardWidth={300}
             cardHeight={410}
             radius={0}
             tint="#0A0909"

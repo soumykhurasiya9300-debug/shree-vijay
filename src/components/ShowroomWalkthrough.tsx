@@ -92,7 +92,7 @@ export const ShowroomWalkthrough: React.FC<ShowroomWalkthroughProps> = ({
 
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909]/95 via-transparent to-black/40 pointer-events-none" />
 
-          {/* Hotspots */}
+          {/* Hotspots with Prominent Visual Affordance & 48px Touch Target (Fix for Issue 9) */}
           {zones.map((zone, idx) => {
             const isActive = activeZone === idx;
             return (
@@ -100,25 +100,28 @@ export const ShowroomWalkthrough: React.FC<ShowroomWalkthroughProps> = ({
                 key={zone.code}
                 onClick={() => setActiveZone(idx)}
                 style={{ left: zone.x, top: zone.y }}
-                className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20 group focus:outline-none cursor-pointer"
-                aria-label={zone.title}
+                className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20 group focus:outline-none cursor-pointer w-12 h-12 flex items-center justify-center"
+                aria-label={`${zone.title} (Hotspot ${idx + 1})`}
+                aria-pressed={isActive}
               >
                 <div className="relative flex items-center justify-center">
-                  {/* Radar pulse animation */}
+                  {/* Subtle continuous radar pulse animation for high contrast and discoverability */}
                   <span
-                    className={`absolute w-8 h-8 rounded-full bg-[#B89A5A]/60 animate-ping ${
-                      isActive ? 'opacity-100' : 'opacity-40 group-hover:opacity-100'
+                    className={`absolute w-11 h-11 rounded-full bg-[#B89A5A]/50 animate-ping pointer-events-none ${
+                      isActive ? 'opacity-100 duration-1000' : 'opacity-40 group-hover:opacity-90'
                     }`}
                   />
-                  {/* Core button */}
+                  <span className="absolute w-12 h-12 rounded-full border border-[#D1B875]/40 pointer-events-none" />
+
+                  {/* Core 40px High-Contrast Hotspot Badge */}
                   <div
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-all duration-300 shadow-xl border-2 ${
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-all duration-300 shadow-[0_0_20px_rgba(184,154,90,0.6)] border-2 ${
                       isActive
-                        ? 'bg-[#B89A5A] text-[#0A0909] border-[#D1B875] scale-125'
-                        : 'bg-[#4A1724] text-[#F4EEE4] border-[#B89A5A] group-hover:scale-110'
+                        ? 'bg-[#F4EEE4] text-[#0A0909] border-[#D1B875] scale-115 ring-4 ring-[#B89A5A]/40'
+                        : 'bg-[#351019] text-[#F4EEE4] border-[#D1B875] group-hover:bg-[#4A1724] group-hover:scale-110'
                     }`}
                   >
-                    {idx + 1}
+                    <span>{idx + 1}</span>
                   </div>
                 </div>
               </button>
@@ -174,26 +177,44 @@ export const ShowroomWalkthrough: React.FC<ShowroomWalkthroughProps> = ({
           </div>
         </div>
 
-        {/* Hotspots Quick Switcher Tabs */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
-          {zones.map((zone, idx) => (
-            <button
-              key={zone.code}
-              onClick={() => setActiveZone(idx)}
-              className={`p-3 text-left border transition-all cursor-pointer ${
-                activeZone === idx
-                  ? 'bg-[#4A1724] text-[#F4EEE4] border-[#B89A5A] shadow-md'
-                  : 'bg-[#181516] hover:bg-[#201C1E] text-[#BDB3A5] hover:text-[#F4EEE4] border-white/10'
-              }`}
-            >
-              <div className="text-[10px] uppercase tracking-wider font-semibold text-[#B89A5A]">
-                {zone.code}
-              </div>
-              <div className="font-display text-xs font-bold mt-0.5 truncate text-[#F4EEE4]">
-                {zone.title}
-              </div>
-            </button>
-          ))}
+        {/* Consolidated Floor Switcher Tabstrip (Fix for Issue 11: Density & Redundancy) */}
+        <div
+          role="tablist"
+          aria-label={lang === 'hi' ? 'शोरूम फ्लोर चयन' : 'Showroom floor selection tabs'}
+          className="mt-4 flex flex-wrap sm:flex-nowrap border border-[#B89A5A]/30 bg-[#121011] divide-y sm:divide-y-0 sm:divide-x divide-white/10"
+        >
+          {zones.map((zone, idx) => {
+            const isActive = activeZone === idx;
+            return (
+              <button
+                key={zone.code}
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => setActiveZone(idx)}
+                className={`flex-1 py-3 px-4 text-left transition-colors cursor-pointer flex items-center gap-2.5 ${
+                  isActive
+                    ? 'bg-[#351019] text-[#F4EEE4] border-b-2 border-b-[#D1B875]'
+                    : 'text-[#BDB3A5] hover:text-[#F4EEE4] hover:bg-[#181516]'
+                }`}
+              >
+                <span
+                  className={`w-5 h-5 rounded-full flex items-center justify-center font-mono text-xs font-bold shrink-0 ${
+                    isActive ? 'bg-[#D1B875] text-[#0A0909]' : 'bg-white/10 text-[#BDB3A5]'
+                  }`}
+                >
+                  {idx + 1}
+                </span>
+                <div className="min-w-0">
+                  <span className="text-xs uppercase font-semibold tracking-wider text-[#D1B875] block truncate">
+                    {zone.code}
+                  </span>
+                  <span className="text-xs text-[#F4EEE4] truncate block">
+                    {zone.title}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
     </section>

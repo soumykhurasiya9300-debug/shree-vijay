@@ -157,7 +157,7 @@ export const BridalEditSection: React.FC<BridalEditSectionProps> = ({
 
               {/* Feature Content Overlay */}
               <div className="absolute bottom-6 sm:bottom-8 left-6 sm:left-8 right-6 sm:right-8 text-white">
-                <span className="text-[11px] uppercase tracking-[0.24em] text-[#B89A5A] font-semibold block mb-1">
+                <span className="text-xs uppercase tracking-[0.2em] text-[#B89A5A] font-semibold block mb-1">
                   SIGNATURE PIECE · JABALPUR SHOWROOM
                 </span>
                 <h3 className="font-display text-2xl sm:text-3xl font-bold text-[#F4EEE4]">
@@ -252,7 +252,7 @@ export const BridalEditSection: React.FC<BridalEditSectionProps> = ({
 
             {/* In-Store Bespoke Consultation Card */}
             <div className="p-6 bg-gradient-to-br from-[#4A1724] to-[#1E0911] text-[#F4EEE4] border border-[#B89A5A]/40 shadow-xl">
-              <span className="text-[10px] uppercase tracking-[0.26em] text-[#D1B875] font-semibold block mb-1">
+              <span className="text-xs uppercase tracking-[0.2em] text-[#D1B875] font-semibold block mb-1">
                 PRIVATE BRIDAL LOUNGE
               </span>
               <h4 className="font-display text-xl font-bold text-[#F4EEE4]">

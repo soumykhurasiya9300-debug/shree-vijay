@@ -198,22 +198,22 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
               <div className="absolute top-4 left-4 border-t border-l border-[#B89A5A]/70 w-8 h-8 pointer-events-none" />
               <div className="absolute bottom-4 right-4 border-b border-r border-[#B89A5A]/70 w-8 h-8 pointer-events-none" />
 
-              {/* Department Overlay Caption */}
-              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-4">
-                <div>
+              {/* Department Overlay Caption with Proximal Trigger Grouping (Fix for Issue 12) */}
+              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4 p-4 sm:p-5 bg-[#0A0909]/85 border border-[#B89A5A]/30 backdrop-blur-xs">
+                <div className="max-w-md">
                   <span className="text-xs uppercase tracking-[0.2em] text-[#B89A5A] font-semibold block">
                     {currentDisplay.tag}
                   </span>
                   <h4 className="font-display text-xl sm:text-2xl font-bold text-[#F4EEE4] mt-1">
                     {currentDisplay.title}
                   </h4>
-                  <p className="text-xs text-[#BDB3A5] mt-0.5 max-w-md font-light">
+                  <p className="text-xs text-[#BDB3A5] mt-1 font-light leading-relaxed">
                     {currentDisplay.subtitle}
                   </p>
                 </div>
                 <a
                   href={currentDisplay.anchor}
-                  className="btn-primary shrink-0"
+                  className="btn-primary shrink-0 self-start sm:self-end"
                 >
                   <span>{lang === 'hi' ? 'प्रवेश करें' : 'Enter'}</span>
                   <span>→</span>

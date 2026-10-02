@@ -87,7 +87,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         </span>
 
         {/* Subtitle */}
-        <span className="text-xs tracking-[0.18em] text-[#BDB3A5] uppercase font-sans mt-1 font-medium">
+        <span className="text-xs tracking-wider text-[#BDB3A5] font-sans mt-1 font-medium">
           Jabalpur · Wedding & Bridal Empire
         </span>
       </div>
@@ -142,7 +142,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
             {lang === 'hi' ? 'श्री विजय शोरूम' : 'Shree Vijay Showroom'}
           </span>
         </div>
-        <span className="text-xs tracking-[0.14em] uppercase font-sans text-[#BDB3A5]">
+        <span className="text-xs tracking-wider font-sans text-[#BDB3A5]">
           Jabalpur · Wedding & Bridal Empire
         </span>
       </div>

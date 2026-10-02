@@ -20,6 +20,15 @@
     --sv-border: rgba(184, 154, 90, 0.20);
     --sv-border-subtle: rgba(255, 255, 255, 0.08);
 
+    /* Standardized 7-Step Typographic Scale (Fix for Issue 1: Consistent type scale) */
+    --text-xs: 0.75rem;    /* 12px - labels, badges, captions */
+    --text-sm: 0.875rem;   /* 14px - secondary body, compact buttons */
+    --text-base: 1rem;     /* 16px - standard body copy */
+    --text-lg: 1.125rem;   /* 18px - emphasized body, subheadings */
+    --text-xl: 1.25rem;    /* 20px - card titles, h3 */
+    --text-3xl: 1.875rem;  /* 30px - section headings, h2 */
+    --text-5xl: 3rem;      /* 48px - hero display, h1 */
+
     --color-bg-primary: #0A0909;
     --color-bg-secondary: #121011;
     --color-surface: #181516;

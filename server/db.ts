@@ -3,8 +3,38 @@ import fs from 'fs';
 import path from 'path';
 import bcrypt from 'bcryptjs';
 
-const DB_DIR = path.resolve(process.cwd(), 'data');
-const DB_FILE = path.resolve(DB_DIR, 'shree_vijay.db');
+function getDbFilePaths(): { readPath: string | null; writePath: string } {
+  const localSeedPath = path.resolve(process.cwd(), 'data', 'shree_vijay.db');
+  const tmpPath = path.resolve('/tmp', 'shree_vijay.db');
+
+  // If running in Cloud Run, use /tmp for writes, reading from /tmp if it exists or seed file
+  if (process.env.K_SERVICE || process.env.K_REVISION) {
+    const readPath = fs.existsSync(tmpPath)
+      ? tmpPath
+      : (fs.existsSync(localSeedPath) ? localSeedPath : null);
+    return { readPath, writePath: tmpPath };
+  }
+
+  // Otherwise, test if local data directory is writable
+  try {
+    const localDir = path.resolve(process.cwd(), 'data');
+    if (!fs.existsSync(localDir)) {
+      fs.mkdirSync(localDir, { recursive: true });
+    }
+    const testFile = path.resolve(localDir, '.write_test');
+    fs.writeFileSync(testFile, '1');
+    fs.unlinkSync(testFile);
+    return {
+      readPath: fs.existsSync(localSeedPath) ? localSeedPath : null,
+      writePath: localSeedPath
+    };
+  } catch {
+    const readPath = fs.existsSync(tmpPath)
+      ? tmpPath
+      : (fs.existsSync(localSeedPath) ? localSeedPath : null);
+    return { readPath, writePath: tmpPath };
+  }
+}
 
 let dbInstance: Database | null = null;
 
@@ -24,15 +54,11 @@ export async function getDb(): Promise<Database> {
       }
     });
 
-    if (!fs.existsSync(DB_DIR)) {
-      try {
-        fs.mkdirSync(DB_DIR, { recursive: true });
-      } catch (e) {}
-    }
+    const { readPath } = getDbFilePaths();
 
-    if (fs.existsSync(DB_FILE)) {
+    if (readPath && fs.existsSync(readPath)) {
       try {
-        const fileBuffer = fs.readFileSync(DB_FILE);
+        const fileBuffer = fs.readFileSync(readPath);
         dbInstance = new SQL.Database(fileBuffer);
       } catch (e) {
         console.warn('Could not read existing DB file, creating in-memory DB:', e);
@@ -62,11 +88,12 @@ export async function getDb(): Promise<Database> {
 
 export function saveDb(db: Database) {
   try {
+    const { writePath } = getDbFilePaths();
     const data = db.export();
     const buffer = Buffer.from(data);
-    fs.writeFileSync(DB_FILE, buffer);
+    fs.writeFileSync(writePath, buffer);
   } catch (err) {
-    console.error('Error saving database to disk:', err);
+    console.warn('Non-fatal: could not persist DB to disk (in-memory state intact):', err);
   }
 }
 
