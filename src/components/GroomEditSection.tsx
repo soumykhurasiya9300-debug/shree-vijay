@@ -148,6 +148,9 @@ export const GroomEditSection: React.FC<GroomEditSectionProps> = ({
                   alt={sub.name}
                   className="w-full h-full object-cover object-top filter brightness-[0.88] group-hover:scale-105 group-hover:brightness-100 transition-all duration-700 ease-out"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/groom_royal_sherwani_1790317453744.jpg';
+                  }}
                 />
 
                 {/* Subtle Gradient Shadow */}

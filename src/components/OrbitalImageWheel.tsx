@@ -13,8 +13,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
 import { MotionSubtitle } from "@/components/unlumen-ui/motion-subtitle";
+import defaultLehengaFallback from "@/assets/images/bridal_lehenga_collection_1790317477737.jpg";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export interface OrbitalImageWheelImage {
   src: string;
@@ -441,61 +444,73 @@ export function OrbitalImageWheel({
   }, []);
 
   useLayoutEffect(() => {
-    const viewport = titleViewportRef.current;
-    const track = titleTrackRef.current;
-    const startSpacer = titleStartSpacerRef.current;
-    const endSpacer = titleEndSpacerRef.current;
-    if (!viewport || !track || titleTrackLabels.length === 0) return;
+    try {
+      const viewport = titleViewportRef.current;
+      const track = titleTrackRef.current;
+      const startSpacer = titleStartSpacerRef.current;
+      const endSpacer = titleEndSpacerRef.current;
+      if (!viewport || !track || titleTrackLabels.length === 0) return;
 
-    if (!titleTrackXToRef.current) {
-      titleTrackXToRef.current = gsap.quickTo(track, "x", {
-        duration: 0.62,
-        ease: "power4.out",
-        overwrite: true,
-      });
+      if (!titleTrackXToRef.current) {
+        try {
+          titleTrackXToRef.current = gsap.quickTo(track, "x", {
+            duration: 0.62,
+            ease: "power4.out",
+            overwrite: true,
+          });
+        } catch (e) {
+          console.warn("GSAP quickTo fallback", e);
+        }
+      }
+
+      const firstTitle = track.querySelector<HTMLElement>(
+        `[data-title-index="0"]`,
+      );
+      const lastTitle = track.querySelector<HTMLElement>(
+        `[data-title-index="${titleTrackLabels.length - 1}"]`,
+      );
+
+      const activeTitle = track.querySelector<HTMLElement>(
+        `[data-title-index="${activeTitleTrackIndex}"]`,
+      );
+      if (!activeTitle || !firstTitle || !lastTitle) return;
+
+      const viewportWidthPx = viewport.clientWidth;
+
+      // Add edge spacers so the first and last pills can be centered.
+      const startPad = Math.max(
+        0,
+        viewportWidthPx / 2 - firstTitle.offsetWidth / 2,
+      );
+      const endPad = Math.max(0, viewportWidthPx / 2 - lastTitle.offsetWidth / 2);
+
+      if (startSpacer) {
+        startSpacer.style.width = `${Math.round(startPad)}px`;
+      }
+
+      if (endSpacer) {
+        endSpacer.style.width = `${Math.round(endPad)}px`;
+      }
+
+      const activeCenter = activeTitle.offsetLeft + activeTitle.offsetWidth / 2;
+
+      let targetX = Math.round(viewportWidthPx / 2 - activeCenter);
+
+      if (track.scrollWidth <= viewportWidthPx) {
+        targetX = Math.round((viewportWidthPx - track.scrollWidth) / 2);
+      } else {
+        const minX = viewportWidthPx - track.scrollWidth;
+        targetX = Math.round(clamp(targetX, minX, 0));
+      }
+
+      if (titleTrackXToRef.current) {
+        titleTrackXToRef.current(targetX);
+      } else {
+        gsap.set(track, { x: targetX });
+      }
+    } catch (e) {
+      console.warn("OrbitalImageWheel useLayoutEffect caught error:", e);
     }
-
-    const firstTitle = track.querySelector<HTMLElement>(
-      `[data-title-index="0"]`,
-    );
-    const lastTitle = track.querySelector<HTMLElement>(
-      `[data-title-index="${titleTrackLabels.length - 1}"]`,
-    );
-
-    const activeTitle = track.querySelector<HTMLElement>(
-      `[data-title-index="${activeTitleTrackIndex}"]`,
-    );
-    if (!activeTitle || !firstTitle || !lastTitle) return;
-
-    const viewportWidthPx = viewport.clientWidth;
-
-    // Add edge spacers so the first and last pills can be centered.
-    const startPad = Math.max(
-      0,
-      viewportWidthPx / 2 - firstTitle.offsetWidth / 2,
-    );
-    const endPad = Math.max(0, viewportWidthPx / 2 - lastTitle.offsetWidth / 2);
-
-    if (startSpacer) {
-      startSpacer.style.width = `${Math.round(startPad)}px`;
-    }
-
-    if (endSpacer) {
-      endSpacer.style.width = `${Math.round(endPad)}px`;
-    }
-
-    const activeCenter = activeTitle.offsetLeft + activeTitle.offsetWidth / 2;
-
-    let targetX = Math.round(viewportWidthPx / 2 - activeCenter);
-
-    if (track.scrollWidth <= viewportWidthPx) {
-      targetX = Math.round((viewportWidthPx - track.scrollWidth) / 2);
-    } else {
-      const minX = viewportWidthPx - track.scrollWidth;
-      targetX = Math.round(clamp(targetX, minX, 0));
-    }
-
-    titleTrackXToRef.current(targetX);
   }, [activeTitleTrackIndex, titleTrackLabels, viewportWidth]);
 
   const activeImage = useMemo(() => {
@@ -568,11 +583,19 @@ export function OrbitalImageWheel({
 
                   {/* Garment Image */}
                   <div
-                    className="absolute inset-0 h-full w-full bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-                    style={{ backgroundImage: `url(${img.src})` }}
+                    className="absolute inset-0 h-full w-full overflow-hidden"
                     role="img"
                     aria-label={img.alt ?? img.label ?? `Image ${i + 1}`}
-                  />
+                  >
+                    <img
+                      src={img.src || defaultLehengaFallback}
+                      alt={img.alt ?? img.label ?? `Image ${i + 1}`}
+                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = defaultLehengaFallback;
+                      }}
+                    />
+                  </div>
 
                   {/* Gradient Vignette */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909] via-transparent to-black/30 pointer-events-none" />

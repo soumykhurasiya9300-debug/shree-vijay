@@ -20,7 +20,7 @@ export const MotionSubtitle: React.FC<MotionSubtitleProps> = ({
 
   useEffect(() => {
     const el = containerRef.current;
-    if (!el) return;
+    if (!el || typeof text !== 'string' || !text.length) return;
 
     const chars = el.querySelectorAll('.motion-char');
     if (!chars.length) return;
@@ -48,13 +48,14 @@ export const MotionSubtitle: React.FC<MotionSubtitleProps> = ({
   }, [text, direction, speed, stagger]);
 
   // Split into characters for cinematic luxury typography reveal
-  const characters = text.split('');
+  const safeText = typeof text === 'string' ? text : '';
+  const characters = safeText.split('');
 
   return (
     <div
       ref={containerRef}
       className={`inline-flex flex-wrap justify-center overflow-hidden ${className}`}
-      aria-label={text}
+      aria-label={safeText}
     >
       {characters.map((char, i) => (
         <span

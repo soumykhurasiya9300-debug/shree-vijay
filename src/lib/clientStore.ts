@@ -1,4 +1,5 @@
 import initialData from '../data/initialData.json';
+import { safeStorage } from './storage.ts';
 import {
   Category,
   Subcategory,
@@ -37,8 +38,11 @@ const STORAGE_KEYS = {
 
 function getFromStorage<T>(key: string, fallback: T): T {
   try {
-    const val = localStorage.getItem(key);
-    return val ? JSON.parse(val) : fallback;
+    const val = safeStorage.getItem(key);
+    if (!val) return fallback;
+    // Auto-migrate any legacy /src/assets/images/ paths stored in client browser localStorage
+    const normalized = val.replace(/\/src\/assets\/images\//g, '/images/');
+    return JSON.parse(normalized);
   } catch (e) {
     return fallback;
   }
@@ -46,29 +50,29 @@ function getFromStorage<T>(key: string, fallback: T): T {
 
 function saveToStorage<T>(key: string, data: T): void {
   try {
-    localStorage.setItem(key, JSON.stringify(data));
+    safeStorage.setItem(key, JSON.stringify(data));
   } catch (e) {
-    console.warn(`Failed to save to localStorage (${key}):`, e);
+    console.warn(`Failed to save to storage (${key}):`, e);
   }
 }
 
 export class ClientStore {
   // Password & Security
   static getStoredPassword(): string {
-    return localStorage.getItem(PASSWORD_KEY) || '1234';
+    return safeStorage.getItem(PASSWORD_KEY) || '1234';
   }
 
   static setStoredPassword(newPass: string): void {
-    localStorage.setItem(PASSWORD_KEY, newPass);
+    safeStorage.setItem(PASSWORD_KEY, newPass);
   }
 
   static getLockout(): { attempts: number; lockedUntil: number | null } {
     try {
-      const data = localStorage.getItem(LOCKOUT_KEY);
+      const data = safeStorage.getItem(LOCKOUT_KEY);
       if (!data) return { attempts: 0, lockedUntil: null };
       const parsed = JSON.parse(data);
       if (parsed.lockedUntil && Date.now() > parsed.lockedUntil) {
-        localStorage.removeItem(LOCKOUT_KEY);
+        safeStorage.removeItem(LOCKOUT_KEY);
         return { attempts: 0, lockedUntil: null };
       }
       return parsed;
@@ -90,12 +94,12 @@ export class ClientStore {
       remainingSeconds = 300;
     }
 
-    localStorage.setItem(LOCKOUT_KEY, JSON.stringify({ attempts, lockedUntil }));
+    safeStorage.setItem(LOCKOUT_KEY, JSON.stringify({ attempts, lockedUntil }));
     return { isLocked, remainingSeconds, attempts };
   }
 
   static clearLockout(): void {
-    localStorage.removeItem(LOCKOUT_KEY);
+    safeStorage.removeItem(LOCKOUT_KEY);
   }
 
   static login(password: string): {
@@ -160,8 +164,8 @@ export class ClientStore {
       role: 'SUPER ADMIN',
     };
 
-    localStorage.setItem(TOKEN_KEY, token);
-    localStorage.setItem(USER_KEY, JSON.stringify(admin));
+    safeStorage.setItem(TOKEN_KEY, token);
+    safeStorage.setItem(USER_KEY, JSON.stringify(admin));
 
     this.logActivity('Vijay Kumar', 'SUPER ADMIN', 'Admin Login', 'System', 'Successful login (Vercel Standalone Mode)');
 
@@ -173,8 +177,8 @@ export class ClientStore {
   }
 
   static checkSession(): { authenticated: boolean; admin: any } {
-    const token = localStorage.getItem(TOKEN_KEY);
-    const userStr = localStorage.getItem(USER_KEY);
+    const token = safeStorage.getItem(TOKEN_KEY);
+    const userStr = safeStorage.getItem(USER_KEY);
     if (token && userStr) {
       try {
         const admin = JSON.parse(userStr);
@@ -187,8 +191,8 @@ export class ClientStore {
   }
 
   static logout(): void {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
+    safeStorage.removeItem(TOKEN_KEY);
+    safeStorage.removeItem(USER_KEY);
   }
 
   static changePassword(oldPass: string, newPass: string): { success: boolean } {

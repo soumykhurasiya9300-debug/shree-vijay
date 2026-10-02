@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, MessageCircle, MapPin } from 'lucide-react';
 import { Product } from '../types/index.ts';
 import { Language, translations } from '../lib/translations.ts';
+import defaultProductImg from '../assets/images/hero_bridal_wedding_1790317438926.jpg';
 
 interface ProductDetailModalProps {
   product: Product | null;
@@ -23,7 +24,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   const images = product.images && product.images.length > 0
     ? product.images
-    : ['/src/assets/images/hero_bridal_wedding_1790317438926.jpg'];
+    : [defaultProductImg];
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState<string>(product.colour || 'Standard');
@@ -57,6 +58,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 alt={product.name}
                 className="w-full h-full object-cover object-top"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/hero_bridal_wedding_1790317438926.jpg';
+                }}
               />
               <div className="absolute top-3 left-3 bg-[#0A0909]/90 px-2.5 py-1 text-xs font-semibold text-[#D1B875] border border-[#B89A5A]/40 backdrop-blur-xs font-mono">
                 {product.stock_status}
@@ -75,7 +79,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       activeImageIndex === idx ? 'border-[#D1B875] scale-105 ring-1 ring-[#B89A5A]' : 'border-white/15 opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={img}
+                      alt=""
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/images/hero_bridal_wedding_1790317438926.jpg';
+                      }}
+                    />
                   </button>
                 ))}
               </div>

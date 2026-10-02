@@ -80,6 +80,9 @@ export const FeaturedLookSpotlight: React.FC<FeaturedLookSpotlightProps> = ({
                   alt={heroPiece?.name || 'Featured Look'}
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 filter brightness-[0.92]"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/bridal_lehenga_collection_1790317477737.jpg';
+                  }}
                 />
                 <div className="absolute top-3 left-3 bg-[#4A1724] text-[#F4EEE4] text-[10px] tracking-widest px-3 py-1 font-mono uppercase border border-[#B89A5A]/30">
                   SKU: {heroPiece?.sku || 'SV-BR-01'}

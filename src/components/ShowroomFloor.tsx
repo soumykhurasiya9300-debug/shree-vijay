@@ -180,6 +180,9 @@ export const ShowroomFloor: React.FC<ShowroomFloorProps> = ({ lang }) => {
                 alt={currentDisplay.title}
                 className="w-full h-full object-cover object-top filter brightness-[0.85] transition-all duration-700 ease-out hover:scale-105"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/bridal_lehenga_collection_1790317477737.jpg';
+                }}
               />
 
               {/* Scrim Overlay */}

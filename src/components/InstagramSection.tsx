@@ -2,6 +2,11 @@ import React from 'react';
 import { Instagram, ArrowUpRight, Youtube } from 'lucide-react';
 import { Language, translations } from '../lib/translations.ts';
 
+import bridalWeddingImg from '../assets/images/hero_bridal_wedding_1790317438926.jpg';
+import groomSherwaniImg from '../assets/images/groom_royal_sherwani_1790317453744.jpg';
+import banarasiSareeImg from '../assets/images/designer_banarasi_saree_1790317467169.jpg';
+import bridalLehengaImg from '../assets/images/bridal_lehenga_collection_1790317477737.jpg';
+
 interface InstagramSectionProps {
   lang: Language;
   instagramUrl?: string;
@@ -17,22 +22,26 @@ export const InstagramSection: React.FC<InstagramSectionProps> = ({
 
   const galleryItems = [
     {
-      img: '/src/assets/images/hero_bridal_wedding_1790317438926.jpg',
+      img: bridalWeddingImg,
+      fallback: '/images/hero_bridal_wedding_1790317438926.jpg',
       caption: 'Regal Crimson Red Bridal Zardozi Lehengas',
       tag: '#ShreeVijayBrides',
     },
     {
-      img: '/src/assets/images/groom_royal_sherwani_1790317453744.jpg',
+      img: groomSherwaniImg,
+      fallback: '/images/groom_royal_sherwani_1790317453744.jpg',
       caption: 'Ivory Raw Silk Heritage Sherwani for Royal Grooms',
       tag: '#JabalpurGroomWear',
     },
     {
-      img: '/src/assets/images/designer_banarasi_saree_1790317467169.jpg',
+      img: banarasiSareeImg,
+      fallback: '/images/designer_banarasi_saree_1790317467169.jpg',
       caption: 'Authentic Banarasi Katan Silk with Antique Zari',
       tag: '#PureBanarasiSilk',
     },
     {
-      img: '/src/assets/images/bridal_lehenga_collection_1790317477737.jpg',
+      img: bridalLehengaImg,
+      fallback: '/images/bridal_lehenga_collection_1790317477737.jpg',
       caption: 'Pastel Rose Gold Handcrafted Mirror Work Couture',
       tag: '#BridalFashion2026',
     },
@@ -90,6 +99,9 @@ export const InstagramSection: React.FC<InstagramSectionProps> = ({
                 alt={item.caption}
                 className="w-full h-full object-cover filter brightness-[0.85] group-hover:scale-105 group-hover:brightness-100 transition-all duration-700 ease-out"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = item.fallback;
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909]/95 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 text-[#F4EEE4]">
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#D1B875]">{item.tag}</span>

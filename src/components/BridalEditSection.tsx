@@ -143,6 +143,9 @@ export const BridalEditSection: React.FC<BridalEditSectionProps> = ({
                 alt="Shree Vijay Bridal Couture"
                 className="w-full h-full object-cover object-top filter brightness-[0.88] transition-transform duration-1000 ease-out group-hover:scale-105"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/bridal_lehenga_collection_1790317477737.jpg';
+                }}
               />
 
               {/* Scrim Overlay */}
@@ -210,6 +213,9 @@ export const BridalEditSection: React.FC<BridalEditSectionProps> = ({
                     alt={prod.name}
                     className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/bridal_lehenga_collection_1790317477737.jpg';
+                    }}
                   />
                   <div className="absolute top-2 left-2 bg-[#4A1724] text-[#F4EEE4] text-[10px] uppercase tracking-wider px-2 py-0.5 font-medium border border-[#B89A5A]/30">
                     {prod.sku}

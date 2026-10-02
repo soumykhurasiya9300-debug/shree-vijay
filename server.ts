@@ -1,7 +1,8 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
+import http from 'http';
 import path from 'path';
 import fs from 'fs';
-import { getDb, saveDb } from './server/db.js';
+import { getDb, saveDb } from './server/db.ts';
 import {
   checkLoginLockout,
   recordFailedLogin,
@@ -11,7 +12,7 @@ import {
   getSession,
   destroySession,
   updateAdminPassword
-} from './server/auth.js';
+} from './server/auth.ts';
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
@@ -1661,34 +1662,99 @@ app.get('/api/admin/activity-logs', requireAuth(['SUPER ADMIN']), async (req: Re
 // ----------------------------------------------------
 
 async function startServer() {
-  // Initialize database first
-  await getDb();
-  console.log('✓ SQLite database initialized and ready at data/shree_vijay.db');
+  // 1. Health check endpoints for Cloud Run container monitoring (must respond immediately)
+  app.get('/_healthz', (req, res) => res.status(200).send('OK'));
+  app.get('/healthz', (req, res) => res.status(200).send('OK'));
+  app.get('/api/health', (req, res) => res.status(200).json({ status: 'ok', uptime: process.uptime() }));
 
-  // Serve static public assets (audio, video, images) with full HTTP Range request support
+  // 2. Serve static public assets (audio, video, images) with full HTTP Range request support
   app.use(express.static(path.resolve(process.cwd(), 'public')));
 
-  if (process.env.NODE_ENV === 'production' && fs.existsSync(path.resolve(process.cwd(), 'dist'))) {
-    app.use(express.static(path.resolve(process.cwd(), 'dist')));
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve(process.cwd(), 'dist', 'index.html'));
+  const server = http.createServer(app);
+
+  // 3. Start listening immediately so Cloud Run container health checks pass without delay
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`✓ Shree Vijay Showroom server running on http://0.0.0.0:${PORT}`);
+  });
+
+  // 4. Initialize database asynchronously in background without blocking server startup
+  getDb().then(() => {
+    console.log('✓ SQLite database initialized and ready at data/shree_vijay.db');
+  }).catch((err) => {
+    console.error('Non-fatal error initializing database:', err);
+  });
+
+  const isDevScript = process.env.npm_lifecycle_event === 'dev';
+  const isCloudRun = Boolean(process.env.K_SERVICE || process.env.K_REVISION);
+  const distDir = path.resolve(process.cwd(), 'dist');
+  const distIndex = path.resolve(distDir, 'index.html');
+  let hasDist = fs.existsSync(distIndex);
+
+  // If in Cloud Run or production and dist is somehow missing, build it on the fly
+  if (!hasDist && (isCloudRun || process.env.NODE_ENV === 'production')) {
+    try {
+      console.log('Building production bundle on startup...');
+      const { build } = await import('vite');
+      await build();
+      hasDist = fs.existsSync(distIndex);
+    } catch (e) {
+      console.error('Failed to build client bundle on startup:', e);
+    }
+  }
+
+  // In production (Cloud Run, npm start, or any non-dev script when dist is built), serve pre-built static bundle
+  const isProduction = hasDist && (!isDevScript || isCloudRun || process.env.NODE_ENV === 'production');
+
+  if (isProduction) {
+    console.log('✓ Serving production build from dist');
+    app.use(express.static(distDir));
+    app.get('*', (req, res, next) => {
+      if (req.path.startsWith('/api')) {
+        return next();
+      }
+      res.sendFile(distIndex);
     });
   } else {
     // Development mode with Vite
     const { createServer: createViteServer } = await import('vite');
+    const isHmrDisabled = process.env.DISABLE_HMR === 'true';
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        hmr: false,
+        ws: false,
+        watch: isHmrDisabled ? null : {},
+      },
       appType: 'spa',
     });
     app.use(vite.middlewares);
-  }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`✓ Shree Vijay Showroom server running on http://0.0.0.0:${PORT}`);
-  });
+    // Guaranteed SPA HTML transform route for all page navigations
+    app.use('*', async (req, res, next) => {
+      if (req.method !== 'GET' || req.originalUrl.startsWith('/api')) {
+        return next();
+      }
+      try {
+        const url = req.originalUrl;
+        let template = fs.readFileSync(path.resolve(process.cwd(), 'index.html'), 'utf-8');
+        template = await vite.transformIndexHtml(url, template);
+        res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
+      } catch (e) {
+        vite.ssrFixStacktrace(e as Error);
+        next(e);
+      }
+    });
+  }
 }
 
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 startServer().catch((err) => {
-  console.error('Fatal server startup error:', err);
-  process.exit(1);
+  console.error('Server startup warning (continuing execution):', err);
 });

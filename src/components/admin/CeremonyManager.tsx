@@ -35,7 +35,7 @@ export const CeremonyManager: React.FC = () => {
     description_hi: '',
     banner_tagline_en: '',
     banner_tagline_hi: '',
-    image_url: '/src/assets/images/occasion_haldi_festive_1790325578682.jpg',
+    image_url: '/images/occasion_haldi_festive_1790325578682.jpg',
     sort_order: 1,
     is_active: 1,
   });
@@ -68,7 +68,7 @@ export const CeremonyManager: React.FC = () => {
       description_hi: '',
       banner_tagline_en: '',
       banner_tagline_hi: '',
-      image_url: '/src/assets/images/occasion_haldi_festive_1790325578682.jpg',
+      image_url: '/images/occasion_haldi_festive_1790325578682.jpg',
       sort_order: ceremonies.length + 1,
       is_active: 1,
     });
@@ -87,7 +87,7 @@ export const CeremonyManager: React.FC = () => {
       description_hi: c.description_hi || '',
       banner_tagline_en: c.banner_tagline_en || '',
       banner_tagline_hi: c.banner_tagline_hi || '',
-      image_url: c.image_url || '/src/assets/images/occasion_haldi_festive_1790325578682.jpg',
+      image_url: c.image_url || '/images/occasion_haldi_festive_1790325578682.jpg',
       sort_order: c.sort_order || 1,
       is_active: c.is_active,
     });
@@ -182,6 +182,9 @@ export const CeremonyManager: React.FC = () => {
                     src={c.image_url}
                     alt={c.name_en}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/occasion_haldi_festive_1790325578682.jpg';
+                    }}
                   />
                   <div className="absolute top-2.5 left-2.5 bg-black/80 px-2 py-0.5 text-[10px] text-[#B89455] font-semibold border border-[#B89455]/40 rounded-xs">
                     KEY: {c.ceremony_key.toUpperCase()}

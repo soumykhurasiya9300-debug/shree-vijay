@@ -111,6 +111,9 @@ export const ShowroomStory: React.FC<ShowroomStoryProps> = ({ lang }) => {
                 alt="Shree Vijay Showroom Heritage"
                 className="w-full h-full object-cover filter brightness-[0.82] hover:scale-105 transition-transform duration-700"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/showroom_interior_ambiance_1790317495781.jpg';
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909]/90 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-5 left-6 right-6 text-[#F4EEE4] flex items-end justify-between">
@@ -134,6 +137,9 @@ export const ShowroomStory: React.FC<ShowroomStoryProps> = ({ lang }) => {
                 alt="Handcrafted Weaves"
                 className="w-full h-full object-cover filter brightness-[0.82] hover:scale-105 transition-transform duration-700"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/designer_banarasi_saree_1790317467169.jpg';
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909]/90 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-5 left-6 right-6 text-[#F4EEE4]">

@@ -191,6 +191,9 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
           alt="Shree Vijay Complete Wedding Wardrobe Atmosphere"
           aria-hidden="true"
           className="w-full h-full object-cover object-center filter brightness-[0.68] contrast-[1.1] saturate-[1.05]"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = '/images/family_wedding_bg.jpg';
+          }}
         />
         {/* Tuned Scrims for high background visibility while preserving typography legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0A0909]/75 via-[#0A0909]/35 to-[#0A0909]/85" />
@@ -254,6 +257,9 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
                 alt="Shree Vijay Male Royal Groom & Festive Wardrobe"
                 className="w-full h-full object-cover object-top filter brightness-[0.88] contrast-[1.04] transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-100"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/groom_royal_sherwani_1790317453744.jpg';
+                }}
               />
 
               {/* Editorial Gradient Scrims */}
@@ -340,6 +346,9 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
                 alt="Shree Vijay Female Bridal & Festive Wardrobe"
                 className="w-full h-full object-cover object-top filter brightness-[0.88] contrast-[1.04] transition-all duration-700 ease-out group-hover:scale-105 group-hover:brightness-100"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/bridal_lehenga_collection_1790317477737.jpg';
+                }}
               />
 
               {/* Editorial Gradient Scrims */}
@@ -471,6 +480,9 @@ export const FamilyWeddingSection: React.FC<FamilyWeddingSectionProps> = ({
                   alt={sub.name}
                   className="w-full h-full object-cover object-top filter brightness-[0.88] group-hover:scale-105 group-hover:brightness-100 transition-all duration-700 ease-out"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/hero_bridal_wedding_1790317438926.jpg';
+                  }}
                 />
 
                 {/* Decorative Gradient Overlay */}

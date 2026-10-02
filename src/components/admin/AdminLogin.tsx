@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, AlertCircle, Clock, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Lock, AlertCircle, Clock, ShieldCheck, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { adminLogin } from '../../lib/api.ts';
 import adminLoginBgImg from '../../assets/images/admin_login_bg.jpg';
+import CodeSlots from '../CodeSlots.tsx';
 
 interface AdminLoginProps {
   onLoginSuccess: (admin: any) => void;
@@ -13,6 +14,8 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onCancel
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lockedUntilSeconds, setLockedUntilSeconds] = useState<number | null>(null);
+  const [status, setStatus] = useState<'idle' | 'error' | 'success'>('idle');
+  const [mask, setMask] = useState(true);
 
   // Live countdown timer for lockout
   useEffect(() => {
@@ -37,19 +40,23 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onCancel
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleVerifyCode = async (codeToVerify: string) => {
     if (lockedUntilSeconds && lockedUntilSeconds > 0) return;
+    if (!codeToVerify) return;
 
     setError(null);
     setLoading(true);
 
     try {
-      const res = await adminLogin(password);
+      const res = await adminLogin(codeToVerify);
       if (res.success && res.admin) {
-        onLoginSuccess(res.admin);
+        setStatus('success');
+        setTimeout(() => {
+          onLoginSuccess(res.admin);
+        }, 600);
       }
     } catch (err: any) {
+      setStatus('error');
       if (err.status === 429) {
         // Enforced 5-minute lockout requirement
         const secs = err.data?.remainingSeconds || 300;
@@ -61,6 +68,13 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onCancel
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password.length >= 4) {
+      await handleVerifyCode(password);
     }
   };
 
@@ -127,21 +141,57 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onCancel
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="block text-xs font-semibold text-[#D1B875] uppercase tracking-wider mb-2">
-                  Administrator Password
-                </label>
-                {/* Requirement 3: Password is strictly masked, never exposed */}
-                <input
-                  type="password"
-                  required
-                  autoFocus
-                  autoComplete="current-password"
-                  disabled={lockedUntilSeconds !== null && lockedUntilSeconds > 0}
-                  placeholder="Enter password..."
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm bg-[#121011]/90 text-[#F4EEE4] placeholder-[#7A6E5F] border border-[#B89A5A]/40 rounded-xs focus:outline-hidden focus:border-[#D1B875] focus:ring-1 focus:ring-[#D1B875]/50 disabled:bg-black/50 disabled:text-gray-500 disabled:cursor-not-allowed transition-all"
-                />
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-semibold text-[#D1B875] uppercase tracking-wider">
+                    Administrator Passcode
+                  </label>
+                  {/* Mask toggle */}
+                  <button
+                    type="button"
+                    onClick={() => setMask(!mask)}
+                    className="px-2 py-1 text-[#D1B875] hover:text-[#F4EEE4] transition-colors rounded-xs hover:bg-white/5 cursor-pointer flex items-center gap-1.5 text-[11px]"
+                    title={mask ? 'Reveal digits' : 'Hide digits'}
+                    aria-label={mask ? 'Reveal digits' : 'Hide digits'}
+                  >
+                    {mask ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    <span className="text-[#A89D8F]">{mask ? 'Show' : 'Hide'}</span>
+                  </button>
+                </div>
+
+                {/* React Bits <CodeSlots /> component */}
+                <div className="flex justify-center py-2">
+                  <CodeSlots
+                    key="code-slots-4"
+                    length={4}
+                    value={password}
+                    status={status}
+                    mask={mask}
+                    autoFocus={true}
+                    disabled={loading || (lockedUntilSeconds !== null && lockedUntilSeconds > 0)}
+                    onChange={(code) => {
+                      setPassword(code);
+                      if (status !== 'idle') setStatus('idle');
+                      if (error) setError(null);
+                    }}
+                    onComplete={async (code) => {
+                      await handleVerifyCode(code);
+                    }}
+                    accentColor="#D1B875"
+                    inkColor="#D1B875"
+                    slotColor="#161314"
+                    digitColor="#0A0909"
+                    dangerColor="#ef4444"
+                    slotSize={48}
+                    gap={10}
+                    radius={10}
+                    bounce={0.2}
+                    settle={0.3}
+                    rise={8}
+                    cascade={20}
+                    ariaLabel="Administrator passcode"
+                  />
+                </div>
+
                 <div className="flex items-center justify-between text-[11px] text-[#A89D8F] mt-1.5 font-light">
                   <span>5 attempts allowed</span>
                   <span className="text-[#B89A5A]">Protected Portal</span>

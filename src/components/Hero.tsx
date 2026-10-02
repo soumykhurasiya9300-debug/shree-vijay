@@ -141,6 +141,9 @@ export const Hero: React.FC<HeroProps> = ({ lang, settings, onOpenEnquiry }) => 
             src={heroImg}
             alt="Shree Vijay Showroom Bridal Collection Jabalpur"
             className="w-full h-full object-cover object-center"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = '/images/hero_bridal_wedding_1790317438926.jpg';
+            }}
           />
         </video>
 

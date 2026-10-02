@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
-import { getDb, saveDb } from './db.js';
+import { getDb, saveDb } from './db.ts';
 
 export interface AdminSession {
   token: string;

@@ -78,7 +78,7 @@ export const ProductManager: React.FC<ProductManagerProps> = ({ categories }) =>
     tags: '',
     notes: '',
     stock_status: 'In Stock' as 'In Stock' | 'Low Stock' | 'Out of Stock',
-    images: ['/src/assets/images/hero_bridal_wedding_1790317438926.jpg'],
+    images: ['/images/hero_bridal_wedding_1790317438926.jpg'],
     variants: [
       { colour: 'Red', size: 'Standard', price: 49999, quantity: 5 },
       { colour: 'Maroon', size: 'Standard', price: 49999, quantity: 3 },
@@ -126,7 +126,7 @@ export const ProductManager: React.FC<ProductManagerProps> = ({ categories }) =>
       tags: 'bridal, wedding, festive',
       notes: '',
       stock_status: 'In Stock',
-      images: ['/src/assets/images/hero_bridal_wedding_1790317438926.jpg'],
+      images: ['/images/hero_bridal_wedding_1790317438926.jpg'],
       variants: [{ colour: 'Crimson Red', size: 'Semi-Stitched', price: 12999, quantity: 5 }],
     });
     setShowModal(true);
@@ -596,9 +596,12 @@ export const ProductManager: React.FC<ProductManagerProps> = ({ categories }) =>
                     <td className="py-3 px-3">
                       <div className="w-12 h-14 rounded-xs overflow-hidden bg-[#ECE4D8] border border-[#D8CEBE]">
                         <img
-                          src={p.images?.[0] || '/src/assets/images/hero_bridal_wedding_1790317438926.jpg'}
+                          src={p.images?.[0] || '/images/hero_bridal_wedding_1790317438926.jpg'}
                           alt=""
                           className="w-full h-full object-cover object-top"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/images/hero_bridal_wedding_1790317438926.jpg';
+                          }}
                         />
                       </div>
                     </td>

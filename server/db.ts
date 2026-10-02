@@ -1,4 +1,4 @@
-import initSqlJs, { Database } from 'sql.js';
+import initSqlJs, { type Database } from 'sql.js';
 import fs from 'fs';
 import path from 'path';
 import bcrypt from 'bcryptjs';
@@ -13,24 +13,51 @@ export async function getDb(): Promise<Database> {
     return dbInstance;
   }
 
-  const SQL = await initSqlJs();
+  try {
+    const SQL = await initSqlJs({
+      locateFile: (file: string) => {
+        const localPath = path.resolve(process.cwd(), 'node_modules/sql.js/dist', file);
+        if (fs.existsSync(localPath)) {
+          return localPath;
+        }
+        return file;
+      }
+    });
 
-  if (!fs.existsSync(DB_DIR)) {
-    fs.mkdirSync(DB_DIR, { recursive: true });
-  }
+    if (!fs.existsSync(DB_DIR)) {
+      try {
+        fs.mkdirSync(DB_DIR, { recursive: true });
+      } catch (e) {}
+    }
 
-  if (fs.existsSync(DB_FILE)) {
-    const fileBuffer = fs.readFileSync(DB_FILE);
-    dbInstance = new SQL.Database(fileBuffer);
-  } else {
+    if (fs.existsSync(DB_FILE)) {
+      try {
+        const fileBuffer = fs.readFileSync(DB_FILE);
+        dbInstance = new SQL.Database(fileBuffer);
+      } catch (e) {
+        console.warn('Could not read existing DB file, creating in-memory DB:', e);
+        dbInstance = new SQL.Database();
+      }
+    } else {
+      dbInstance = new SQL.Database();
+    }
+
+    // Initialize schema
+    try {
+      initSchema(dbInstance);
+      saveDb(dbInstance);
+    } catch (schemaErr) {
+      console.error('Error during initSchema:', schemaErr);
+    }
+
+    return dbInstance;
+  } catch (err) {
+    console.error('Error in initSqlJs, falling back to basic Database instance:', err);
+    const SQL = await initSqlJs();
     dbInstance = new SQL.Database();
+    initSchema(dbInstance);
+    return dbInstance;
   }
-
-  // Initialize schema
-  initSchema(dbInstance);
-  saveDb(dbInstance);
-
-  return dbInstance;
 }
 
 export function saveDb(db: Database) {
@@ -355,12 +382,12 @@ function seedCeremonies(db: Database) {
     db.run(`
       INSERT INTO ceremonies (ceremony_key, name_en, name_hi, hindi_aura, palette, description_en, description_hi, banner_tagline_en, banner_tagline_hi, image_url, sort_order, is_active)
       VALUES 
-      ('haldi', 'HALDI CEREMONY', 'हल्दी सेरेमनी', 'पीत वर्ण अनुष्ठान एवं मांगलिक हल्दी रस्म', 'Sunlit Yellows, Gota Patti, Floral Silks', 'Joyous turmeric yellows, breezy mulmul, and light gota patti for intimate rituals.', 'शुभ पीत वर्ण के परिधान — गोटा पत्ती, हल्के मलमल व फ्लोरल वर्क।', 'Haldi Ceremony Special: Sunshine lehengas, sarees, suits, kurtis, gowns & kurtas.', 'हल्दी रस्म के लिए खास सुंदर पीताम्बरी लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन व कुर्ते।', '/src/assets/images/occasion_haldi_festive_1790325578682.jpg', 1, 1),
-      ('mehendi', 'MEHENDI UTSAV', 'मेहंदी उत्सव', 'मरकत हरित, आभला दर्पण व उत्सव परिधान', 'Emerald Greens, Mirror Work, Fluid Georgette', 'Vibrant emerald greens and mirror embellishments crafted for effortless movement.', 'हरे व फिरोजी रंग के आरामदायक लहंगे, मिरर वर्क कुर्ते व फ्लोरल साड़ियाँ।', 'Mehendi Ceremony Special: Henna-friendly lehengas, sarees, suits, kurtis, gowns & kurtas.', 'मेहंदी रस्म के लिए खास हरे रंग के लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन व कुर्ते।', '/src/assets/images/bridal_lehenga_collection_1790317477737.jpg', 2, 1),
-      ('sangeet', 'SANGEET NIGHT', 'संगीत नाइट', 'नक्षत्र रात्रि — ३६०° ट्विर्ल व सीक्विन्स', 'Jewel Tones, Glittering Sequins, 360° Twirl', 'Glamorous twilight jewel hues with high-impact sparkle designed for the stage.', 'ग्लैमरस सीक्विन्स लहंगे, इंडो-वेस्टर्न बंदगला व कॉकटेल गाउन।', 'Sangeet Night Special: Glamorous lehengas, sarees, suits, kurtis, gowns & bandhgalas.', 'संगीत नाइट के लिए खास चमकदार लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन व बंदगला।', '/src/assets/images/groom_royal_sherwani_1790317453744.jpg', 3, 1),
-      ('wedding', 'WEDDING / MANDAP', 'विवाह मंडप / फेरे', 'शाश्वत वैदिक फेरे व राजसी सिंदूरी परिधान', 'Heritage Crimson, Royal Zardozi, Pure Brocade', 'Heirloom vermilion reds, beaten gold zardozi, and regal raw silks for sacred vows.', 'शाश्वत राजपूताना लाल लहंगे, सिल्क शेरवानी व बनारसी कतान साड़ियाँ।', 'Mandap Vows Special: Sacred bridal lehengas, sarees, suits, kurtis, gowns & groom sherwanis.', 'शुभ विवाह फेरों के लिए राजसी दुल्हन लहंगा, बनारसी साड़ी, सूट, कुर्ती, गाउन व दूल्हा शेरवानी।', '/src/assets/images/hero_bridal_wedding_1790317438926.jpg', 4, 1),
-      ('royal', 'ROYAL RECEPTION', 'रॉयल रिसेप्शन', 'शाही रिसेप्शन एवं आधुनिक भव्यता', 'Champagne Gold, Deep Wine, Velvet Bandhgalas', 'Contemporary grandeur, sculpted velvet silhouettes, and opulent champagne gold tones.', 'आधुनिक भव्यता — मखमली गाउन, जोधपुरी सूट व मेटैलिक साड़ियाँ।', 'Royal Reception Special: Grand lehengas, sarees, suits, kurtis, gowns, kurtas & bandhgalas.', 'रॉयल रिसेप्शन के लिए भव्य लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन, कुर्ते व जोधपुरी बंदगला।', '/src/assets/images/family_wedding_ensemble_1790325566253.jpg', 5, 1),
-      ('festival', 'FESTIVAL & PUJA', 'फेस्टिव व पूजन', 'मांगल्य एवं पारम्परिक देव पूजन संग्रह', 'Pure Banarasi Katan, Tussar, Chanderi Silks', 'Authentic master-woven Banarasi silk sarees, temple borders, and festive cottons.', 'असली हथकरघा साड़ियाँ, चंदेरी जरी बॉर्डर व पारम्परिक धोती कुर्ता।', 'Festival Special: Auspicious lehengas, sarees, suits, kurtis, gowns, kurtas & achkans.', 'दीपावली, करवाचौथ व पूजन हेतु हथकरघा साड़ियाँ, लहंगे, सूट, कुर्ती, गाउन व कुर्ते।', '/src/assets/images/designer_banarasi_saree_1790317467169.jpg', 6, 1);
+      ('haldi', 'HALDI CEREMONY', 'हल्दी सेरेमनी', 'पीत वर्ण अनुष्ठान एवं मांगलिक हल्दी रस्म', 'Sunlit Yellows, Gota Patti, Floral Silks', 'Joyous turmeric yellows, breezy mulmul, and light gota patti for intimate rituals.', 'शुभ पीत वर्ण के परिधान — गोटा पत्ती, हल्के मलमल व फ्लोरल वर्क।', 'Haldi Ceremony Special: Sunshine lehengas, sarees, suits, kurtis, gowns & kurtas.', 'हल्दी रस्म के लिए खास सुंदर पीताम्बरी लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन व कुर्ते।', '/images/occasion_haldi_festive_1790325578682.jpg', 1, 1),
+      ('mehendi', 'MEHENDI UTSAV', 'मेहंदी उत्सव', 'मरकत हरित, आभला दर्पण व उत्सव परिधान', 'Emerald Greens, Mirror Work, Fluid Georgette', 'Vibrant emerald greens and mirror embellishments crafted for effortless movement.', 'हरे व फिरोजी रंग के आरामदायक लहंगे, मिरर वर्क कुर्ते व फ्लोरल साड़ियाँ।', 'Mehendi Ceremony Special: Henna-friendly lehengas, sarees, suits, kurtis, gowns & kurtas.', 'मेहंदी रस्म के लिए खास हरे रंग के लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन व कुर्ते।', '/images/bridal_lehenga_collection_1790317477737.jpg', 2, 1),
+      ('sangeet', 'SANGEET NIGHT', 'संगीत नाइट', 'नक्षत्र रात्रि — ३६०° ट्विर्ल व सीक्विन्स', 'Jewel Tones, Glittering Sequins, 360° Twirl', 'Glamorous twilight jewel hues with high-impact sparkle designed for the stage.', 'ग्लैमरस सीक्विन्स लहंगे, इंडो-वेस्टर्न बंदगला व कॉकटेल गाउन।', 'Sangeet Night Special: Glamorous lehengas, sarees, suits, kurtis, gowns & bandhgalas.', 'संगीत नाइट के लिए खास चमकदार लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन व बंदगला।', '/images/groom_royal_sherwani_1790317453744.jpg', 3, 1),
+      ('wedding', 'WEDDING / MANDAP', 'विवाह मंडप / फेरे', 'शाश्वत वैदिक फेरे व राजसी सिंदूरी परिधान', 'Heritage Crimson, Royal Zardozi, Pure Brocade', 'Heirloom vermilion reds, beaten gold zardozi, and regal raw silks for sacred vows.', 'शाश्वत राजपूताना लाल लहंगे, सिल्क शेरवानी व बनारसी कतान साड़ियाँ।', 'Mandap Vows Special: Sacred bridal lehengas, sarees, suits, kurtis, gowns & groom sherwanis.', 'शुभ विवाह फेरों के लिए राजसी दुल्हन लहंगा, बनारसी साड़ी, सूट, कुर्ती, गाउन व दूल्हा शेरवानी।', '/images/hero_bridal_wedding_1790317438926.jpg', 4, 1),
+      ('royal', 'ROYAL RECEPTION', 'रॉयल रिसेप्शन', 'शाही रिसेप्शन एवं आधुनिक भव्यता', 'Champagne Gold, Deep Wine, Velvet Bandhgalas', 'Contemporary grandeur, sculpted velvet silhouettes, and opulent champagne gold tones.', 'आधुनिक भव्यता — मखमली गाउन, जोधपुरी सूट व मेटैलिक साड़ियाँ।', 'Royal Reception Special: Grand lehengas, sarees, suits, kurtis, gowns, kurtas & bandhgalas.', 'रॉयल रिसेप्शन के लिए भव्य लहंगे, साड़ियाँ, सूट, कुर्ती, गाउन, कुर्ते व जोधपुरी बंदगला।', '/images/family_wedding_ensemble_1790325566253.jpg', 5, 1),
+      ('festival', 'FESTIVAL & PUJA', 'फेस्टिव व पूजन', 'मांगल्य एवं पारम्परिक देव पूजन संग्रह', 'Pure Banarasi Katan, Tussar, Chanderi Silks', 'Authentic master-woven Banarasi silk sarees, temple borders, and festive cottons.', 'असली हथकरघा साड़ियाँ, चंदेरी जरी बॉर्डर व पारम्परिक धोती कुर्ता।', 'Festival Special: Auspicious lehengas, sarees, suits, kurtis, gowns, kurtas & achkans.', 'दीपावली, करवाचौथ व पूजन हेतु हथकरघा साड़ियाँ, लहंगे, सूट, कुर्ती, गाउन व कुर्ते।', '/images/designer_banarasi_saree_1790317467169.jpg', 6, 1);
     `);
   }
 }
@@ -382,7 +409,7 @@ function ensureGroomProductsExist(db: Database) {
       fabric: 'Rich Micro Velvet & Silk',
       material: 'Handcrafted Zardozi, Cutdana & Antique Zari',
       is_featured: 1,
-      images: JSON.stringify(['/src/assets/images/groom_royal_sherwani_1790317453744.jpg']),
+      images: JSON.stringify(['/images/groom_royal_sherwani_1790317453744.jpg']),
       variants: [
         { sku: 'SV-GR-202-38', colour: 'Royal Maroon', size: '38', price: 34999, qty: 4 },
         { sku: 'SV-GR-202-40', colour: 'Royal Maroon', size: '40', price: 34999, qty: 5 },
@@ -404,7 +431,7 @@ function ensureGroomProductsExist(db: Database) {
       fabric: 'Banarasi Silk Jamawar',
       material: 'Tonal Resham Threadwork & Crystal Brooch',
       is_featured: 1,
-      images: JSON.stringify(['/src/assets/images/groom_royal_sherwani_1790317453744.jpg']),
+      images: JSON.stringify(['/images/groom_royal_sherwani_1790317453744.jpg']),
       variants: [
         { sku: 'SV-GR-203-38', colour: 'Pearl White', size: '38', price: 31999, qty: 3 },
         { sku: 'SV-GR-203-40', colour: 'Pearl White', size: '40', price: 31999, qty: 5 }
@@ -425,7 +452,7 @@ function ensureGroomProductsExist(db: Database) {
       fabric: 'Imported Suiting Blend & Georgette Drape',
       material: 'Geometric Cutdana, Hand-tucked Pleats & Metal Cufflinks',
       is_featured: 1,
-      images: JSON.stringify(['/src/assets/images/groom_royal_sherwani_1790317453744.jpg']),
+      images: JSON.stringify(['/images/groom_royal_sherwani_1790317453744.jpg']),
       variants: [
         { sku: 'SV-INW-201-38', colour: 'Midnight Navy', size: '38', price: 22999, qty: 4 },
         { sku: 'SV-INW-201-40', colour: 'Midnight Navy', size: '40', price: 22999, qty: 6 },
@@ -447,7 +474,7 @@ function ensureGroomProductsExist(db: Database) {
       fabric: 'Metallic Brocade Silk',
       material: 'Antique Jewel Placket & Structured Shoulders',
       is_featured: 0,
-      images: JSON.stringify(['/src/assets/images/groom_royal_sherwani_1790317453744.jpg']),
+      images: JSON.stringify(['/images/groom_royal_sherwani_1790317453744.jpg']),
       variants: [
         { sku: 'SV-INW-202-40', colour: 'Rose Gold', size: '40', price: 21500, qty: 5 },
         { sku: 'SV-INW-202-42', colour: 'Rose Gold', size: '42', price: 21500, qty: 4 }
@@ -468,7 +495,7 @@ function ensureGroomProductsExist(db: Database) {
       fabric: 'Italian Wool Suiting Blend',
       material: 'Hand-cast Brass Royal Crest Buttons & Silk Pocket Square',
       is_featured: 1,
-      images: JSON.stringify(['/src/assets/images/groom_royal_sherwani_1790317453744.jpg']),
+      images: JSON.stringify(['/images/groom_royal_sherwani_1790317453744.jpg']),
       variants: [
         { sku: 'SV-JDP-201-38', colour: 'Royal Navy', size: '38', price: 26999, qty: 4 },
         { sku: 'SV-JDP-201-40', colour: 'Royal Navy', size: '40', price: 26999, qty: 5 },
@@ -490,7 +517,7 @@ function ensureGroomProductsExist(db: Database) {
       fabric: 'Dupion Raw Silk & Tussar Silk',
       material: 'Floral Resham Threadwork & Threaded Potli Buttons',
       is_featured: 1,
-      images: JSON.stringify(['/src/assets/images/groom_royal_sherwani_1790317453744.jpg']),
+      images: JSON.stringify(['/images/groom_royal_sherwani_1790317453744.jpg']),
       variants: [
         { sku: 'SV-KRT-201-38', colour: 'Pista Green', size: '38', price: 8999, qty: 4 },
         { sku: 'SV-KRT-201-40', colour: 'Pista Green', size: '40', price: 8999, qty: 6 },
@@ -628,12 +655,12 @@ function seedDefaultData(db: Database) {
     // Categories
     db.run(`
       INSERT INTO categories (name, name_hi, slug, description, description_hi, image_url, sort_order, is_active) VALUES
-      ('Bridal Lehengas', 'दुल्हन लहंगा', 'bridal-lehengas', 'Heirloom zardozi, velvet, and raw silk lehengas for the modern royal bride.', 'शाही जरी, जरदोजी व वेलवेट में सजे अलौकिक दुल्हन लहंगे।', '/src/assets/images/bridal_lehenga_collection_1790317477737.jpg', 1, 1),
-      ('Designer Sarees', 'डिज़ाइनर साड़ियाँ', 'designer-sarees', 'Pure Banarasi, Kanjivaram, Chanderi, Organza, and festive party-wear sarees.', 'विशुद्ध बनारसी, कांजीवरम, चंदेरी और पार्टी वियर साड़ियाँ।', '/src/assets/images/designer_banarasi_saree_1790317467169.jpg', 2, 1),
-      ('Groom Sherwanis & Menswear', 'दूल्हा शेरवानी व मेन्सवियर', 'groom-sherwanis', 'Regal handcrafted sherwanis, Indo-western bandhgalas, and designer kurta sets.', 'राजपूताना व जोधपुरी शेरवानी, इंडो-वेस्टर्न और डिजाइनर कुर्ते।', '/src/assets/images/groom_royal_sherwani_1790317453744.jpg', 3, 1),
-      ('Pure Cotton Sarees', 'शुद्ध कॉटन साड़ी', 'pure-cotton-sarees', 'Authentic breathable pure cotton sarees trusted for generations in Jabalpur.', 'जबलपुर का सबसे भरोसेमंद १००% शुद्ध कॉटन साड़ी कलेक्शन।', '/src/assets/images/designer_banarasi_saree_1790317467169.jpg', 4, 1),
-      ('Salwar Suits & Anarkali', 'सलवार सूट एवं अनारकली', 'salwar-suits', 'Designer party suits, Pakistani cuts, and flared bridal anarkalis.', 'पार्टी वियर रेडीमेड एवं अनस्टिच्ड डिज़ाइनर सलवार सूट्स।', '/src/assets/images/hero_bridal_wedding_1790317438926.jpg', 5, 1),
-      ('Family & Festive Wear', 'फैमिली एवं फेस्टिव वियर', 'family-festive-wear', 'Coordinated ensembles for the entire wedding party, Haldi, and Sangeet.', 'हल्दी, मेहंदी एवं पूरे परिवार के लिए मैचिंग फेस्टिव परिधान।', '/src/assets/images/showroom_interior_ambiance_1790317495781.jpg', 6, 1);
+      ('Bridal Lehengas', 'दुल्हन लहंगा', 'bridal-lehengas', 'Heirloom zardozi, velvet, and raw silk lehengas for the modern royal bride.', 'शाही जरी, जरदोजी व वेलवेट में सजे अलौकिक दुल्हन लहंगे।', '/images/bridal_lehenga_collection_1790317477737.jpg', 1, 1),
+      ('Designer Sarees', 'डिज़ाइनर साड़ियाँ', 'designer-sarees', 'Pure Banarasi, Kanjivaram, Chanderi, Organza, and festive party-wear sarees.', 'विशुद्ध बनारसी, कांजीवरम, चंदेरी और पार्टी वियर साड़ियाँ।', '/images/designer_banarasi_saree_1790317467169.jpg', 2, 1),
+      ('Groom Sherwanis & Menswear', 'दूल्हा शेरवानी व मेन्सवियर', 'groom-sherwanis', 'Regal handcrafted sherwanis, Indo-western bandhgalas, and designer kurta sets.', 'राजपूताना व जोधपुरी शेरवानी, इंडो-वेस्टर्न और डिजाइनर कुर्ते।', '/images/groom_royal_sherwani_1790317453744.jpg', 3, 1),
+      ('Pure Cotton Sarees', 'शुद्ध कॉटन साड़ी', 'pure-cotton-sarees', 'Authentic breathable pure cotton sarees trusted for generations in Jabalpur.', 'जबलपुर का सबसे भरोसेमंद १००% शुद्ध कॉटन साड़ी कलेक्शन।', '/images/designer_banarasi_saree_1790317467169.jpg', 4, 1),
+      ('Salwar Suits & Anarkali', 'सलवार सूट एवं अनारकली', 'salwar-suits', 'Designer party suits, Pakistani cuts, and flared bridal anarkalis.', 'पार्टी वियर रेडीमेड एवं अनस्टिच्ड डिज़ाइनर सलवार सूट्स।', '/images/hero_bridal_wedding_1790317438926.jpg', 5, 1),
+      ('Family & Festive Wear', 'फैमिली एवं फेस्टिव वियर', 'family-festive-wear', 'Coordinated ensembles for the entire wedding party, Haldi, and Sangeet.', 'हल्दी, मेहंदी एवं पूरे परिवार के लिए मैचिंग फेस्टिव परिधान।', '/images/showroom_interior_ambiance_1790317495781.jpg', 6, 1);
     `);
 
     // Subcategories
@@ -682,8 +709,8 @@ function seedDefaultData(db: Database) {
         material: 'Handcrafted Zardozi, Sequins & Pearls',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/hero_bridal_wedding_1790317438926.jpg',
-          '/src/assets/images/bridal_lehenga_collection_1790317477737.jpg'
+          '/images/hero_bridal_wedding_1790317438926.jpg',
+          '/images/bridal_lehenga_collection_1790317477737.jpg'
         ]),
         variants: [
           { sku: 'SV-BR-001-RED', colour: 'Royal Crimson Red', size: 'Semi-Stitched', price: 49999, qty: 5 },
@@ -706,8 +733,8 @@ function seedDefaultData(db: Database) {
         material: 'Cutdana, Swarowski Crystals, Mirror Work',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/bridal_lehenga_collection_1790317477737.jpg',
-          '/src/assets/images/hero_bridal_wedding_1790317438926.jpg'
+          '/images/bridal_lehenga_collection_1790317477737.jpg',
+          '/images/hero_bridal_wedding_1790317438926.jpg'
         ]),
         variants: [
           { sku: 'SV-BR-002-BLUSH', colour: 'Blush Pink', size: 'Semi-Stitched', price: 39500, qty: 4 },
@@ -730,7 +757,7 @@ function seedDefaultData(db: Database) {
         material: 'Real Gold Zari Kadwa Weave',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/designer_banarasi_saree_1790317467169.jpg'
+          '/images/designer_banarasi_saree_1790317467169.jpg'
         ]),
         variants: [
           { sku: 'SV-SR-101-GRN', colour: 'Emerald Green', size: '6.3 M', price: 14900, qty: 8 },
@@ -754,7 +781,7 @@ function seedDefaultData(db: Database) {
         material: 'Hand Resham, Mokaish & Antique Zari',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-GR-201-38', colour: 'Ivory Gold', size: '38', price: 28999, qty: 3 },
@@ -778,7 +805,7 @@ function seedDefaultData(db: Database) {
         material: 'Handloom Cotton Thread Weave',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/designer_banarasi_saree_1790317467169.jpg'
+          '/images/designer_banarasi_saree_1790317467169.jpg'
         ]),
         variants: [
           { sku: 'SV-CT-301-BLU', colour: 'Indigo Blue', size: '5.5 M', price: 1850, qty: 15 },
@@ -802,7 +829,7 @@ function seedDefaultData(db: Database) {
         material: 'Mirror Work & Gota Border',
         is_featured: 0,
         images: JSON.stringify([
-          '/src/assets/images/hero_bridal_wedding_1790317438926.jpg'
+          '/images/hero_bridal_wedding_1790317438926.jpg'
         ]),
         variants: [
           { sku: 'SV-ST-401-M', colour: 'Peach', size: 'M', price: 5999, qty: 6 },
@@ -826,7 +853,7 @@ function seedDefaultData(db: Database) {
         material: 'Gota Patti, Mirror Tassels & Resham Embroidery',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/occasion_haldi_festive_1790325578682.jpg'
+          '/images/occasion_haldi_festive_1790325578682.jpg'
         ]),
         variants: [
           { sku: 'SV-HLD-001-YEL', colour: 'Turmeric Yellow', size: 'Semi-Stitched', price: 21999, qty: 6 }
@@ -848,7 +875,7 @@ function seedDefaultData(db: Database) {
         material: 'Cutdana, Mirror Work & Gota Hem',
         is_featured: 0,
         images: JSON.stringify([
-          '/src/assets/images/occasion_haldi_festive_1790325578682.jpg'
+          '/images/occasion_haldi_festive_1790325578682.jpg'
         ]),
         variants: [
           { sku: 'SV-HLD-002-M', colour: 'Mustard', size: 'M', price: 8999, qty: 5 },
@@ -871,7 +898,7 @@ function seedDefaultData(db: Database) {
         material: 'Handwoven Golden Zari Bootis',
         is_featured: 0,
         images: JSON.stringify([
-          '/src/assets/images/designer_banarasi_saree_1790317467169.jpg'
+          '/images/designer_banarasi_saree_1790317467169.jpg'
         ]),
         variants: [
           { sku: 'SV-HLD-003-YEL', colour: 'Marigold', size: '6.3 M', price: 6499, qty: 8 }
@@ -893,7 +920,7 @@ function seedDefaultData(db: Database) {
         material: 'Handcrafted Zardozi, Cutdana & Antique Zari',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-GR-202-38', colour: 'Royal Maroon', size: '38', price: 34999, qty: 4 },
@@ -917,7 +944,7 @@ function seedDefaultData(db: Database) {
         material: 'Tonal Resham Threadwork & Crystal Brooch',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-GR-203-38', colour: 'Pearl White', size: '38', price: 31999, qty: 3 },
@@ -940,7 +967,7 @@ function seedDefaultData(db: Database) {
         material: 'Geometric Cutdana, Hand-tucked Pleats & Metal Cufflinks',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-INW-201-38', colour: 'Midnight Navy', size: '38', price: 22999, qty: 4 },
@@ -964,7 +991,7 @@ function seedDefaultData(db: Database) {
         material: 'Antique Jewel Placket & Structured Shoulders',
         is_featured: 0,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-INW-202-40', colour: 'Rose Gold', size: '40', price: 21500, qty: 5 },
@@ -987,7 +1014,7 @@ function seedDefaultData(db: Database) {
         material: 'Hand-cast Brass Royal Crest Buttons & Silk Pocket Square',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-JDP-201-38', colour: 'Royal Navy', size: '38', price: 26999, qty: 4 },
@@ -1011,7 +1038,7 @@ function seedDefaultData(db: Database) {
         material: 'Floral Resham Threadwork & Threaded Potli Buttons',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-KRT-201-38', colour: 'Pista Green', size: '38', price: 8999, qty: 4 },
@@ -1035,7 +1062,7 @@ function seedDefaultData(db: Database) {
         material: 'Resham Threadwork & Brass Buttons',
         is_featured: 0,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-HLD-004-38', colour: 'Mustard', size: '38', price: 7999, qty: 4 },
@@ -1058,7 +1085,7 @@ function seedDefaultData(db: Database) {
         material: 'Genuine Mirror Work & Resham Embroidery',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/bridal_lehenga_collection_1790317477737.jpg'
+          '/images/bridal_lehenga_collection_1790317477737.jpg'
         ]),
         variants: [
           { sku: 'SV-MHD-001-GRN', colour: 'Emerald Green', size: 'Semi-Stitched', price: 32500, qty: 5 }
@@ -1080,7 +1107,7 @@ function seedDefaultData(db: Database) {
         material: 'Hand-painted Florals & Scalloped Zari Edge',
         is_featured: 0,
         images: JSON.stringify([
-          '/src/assets/images/designer_banarasi_saree_1790317467169.jpg'
+          '/images/designer_banarasi_saree_1790317467169.jpg'
         ]),
         variants: [
           { sku: 'SV-MHD-002-GRN', colour: 'Mint Green', size: '6.3 M', price: 12200, qty: 6 }
@@ -1102,7 +1129,7 @@ function seedDefaultData(db: Database) {
         material: 'Reflective Micro-Cut Dual Tone Sequins',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/bridal_lehenga_collection_1790317477737.jpg'
+          '/images/bridal_lehenga_collection_1790317477737.jpg'
         ]),
         variants: [
           { sku: 'SV-SNG-001-BLU', colour: 'Midnight Blue', size: 'Semi-Stitched', price: 41500, qty: 4 }
@@ -1124,7 +1151,7 @@ function seedDefaultData(db: Database) {
         material: 'Hand-cast Crest Buttons & Metallic Trim',
         is_featured: 0,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-SNG-002-38', colour: 'Deep Wine', size: '38', price: 24999, qty: 3 },
@@ -1147,7 +1174,7 @@ function seedDefaultData(db: Database) {
         material: 'Swarovski Crystals, Cutdana & Glass Beads',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/family_wedding_ensemble_1790325566253.jpg'
+          '/images/family_wedding_ensemble_1790325566253.jpg'
         ]),
         variants: [
           { sku: 'SV-RCP-001-GLD', colour: 'Champagne Gold', size: 'Custom Fit', price: 42500, qty: 3 }
@@ -1169,7 +1196,7 @@ function seedDefaultData(db: Database) {
         material: 'Monochrome Silk Hand Embroidery',
         is_featured: 0,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-RCP-002-BLK', colour: 'Obsidian Black', size: '40', price: 29999, qty: 4 }
@@ -1191,7 +1218,7 @@ function seedDefaultData(db: Database) {
         material: 'Mythological Jaal in Pure Gold Zari',
         is_featured: 1,
         images: JSON.stringify([
-          '/src/assets/images/designer_banarasi_saree_1790317467169.jpg'
+          '/images/designer_banarasi_saree_1790317467169.jpg'
         ]),
         variants: [
           { sku: 'SV-FST-001-RED', colour: 'Sindoor Red', size: '6.3 M', price: 19500, qty: 5 }
@@ -1213,7 +1240,7 @@ function seedDefaultData(db: Database) {
         material: 'Kantha Stitch Accents & Gold Border Dhoti',
         is_featured: 0,
         images: JSON.stringify([
-          '/src/assets/images/groom_royal_sherwani_1790317453744.jpg'
+          '/images/groom_royal_sherwani_1790317453744.jpg'
         ]),
         variants: [
           { sku: 'SV-FST-003-SAF', colour: 'Kesariya Saffron', size: '40', price: 7499, qty: 5 }

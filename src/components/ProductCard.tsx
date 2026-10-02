@@ -2,6 +2,7 @@ import React from 'react';
 import { MessageCircle, Eye } from 'lucide-react';
 import { Product } from '../types/index.ts';
 import { Language, translations } from '../lib/translations.ts';
+import defaultProductImg from '../assets/images/hero_bridal_wedding_1790317438926.jpg';
 
 interface ProductCardProps {
   product: Product;
@@ -22,7 +23,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const primaryImage =
     product.images && product.images.length > 0
       ? product.images[0]
-      : '/src/assets/images/hero_bridal_wedding_1790317438926.jpg';
+      : defaultProductImg;
 
   // Format WhatsApp direct link with product specifics
   const waMessage = `Namaste Shree Vijay Showroom, I am interested in ${product.name} (${product.sku}) priced around ₹${(
@@ -46,7 +47,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           className="w-full h-full object-cover object-top filter brightness-[0.88] group-hover:scale-105 group-hover:brightness-100 transition-all duration-500 ease-out"
           referrerPolicy="no-referrer"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = '/src/assets/images/hero_bridal_wedding_1790317438926.jpg';
+            (e.target as HTMLImageElement).src = '/images/hero_bridal_wedding_1790317438926.jpg';
           }}
         />
 

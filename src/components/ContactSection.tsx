@@ -30,10 +30,49 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     message: '',
   });
 
+  const [formMode, setFormMode] = useState<'login' | 'signup' | 'consultation'>('login');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [signupName, setSignupName] = useState('');
+  const [loggingIn, setLoggingIn] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState<string | null>(null);
+  const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [enquiryCode, setEnquiryCode] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoggingIn(true);
+    setErrorMsg(null);
+    setStatusMsg(null);
+    setTimeout(() => {
+      setLoggingIn(false);
+      if (loginEmail && loginPassword) {
+        setLoggedInUser(loginEmail.split('@')[0] || 'VIP Client');
+        setStatusMsg(lang === 'hi' ? 'क्लाइंट पोर्टल में सफलतापूर्वक लॉग इन हुआ!' : 'Successfully logged in to VIP Client Portal!');
+      } else {
+        setErrorMsg(lang === 'hi' ? 'कृपया ईमेल और पासवर्ड दर्ज करें।' : 'Please enter both email and password.');
+      }
+    }, 500);
+  };
+
+  const handleSignupSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoggingIn(true);
+    setErrorMsg(null);
+    setStatusMsg(null);
+    setTimeout(() => {
+      setLoggingIn(false);
+      if (loginEmail && loginPassword) {
+        setLoggedInUser(signupName || loginEmail.split('@')[0] || 'VIP Client');
+        setStatusMsg(lang === 'hi' ? 'आपका नया खाता तैयार है!' : 'Your VIP account is created successfully!');
+      } else {
+        setErrorMsg(lang === 'hi' ? 'कृपया सभी विवरण भरें।' : 'Please fill in all details.');
+      }
+    }, 500);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,163 +224,326 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             </div>
           </div>
 
-          {/* Right Column: Personal Trial Booking Form */}
+          {/* Right Column: Personal Trial Booking Form & VIP Portal */}
           <div className="lg:col-span-7">
             <div className="p-6 sm:p-8 bg-[#181516] border border-[#B89A5A]/30 shadow-xl text-left">
-              <div className="mb-6">
+              <div className="mb-6 text-center sm:text-left">
                 <span className="text-[10px] uppercase tracking-[0.24em] text-[#B89A5A] font-semibold block">
-                  BESPOKE ASSISTANCE
+                  VIP CLIENT SUITE
                 </span>
                 <h3 className="font-display text-2xl font-bold text-[#F4EEE4] mt-1">
-                  {lang === 'hi' ? 'व्यक्तिगत ट्रायल व परामर्श बुक करें' : 'Book a Personal Bridal/Wedding Trial'}
+                  {lang === 'hi' ? 'क्लाइंट पोर्टल व व्यक्तिगत परामर्श' : 'VIP Client Portal & Consultation'}
                 </h3>
                 <p className="text-xs text-[#BDB3A5] mt-1 font-light">
                   {lang === 'hi'
-                    ? 'अपनी पसंदीदा तारीख और परिधान श्रेणी चुनें, हमारे मुख्य स्टाइलिस्ट आपके लिए विशिष्ट कलेक्शन तैयार रखेंगे।'
-                    : 'Select your preferred date & ensemble category. Our senior stylists will keep curated options ready for your arrival.'}
+                    ? 'अपने व्यक्तिगत ट्रायल व कूट्यूर परामर्श के लिए लॉग इन करें।'
+                    : 'Log in to access your bespoke styling orders, bridal trials, and personal atelier consultation.'}
                 </p>
               </div>
 
-              {submitted ? (
-                <div className="py-8 text-center space-y-4">
-                  <CheckCircle2 className="w-12 h-12 text-[#D1B875] mx-auto" />
-                  <h4 className="font-display text-2xl font-bold text-[#F4EEE4]">
-                    {lang === 'hi' ? 'परामर्श सफलतापूर्वक बुक हुआ' : 'Consultation Booked Successfully'}
-                  </h4>
-                  <p className="text-xs text-[#BDB3A5] max-w-md mx-auto">
-                    {lang === 'hi'
-                      ? 'धन्यवाद! आपके अनुरोध का संदर्भ कोड नीचे है। हमारी टीम आपसे शीघ्र संपर्क करेगी।'
-                      : 'Thank you! Your consultation reference code is generated below. Our bridal coordinator will connect with you.'}
-                  </p>
-                  <div className="inline-block py-2 px-4 bg-[#121011] border border-[#B89A5A]/40 font-mono text-sm text-[#F4EEE4]">
-                    CODE: {enquiryCode}
-                  </div>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {errorMsg && (
-                    <div className="p-3 bg-red-950/60 border border-red-800 text-xs text-red-200">
-                      {errorMsg}
+              {formMode === 'login' ? (
+                <div className="flex justify-center">
+                  {loggedInUser ? (
+                    <div className="py-6 text-center space-y-3">
+                      <CheckCircle2 className="w-10 h-10 text-[#58bc82] mx-auto" />
+                      <h4 className="font-display text-xl font-bold text-[#F4EEE4]">
+                        {lang === 'hi' ? `स्वागत है, ${loggedInUser}!` : `Welcome, ${loggedInUser}!`}
+                      </h4>
+                      <p className="text-xs text-[#BDB3A5]">
+                        {lang === 'hi' ? 'आप अपने वीआईपी क्लाइंट सूट में लॉग इन हैं।' : 'You are signed into your VIP bridal consultation suite.'}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setLoggedInUser(null)}
+                        className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#F4EEE4] bg-[#707070] hover:bg-[#58bc82] rounded-full transition-colors cursor-pointer"
+                      >
+                        {lang === 'hi' ? 'लॉग आउट' : 'Log out'}
+                      </button>
                     </div>
+                  ) : (
+                    /* From Uiverse.io by bociKond */
+                    <form className="form" onSubmit={handleLoginSubmit}>
+                      {errorMsg && (
+                        <div className="w-full p-2.5 bg-red-950/60 border border-red-800 text-xs text-red-200 rounded-sm text-center">
+                          {errorMsg}
+                        </div>
+                      )}
+                      {statusMsg && (
+                        <div className="w-full p-2.5 bg-[#58bc82]/20 border border-[#58bc82] text-xs text-[#58bc82] rounded-sm text-center">
+                          {statusMsg}
+                        </div>
+                      )}
+                      <span className="input-span">
+                        <label htmlFor="email" className="label">Email</label>
+                        <input
+                          type="email"
+                          name="email"
+                          id="email"
+                          required
+                          value={loginEmail}
+                          onChange={(e) => setLoginEmail(e.target.value)}
+                          placeholder="client@shreevijay.com"
+                        />
+                      </span>
+                      <span className="input-span">
+                        <label htmlFor="password" className="label">Password</label>
+                        <input
+                          type="password"
+                          name="password"
+                          id="password"
+                          required
+                          value={loginPassword}
+                          onChange={(e) => setLoginPassword(e.target.value)}
+                          placeholder="••••••••"
+                        />
+                      </span>
+                      <span className="span">
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setStatusMsg(lang === 'hi' ? 'पासवर्ड रीसेट लिंक आपके ईमेल पर भेजा गया है।' : 'Password reset link sent to your email.');
+                          }}
+                        >
+                          Forgot password?
+                        </a>
+                      </span>
+                      <input
+                        className="submit"
+                        type="submit"
+                        value={loggingIn ? (lang === 'hi' ? 'लॉग इन हो रहा है...' : 'Logging in...') : 'Log in'}
+                      />
+                      <span className="span">
+                        Don't have an account?{' '}
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setFormMode('signup');
+                            setErrorMsg(null);
+                            setStatusMsg(null);
+                          }}
+                        >
+                          Sign up
+                        </a>
+                      </span>
+                    </form>
                   )}
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
-                        {lang === 'hi' ? 'आपका नाम *' : 'Your Full Name *'}
-                      </label>
+                </div>
+              ) : formMode === 'signup' ? (
+                <div className="flex justify-center">
+                  {/* Sign up variant using bociKond form styles */}
+                  <form className="form" onSubmit={handleSignupSubmit}>
+                    {errorMsg && (
+                      <div className="w-full p-2.5 bg-red-950/60 border border-red-800 text-xs text-red-200 rounded-sm text-center">
+                        {errorMsg}
+                      </div>
+                    )}
+                    {statusMsg && (
+                      <div className="w-full p-2.5 bg-[#58bc82]/20 border border-[#58bc82] text-xs text-[#58bc82] rounded-sm text-center">
+                        {statusMsg}
+                      </div>
+                    )}
+                    <span className="input-span">
+                      <label htmlFor="signup-name" className="label">Full Name</label>
                       <input
                         type="text"
+                        name="name"
+                        id="signup-name"
                         required
-                        value={formData.customer_name}
-                        onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
-                        placeholder="e.g. Radhika Sharma"
-                        className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
+                        value={signupName}
+                        onChange={(e) => setSignupName(e.target.value)}
+                        placeholder="Radhika Sharma"
                       />
-                    </div>
-
-                    <div>
-                      <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
-                        {lang === 'hi' ? 'फोन नंबर (व्हाट्सएप) *' : 'Mobile / WhatsApp Number *'}
-                      </label>
+                    </span>
+                    <span className="input-span">
+                      <label htmlFor="signup-email" className="label">Email</label>
                       <input
-                        type="tel"
+                        type="email"
+                        name="email"
+                        id="signup-email"
                         required
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="10-digit number"
-                        className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
+                        value={loginEmail}
+                        onChange={(e) => setLoginEmail(e.target.value)}
+                        placeholder="client@shreevijay.com"
+                      />
+                    </span>
+                    <span className="input-span">
+                      <label htmlFor="signup-password" className="label">Password</label>
+                      <input
+                        type="password"
+                        name="password"
+                        id="signup-password"
+                        required
+                        value={loginPassword}
+                        onChange={(e) => setLoginPassword(e.target.value)}
+                        placeholder="Create password"
+                      />
+                    </span>
+                    <input
+                      className="submit"
+                      type="submit"
+                      value={loggingIn ? 'Signing up...' : 'Sign up'}
+                    />
+                    <span className="span">
+                      Already have an account?{' '}
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setFormMode('login');
+                          setErrorMsg(null);
+                          setStatusMsg(null);
+                        }}
+                      >
+                        Log in
+                      </a>
+                    </span>
+                  </form>
+                </div>
+              ) : (
+                /* Consultation Booking */
+                submitted ? (
+                  <div className="py-8 text-center space-y-4">
+                    <CheckCircle2 className="w-12 h-12 text-[#D1B875] mx-auto" />
+                    <h4 className="font-display text-2xl font-bold text-[#F4EEE4]">
+                      {lang === 'hi' ? 'परामर्श सफलतापूर्वक बुक हुआ' : 'Consultation Booked Successfully'}
+                    </h4>
+                    <p className="text-xs text-[#BDB3A5] max-w-md mx-auto">
+                      {lang === 'hi'
+                        ? 'धन्यवाद! आपके अनुरोध का संदर्भ कोड नीचे है। हमारी टीम आपसे शीघ्र संपर्क करेगी।'
+                        : 'Thank you! Your consultation reference code is generated below. Our bridal coordinator will connect with you.'}
+                    </p>
+                    <div className="inline-block py-2 px-4 bg-[#121011] border border-[#B89A5A]/40 font-mono text-sm text-[#F4EEE4]">
+                      CODE: {enquiryCode}
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    {errorMsg && (
+                      <div className="p-3 bg-red-950/60 border border-red-800 text-xs text-red-200">
+                        {errorMsg}
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
+                          {lang === 'hi' ? 'आपका नाम *' : 'Your Full Name *'}
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.customer_name}
+                          onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
+                          placeholder="e.g. Radhika Sharma"
+                          className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
+                          {lang === 'hi' ? 'फोन नंबर (व्हाट्सएप) *' : 'Mobile / WhatsApp Number *'}
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          placeholder="10-digit number"
+                          className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
+                          {lang === 'hi' ? 'अवसर / सेरेमनी' : 'Occasion'}
+                        </label>
+                        <select
+                          value={formData.occasion}
+                          onChange={(e) => setFormData({ ...formData, occasion: e.target.value })}
+                          className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none cursor-pointer transition-colors"
+                        >
+                          <option value="Wedding / Mandap">Wedding / Mandap</option>
+                          <option value="Royal Reception">Royal Reception</option>
+                          <option value="Sangeet Twirl">Sangeet Twirl</option>
+                          <option value="Haldi & Mehendi">Haldi & Mehendi</option>
+                          <option value="Complete Family Wedding">Complete Family Wedding</option>
+                          <option value="Festive & Puja">Festive & Puja</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
+                          {lang === 'hi' ? 'परिधान श्रेणी' : 'Ensemble Category'}
+                        </label>
+                        <select
+                          value={formData.category}
+                          onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                          className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none cursor-pointer transition-colors"
+                        >
+                          <option value="Bridal Lehenga">Bridal Lehenga</option>
+                          <option value="Groom Royal Sherwani">Groom Royal Sherwani</option>
+                          <option value="Pure Banarasi Silk Saree">Pure Banarasi Silk Saree</option>
+                          <option value="Jodhpuri & Bandhgala Suit">Jodhpuri & Bandhgala Suit</option>
+                          <option value="Reception Evening Gown">Reception Evening Gown</option>
+                          <option value="Family Coordination Sets">Family Coordination Sets</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
+                        {lang === 'hi' ? 'संपर्क का पसंदीदा माध्यम' : 'Preferred Communication'}
+                      </label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(['WhatsApp', 'Call', 'Showroom Visit'] as const).map((method) => (
+                          <button
+                            key={method}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, preferred_contact: method })}
+                            className={`py-2 text-xs font-semibold transition-colors cursor-pointer border ${
+                              formData.preferred_contact === method
+                                ? 'bg-[#4A1724] text-[#F4EEE4] border-[#B89A5A]'
+                                : 'bg-[#121011] text-[#BDB3A5] border-white/10 hover:border-white/30'
+                            }`}
+                          >
+                            {method}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
+                        {lang === 'hi' ? 'विशेष आवश्यकता या संदेश' : 'Special Preferences or Notes'}
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        placeholder="e.g. Looking for pure velvet crimson lehenga with double dupatta..."
+                        className="w-full px-3.5 py-2 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
                       />
                     </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
-                        {lang === 'hi' ? 'अवसर / सेरेमनी' : 'Occasion'}
-                      </label>
-                      <select
-                        value={formData.occasion}
-                        onChange={(e) => setFormData({ ...formData, occasion: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none cursor-pointer transition-colors"
-                      >
-                        <option value="Wedding / Mandap">Wedding / Mandap</option>
-                        <option value="Royal Reception">Royal Reception</option>
-                        <option value="Sangeet Twirl">Sangeet Twirl</option>
-                        <option value="Haldi & Mehendi">Haldi & Mehendi</option>
-                        <option value="Complete Family Wedding">Complete Family Wedding</option>
-                        <option value="Festive & Puja">Festive & Puja</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
-                        {lang === 'hi' ? 'परिधान श्रेणी' : 'Ensemble Category'}
-                      </label>
-                      <select
-                        value={formData.category}
-                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none cursor-pointer transition-colors"
-                      >
-                        <option value="Bridal Lehenga">Bridal Lehenga</option>
-                        <option value="Groom Royal Sherwani">Groom Royal Sherwani</option>
-                        <option value="Pure Banarasi Silk Saree">Pure Banarasi Silk Saree</option>
-                        <option value="Jodhpuri & Bandhgala Suit">Jodhpuri & Bandhgala Suit</option>
-                        <option value="Reception Evening Gown">Reception Evening Gown</option>
-                        <option value="Family Coordination Sets">Family Coordination Sets</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
-                      {lang === 'hi' ? 'संपर्क का पसंदीदा माध्यम' : 'Preferred Communication'}
-                    </label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {(['WhatsApp', 'Call', 'Showroom Visit'] as const).map((method) => (
-                        <button
-                          key={method}
-                          type="button"
-                          onClick={() => setFormData({ ...formData, preferred_contact: method })}
-                          className={`py-2 text-xs font-semibold transition-colors cursor-pointer border ${
-                            formData.preferred_contact === method
-                              ? 'bg-[#4A1724] text-[#F4EEE4] border-[#B89A5A]'
-                              : 'bg-[#121011] text-[#BDB3A5] border-white/10 hover:border-white/30'
-                          }`}
-                        >
-                          {method}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-medium text-[#BDB3A5] uppercase tracking-wider block mb-1">
-                      {lang === 'hi' ? 'विशेष आवश्यकता या संदेश' : 'Special Preferences or Notes'}
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="e.g. Looking for pure velvet crimson lehenga with double dupatta..."
-                      className="w-full px-3.5 py-2 bg-[#121011] border border-white/15 focus:border-[#B89A5A] text-xs text-[#F4EEE4] focus:outline-none transition-colors"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full py-3.5 bg-[#4A1724] hover:bg-[#351019] text-[#F4EEE4] border border-[#B89A5A]/50 text-xs font-semibold uppercase tracking-[0.2em] transition-all shadow-md cursor-pointer disabled:opacity-50"
-                  >
-                    {submitting
-                      ? lang === 'hi'
-                        ? 'पंजीकरण हो रहा है...'
-                        : 'Submitting Request...'
-                      : lang === 'hi'
-                      ? 'परामर्श हेतु अनुरोध भेजें'
-                      : 'Request Personal Showroom Consultation'}
-                  </button>
-                </form>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="w-full py-3.5 bg-[#4A1724] hover:bg-[#351019] text-[#F4EEE4] border border-[#B89A5A]/50 text-xs font-semibold uppercase tracking-[0.2em] transition-all shadow-md cursor-pointer disabled:opacity-50"
+                    >
+                      {submitting
+                        ? lang === 'hi'
+                          ? 'पंजीकरण हो रहा है...'
+                          : 'Submitting Request...'
+                        : lang === 'hi'
+                        ? 'परामर्श हेतु अनुरोध भेजें'
+                        : 'Request Personal Showroom Consultation'}
+                    </button>
+                  </form>
+                )
               )}
             </div>
           </div>

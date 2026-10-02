@@ -14,19 +14,20 @@ import {
   ActivityLog,
 } from '../types/index.ts';
 import { ClientStore } from './clientStore.ts';
+import { safeStorage } from './storage.ts';
 
 const TOKEN_KEY = 'sv_admin_token';
 
 export function getStoredToken(): string | null {
-  return localStorage.getItem(TOKEN_KEY);
+  return safeStorage.getItem(TOKEN_KEY);
 }
 
 export function setStoredToken(token: string): void {
-  localStorage.setItem(TOKEN_KEY, token);
+  safeStorage.setItem(TOKEN_KEY, token);
 }
 
 export function removeStoredToken(): void {
-  localStorage.removeItem(TOKEN_KEY);
+  safeStorage.removeItem(TOKEN_KEY);
 }
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {

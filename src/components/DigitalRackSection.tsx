@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, ArrowRight, Eye, Sparkles, Orbit, SlidersHorizontal } from 'lucide-react';
+import React, { useState } from 'react';
+import { Sparkles } from 'lucide-react';
 import { Product } from '../types/index.ts';
 import { Language } from '../lib/translations.ts';
-import { OrbitalImageWheel, OrbitalImageWheelImage } from './OrbitalImageWheel.tsx';
+import DepthCarousel, { DepthCarouselItem } from './DepthCarousel.tsx';
 
 interface DigitalRackSectionProps {
   products: Product[];
@@ -17,33 +17,19 @@ export const DigitalRackSection: React.FC<DigitalRackSectionProps> = ({
   onViewProduct,
   onEnquireProduct,
 }) => {
-  const rackRef = useRef<HTMLDivElement>(null);
-  const [viewMode, setViewMode] = useState<'orbital' | 'rail'>('orbital');
-
-  const scrollLeft = () => {
-    if (rackRef.current) {
-      rackRef.current.scrollBy({ left: -360, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (rackRef.current) {
-      rackRef.current.scrollBy({ left: 360, behavior: 'smooth' });
-    }
-  };
+  const [activeDepthIndex, setActiveDepthIndex] = useState(0);
 
   // Curate display items from products list
   const rackItems = products.slice(0, 10);
 
-  // Map to orbital wheel image items
-  const orbitalImages: OrbitalImageWheelImage[] = rackItems.map((prod) => ({
-    src: prod.images?.[0] || '/src/assets/images/bridal_lehenga_collection_1790317477737.jpg',
-    label: prod.name,
+  // Map to depth carousel items
+  const depthItems: DepthCarouselItem[] = rackItems.map((prod) => ({
+    image: prod.images?.[0] || '/src/assets/images/bridal_lehenga_collection_1790317477737.jpg',
     alt: prod.name,
-    category: prod.category_name,
+    title: prod.name,
+    category: prod.category_name || 'Couture Look',
     price: prod.price,
-    sku: prod.sku,
-    subtitle: `${prod.category_name || 'Couture Ensembles'} • ₹${prod.price?.toLocaleString('en-IN')}`,
+    subtitle: `₹${prod.price?.toLocaleString('en-IN')}`,
     onView: () => onViewProduct(prod),
     onEnquire: () => onEnquireProduct(prod),
   }));
@@ -53,200 +39,90 @@ export const DigitalRackSection: React.FC<DigitalRackSectionProps> = ({
       id="digital-rack"
       className="relative bg-[#0A0909] text-[#F4EEE4] border-b border-[#B89A5A]/20 overflow-hidden"
     >
-      {/* Top Section Header Container */}
-      <div className="pt-20 lg:pt-28 pb-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.26em] text-[#B89A5A] font-semibold mb-2">
-              <Sparkles className="w-3.5 h-3.5 text-[#D1B875]" />
-              <span>{lang === 'hi' ? 'शोरूम हैंगर एक्सपीरियंस' : 'THE DIGITAL RACK EXPERIENCE'}</span>
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#F4EEE4]">
-              {lang === 'hi' ? 'द शोरूम कूट्यूर रैक' : 'Browse the Couture Rack'}
-            </h2>
-            <p className="font-editorial italic text-base sm:text-lg text-[#D1B875] mt-1.5 max-w-2xl">
-              {lang === 'hi'
-                ? 'जैसे आप शोरूम में हैंगर पर लगे मास्टरपीस को छूकर देखते हैं।'
-                : 'Browse curated hanging ensembles in 3D orbit or boutique rail, just as you would browse our brass atelier racks.'}
-            </p>
-          </div>
-
-          {/* Mode Switcher & Rail Navigation */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center p-1 bg-[#181516] border border-[#B89A5A]/30 rounded-full">
-              <button
-                type="button"
-                onClick={() => setViewMode('orbital')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-colors cursor-pointer ${
-                  viewMode === 'orbital'
-                    ? 'bg-[#B89A5A] text-[#0A0909] font-bold shadow-xs'
-                    : 'text-[#BDB3A5] hover:text-[#F4EEE4]'
-                }`}
-                aria-label="3D Orbital view"
-              >
-                <Orbit className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">3D Orbital</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setViewMode('rail')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-colors cursor-pointer ${
-                  viewMode === 'rail'
-                    ? 'bg-[#B89A5A] text-[#0A0909] font-bold shadow-xs'
-                    : 'text-[#BDB3A5] hover:text-[#F4EEE4]'
-                }`}
-                aria-label="Rail slider view"
-              >
-                <SlidersHorizontal className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Showroom Rail</span>
-              </button>
-            </div>
-
-            {viewMode === 'rail' && (
-              <div className="hidden sm:flex items-center gap-2">
-                <button
-                  onClick={scrollLeft}
-                  className="w-9 h-9 border border-[#B89A5A]/40 hover:border-[#D1B875] bg-[#181516] hover:bg-[#201C1E] text-[#F4EEE4] flex items-center justify-center transition-colors cursor-pointer shadow-xs rounded-xs"
-                  aria-label="Previous rack garments"
-                >
-                  <ChevronLeft className="w-4 h-4 text-[#B89A5A]" />
-                </button>
-                <button
-                  onClick={scrollRight}
-                  className="w-9 h-9 border border-[#B89A5A]/40 hover:border-[#D1B875] bg-[#181516] hover:bg-[#201C1E] text-[#F4EEE4] flex items-center justify-center transition-colors cursor-pointer shadow-xs rounded-xs"
-                  aria-label="Next rack garments"
-                >
-                  <ChevronRight className="w-4 h-4 text-[#B89A5A]" />
-                </button>
-              </div>
-            )}
-          </div>
+      {/* Top Section Header Container - Centered and Bold */}
+      <div className="pt-20 lg:pt-28 pb-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="inline-flex items-center justify-center gap-2 text-xs uppercase tracking-[0.28em] text-[#B89A5A] font-bold mb-3 px-4 py-1 rounded-full bg-[#181516]/80 border border-[#B89A5A]/30">
+          <Sparkles className="w-3.5 h-3.5 text-[#D1B875]" />
+          <span>{lang === 'hi' ? 'शोरूम हैंगर एक्सपीरियंस' : 'THE DIGITAL RACK EXPERIENCE'}</span>
         </div>
 
-        {/* Brass Showroom Rail (Physical Showroom Detail) */}
-        <div className="relative mt-8 mb-2">
-          <div className="h-1 bg-gradient-to-r from-[#5C4520] via-[#B89A5A] to-[#5C4520] shadow-sm rounded-full w-full" />
-          <div className="flex justify-between px-10 -mt-2.5">
-            <span className="w-2.5 h-4 bg-[#B89A5A]/80 rounded-xs" />
-            <span className="w-2.5 h-4 bg-[#B89A5A]/80 rounded-xs" />
-            <span className="w-2.5 h-4 bg-[#B89A5A]/80 rounded-xs" />
-            <span className="w-2.5 h-4 bg-[#B89A5A]/80 rounded-xs" />
-          </div>
+        <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#F4EEE4] uppercase max-w-4xl mx-auto leading-tight">
+          {lang === 'hi' ? 'द शोरूम कूट्यूर रैक' : 'Browse the Couture Rack'}
+        </h2>
+
+        <p className="font-editorial italic text-base sm:text-xl text-[#D1B875] mt-3 max-w-2xl mx-auto">
+          {lang === 'hi'
+            ? 'जैसे आप शोरूम में हैंगर पर लगे मास्टरपीस को छूकर देखते हैं।'
+            : 'Browse curated hanging ensembles in immersive depth, just as you would browse our brass atelier racks.'}
+        </p>
+
+        {/* Brass Atelier Rail Accent Line */}
+        <div className="relative mt-8 mb-4 max-w-3xl mx-auto">
+          <div className="h-0.5 bg-gradient-to-r from-transparent via-[#B89A5A]/60 to-transparent w-full" />
         </div>
       </div>
 
-      {/* View 1: 3D Orbital Wheel Animation */}
-      {viewMode === 'orbital' ? (
-        <div className="relative w-full">
-          <OrbitalImageWheel
-            images={orbitalImages}
-            turns={2.5}
-            blur={4}
-            dim={40}
-            brightnessBoost={30}
-            scrollSensitivity={0.8}
-            itemWidth={280}
-            itemHeight={380}
-            scrollLength={250}
-            captionOffset={8}
-            className="pb-8"
+      {/* React Bits DepthCarousel 3D Component */}
+      <div className="relative w-full max-w-6xl mx-auto px-4 pb-20">
+        <div style={{ height: '520px', position: 'relative' }} className="w-full">
+          <DepthCarousel
+            items={depthItems}
+            depth={220}
+            spread={90}
+            tilt={22}
+            tiltDirection="right"
+            perspective={1400}
+            visibleCards={4}
+            falloff={0.2}
+            blur={6}
+            autoplay
+            autoplayDelay={3200}
+            loop
+            cardWidth={310}
+            cardHeight={410}
+            radius={16}
+            tint="#0A0909"
+            showControls
+            showIndicators
+            onChange={(index) => setActiveDepthIndex(index)}
           />
         </div>
-      ) : (
-        /* View 2: Horizontal Showroom Rail Container */
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          <div
-            ref={rackRef}
-            className="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth py-4 px-2 -mx-2 focus:outline-none"
-            tabIndex={0}
-            role="region"
-            aria-label="Digital garment rack"
-          >
-            {rackItems.map((prod, index) => {
-              const lookNumber = (index + 1).toString().padStart(2, '0');
-              return (
-                <div
-                  key={prod.id}
-                  className="group shrink-0 w-[270px] sm:w-[310px] bg-[#181516] border border-white/10 hover:border-[#B89A5A]/60 transition-all duration-300 shadow-xl flex flex-col text-left rounded-sm overflow-hidden"
-                >
-                  {/* Brass Hanger Hook Aesthetic */}
-                  <div className="flex justify-center -mt-3.5 mb-1 z-10 pointer-events-none">
-                    <div className="w-5 h-5 rounded-full border-2 border-[#B89A5A] bg-[#181516] shadow-xs" />
-                  </div>
 
-                  {/* Vertical Garment Visual */}
-                  <div className="relative aspect-[3/4] overflow-hidden bg-[#0A0909]">
-                    <img
-                      src={prod.images?.[0] || '/src/assets/images/bridal_lehenga_collection_1790317477737.jpg'}
-                      alt={prod.name}
-                      className="w-full h-full object-cover object-top filter brightness-[0.88] group-hover:scale-105 group-hover:brightness-100 transition-all duration-700 ease-out"
-                      referrerPolicy="no-referrer"
-                    />
-
-                    {/* Look Code Overlay */}
-                    <div className="absolute top-3 left-3 bg-[#121011]/95 text-[#F4EEE4] text-[10px] font-mono tracking-widest px-2.5 py-1 uppercase border border-[#B89A5A]/30 backdrop-blur-xs">
-                      LOOK {lookNumber}
-                    </div>
-
-                    {/* Quick View Hover Overlay */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-                      <button
-                        onClick={() => onViewProduct(prod)}
-                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#F4EEE4] text-[#0A0909] hover:bg-[#D1B875] text-xs font-semibold uppercase tracking-wider shadow-xl transition-transform transform translate-y-2 group-hover:translate-y-0 cursor-pointer"
-                      >
-                        <Eye className="w-3.5 h-3.5 text-[#0A0909]" />
-                        <span>{lang === 'hi' ? 'लुक देखें' : 'View Look'}</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Garment Identification */}
-                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between text-[11px] text-[#B89A5A] uppercase tracking-[0.18em] font-semibold">
-                        <span>{prod.category_name || 'Couture Look'}</span>
-                        <span className="font-mono text-[#BDB3A5] text-[10px]">{prod.sku}</span>
-                      </div>
-
-                      <h3 className="font-display text-base sm:text-lg font-bold text-[#F4EEE4] group-hover:text-[#D1B875] mt-1 line-clamp-1 transition-colors">
-                        {prod.name}
-                      </h3>
-
-                      <p className="text-xs text-[#BDB3A5] mt-1 line-clamp-2 font-light">
-                        {prod.description}
-                      </p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                      <div>
-                        <span className="text-[10px] text-[#BDB3A5] uppercase block">Price:</span>
-                        <span className="font-display font-bold text-base text-[#F4EEE4] font-mono">
-                          ₹{prod.price?.toLocaleString('en-IN')}
-                        </span>
-                      </div>
-
-                      <button
-                        onClick={() => onEnquireProduct(prod)}
-                        className="text-xs font-semibold uppercase tracking-wider text-[#D1B875] hover:text-[#F4EEE4] inline-flex items-center gap-1 cursor-pointer transition-colors"
-                      >
-                        <span>{lang === 'hi' ? 'पूछताछ' : 'Enquire'}</span>
-                        <ArrowRight className="w-3.5 h-3.5 text-[#B89A5A]" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+        {/* Active Garment Spotlight Details Bar */}
+        {depthItems[activeDepthIndex] && (
+          <div className="mt-6 max-w-xl mx-auto p-4 bg-[#141112]/95 border border-[#B89A5A]/40 rounded-xs shadow-2xl backdrop-blur-md flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <span className="text-[10px] text-[#B89A5A] uppercase tracking-[0.2em] font-bold block mb-0.5">
+                {depthItems[activeDepthIndex].category}
+              </span>
+              <h3 className="font-display text-base sm:text-lg font-bold text-[#F4EEE4] truncate">
+                {depthItems[activeDepthIndex].title}
+              </h3>
+              <span className="font-mono text-sm text-[#D1B875] font-bold">
+                ₹{depthItems[activeDepthIndex].price?.toLocaleString('en-IN')}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => depthItems[activeDepthIndex].onView?.()}
+                className="px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#F4EEE4] bg-white/10 hover:bg-white/20 border border-[#B89A5A]/30 rounded-xs cursor-pointer transition-colors"
+              >
+                {lang === 'hi' ? 'लुक देखें' : 'View Look'}
+              </button>
+              <button
+                type="button"
+                onClick={() => depthItems[activeDepthIndex].onEnquire?.()}
+                className="px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#0A0909] bg-[#D1B875] hover:bg-[#B89A5A] rounded-xs cursor-pointer transition-colors shadow-sm"
+              >
+                {lang === 'hi' ? 'पूछताछ' : 'Enquire'}
+              </button>
+            </div>
           </div>
-
-          {/* Swipe Hint for Mobile */}
-          <div className="sm:hidden text-center mt-4 text-[11px] text-[#BDB3A5] tracking-widest uppercase">
-            ← Swipe to explore rack →
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 };
+
 export default DigitalRackSection;

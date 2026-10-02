@@ -161,12 +161,12 @@ export const FeaturedCollections: React.FC<FeaturedCollectionsProps> = ({
                   {/* Category Image Header */}
                   <div className={`relative overflow-hidden bg-[#ECE4D8] transition-all duration-500 ${isExpanded ? 'h-52 sm:h-64' : 'h-64'}`}>
                     <img
-                      src={cat.image_url || '/src/assets/images/hero_bridal_wedding_1790317438926.jpg'}
+                      src={cat.image_url || '/images/hero_bridal_wedding_1790317438926.jpg'}
                       alt={lang === 'hi' ? cat.name_hi : cat.name}
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
                       referrerPolicy="no-referrer"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/src/assets/images/hero_bridal_wedding_1790317438926.jpg';
+                        (e.target as HTMLImageElement).src = '/images/hero_bridal_wedding_1790317438926.jpg';
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent opacity-85 group-hover:opacity-95 transition-opacity" />
@@ -338,12 +338,12 @@ export const FeaturedCollections: React.FC<FeaturedCollectionsProps> = ({
                                 className="relative h-48 bg-[#ECE4D8] overflow-hidden cursor-pointer"
                               >
                                 <img
-                                  src={prod.images?.[0] || '/src/assets/images/hero_bridal_wedding_1790317438926.jpg'}
+                                  src={prod.images?.[0] || '/images/hero_bridal_wedding_1790317438926.jpg'}
                                   alt={lang === 'hi' ? prod.name_hi : prod.name}
                                   className="w-full h-full object-cover object-top group-hover/item:scale-105 transition-transform duration-500 ease-out"
                                   referrerPolicy="no-referrer"
                                   onError={(e) => {
-                                    (e.target as HTMLImageElement).src = '/src/assets/images/hero_bridal_wedding_1790317438926.jpg';
+                                    (e.target as HTMLImageElement).src = '/images/hero_bridal_wedding_1790317438926.jpg';
                                   }}
                                 />
 

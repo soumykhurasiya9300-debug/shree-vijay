@@ -85,6 +85,9 @@ export const ShowroomWalkthrough: React.FC<ShowroomWalkthroughProps> = ({
             alt="Shree Vijay Showroom Interior Walkthrough"
             className="w-full h-full object-cover filter brightness-[0.78] contrast-[1.05]"
             referrerPolicy="no-referrer"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = '/images/showroom_interior_ambiance_1790317495781.jpg';
+            }}
           />
 
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909]/95 via-transparent to-black/40 pointer-events-none" />

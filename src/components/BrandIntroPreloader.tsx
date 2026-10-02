@@ -54,6 +54,16 @@ export const BrandIntroPreloader: React.FC<BrandIntroPreloaderProps> = ({
           : 'opacity-100 scale-100'
       }`}
     >
+      {/* Top Right Quick Skip Button */}
+      <div className="absolute top-5 right-5 sm:top-8 sm:right-8 z-30">
+        <button
+          type="button"
+          onClick={handleEnter}
+          className="px-3.5 py-1.5 text-[11px] font-mono tracking-widest uppercase text-[#D1B875] hover:text-[#F4EEE4] bg-[#0A0909]/80 hover:bg-[#181516] border border-[#B89A5A]/40 rounded-xs transition-colors cursor-pointer"
+        >
+          Skip Intro →
+        </button>
+      </div>
       {/* Royal Heritage Brand Background (fitted to frame with high visibility and perfect responsive framing) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
         <img

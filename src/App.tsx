@@ -25,19 +25,21 @@ import { BrandIntroPreloader } from './components/BrandIntroPreloader.tsx';
 import { fetchPublicInit, checkSession } from './lib/api.ts';
 import { Language } from './lib/translations.ts';
 import { Category, Subcategory, Product, WebsiteSettings, WebsiteSection } from './types/index.ts';
+import { safeStorage } from './lib/storage.ts';
+import initialData from './data/initialData.json';
 
 export default function App() {
   const [lang, setLang] = useState<Language>(() => {
-    return (localStorage.getItem('sv_language') as Language) || 'en';
+    return (safeStorage.getItem('sv_language') as Language) || 'en';
   });
 
-  const [loading, setLoading] = useState(true);
-  const [showBrandIntro, setShowBrandIntro] = useState(true);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [settings, setSettings] = useState<WebsiteSettings | undefined>(undefined);
-  const [sections, setSections] = useState<WebsiteSection[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [showBrandIntro, setShowBrandIntro] = useState(false);
+  const [categories, setCategories] = useState<Category[]>((initialData.categories as any) || []);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>((initialData.subcategories as any) || []);
+  const [products, setProducts] = useState<Product[]>((initialData.products as any) || []);
+  const [settings, setSettings] = useState<WebsiteSettings | undefined>((initialData.settings as any) || undefined);
+  const [sections, setSections] = useState<WebsiteSection[]>((initialData.website_sections as any) || []);
 
   // Selection & Modals
   const [viewingProduct, setViewingProduct] = useState<Product | null>(null);
@@ -83,7 +85,7 @@ export default function App() {
 
   const handleLanguageChange = (newLang: Language) => {
     setLang(newLang);
-    localStorage.setItem('sv_language', newLang);
+    safeStorage.setItem('sv_language', newLang);
   };
 
   const handleOpenEnquiryForProduct = (product: Product, variantInfo?: string, qty: number = 1) => {

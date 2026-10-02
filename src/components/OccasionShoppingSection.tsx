@@ -734,6 +734,9 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
                       alt={occ.name}
                       className="w-full h-full object-cover object-center filter brightness-[0.88] group-hover:brightness-105 group-hover:scale-110 transition-all duration-700 ease-out"
                       loading="lazy"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/images/occasion_haldi_festive_1790325578682.jpg';
+                      }}
                     />
                     {/* Subtle gradient wash */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity" />
@@ -838,6 +841,9 @@ export const OccasionShoppingSection: React.FC<OccasionShoppingSectionProps> = (
                   alt={sub.name}
                   className="w-full h-full object-cover object-top filter brightness-[0.88] group-hover:scale-105 group-hover:brightness-100 transition-all duration-700 ease-out"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/occasion_haldi_festive_1790325578682.jpg';
+                  }}
                 />
 
                 {/* Gradient Wash */}

@@ -22,7 +22,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
   const [slug, setSlug] = useState('');
   const [desc, setDesc] = useState('');
   const [descHi, setDescHi] = useState('');
-  const [imageUrl, setImageUrl] = useState('/src/assets/images/hero_bridal_wedding_1790317438926.jpg');
+  const [imageUrl, setImageUrl] = useState('/images/hero_bridal_wedding_1790317438926.jpg');
   const [sortOrder, setSortOrder] = useState(0);
 
   const openCreateModal = () => {
@@ -32,7 +32,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
     setSlug('');
     setDesc('');
     setDescHi('');
-    setImageUrl('/src/assets/images/hero_bridal_wedding_1790317438926.jpg');
+    setImageUrl('/images/hero_bridal_wedding_1790317438926.jpg');
     setSortOrder(categories.length + 1);
     setShowModal(true);
   };
@@ -131,9 +131,12 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
               <div>
                 <div className="h-40 bg-[#ECE4D8] overflow-hidden relative">
                   <img
-                    src={cat.image_url || '/src/assets/images/hero_bridal_wedding_1790317438926.jpg'}
+                    src={cat.image_url || '/images/hero_bridal_wedding_1790317438926.jpg'}
                     alt={cat.name}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/hero_bridal_wedding_1790317438926.jpg';
+                    }}
                   />
                   <div className="absolute top-2 left-2 bg-black/80 px-2 py-0.5 text-[10px] font-bold text-white rounded-xs">
                     Order: #{cat.sort_order}

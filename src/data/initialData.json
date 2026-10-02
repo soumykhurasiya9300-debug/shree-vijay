@@ -7,7 +7,7 @@
       "slug": "bridal-lehengas",
       "description": "Heirloom zardozi, velvet, and raw silk lehengas for the modern royal bride.",
       "description_hi": "\u0936\u093e\u0939\u0940 \u091c\u0930\u0940, \u091c\u0930\u0926\u094b\u091c\u0940 \u0935 \u0935\u0947\u0932\u0935\u0947\u091f \u092e\u0947\u0902 \u0938\u091c\u0947 \u0905\u0932\u094c\u0915\u093f\u0915 \u0926\u0941\u0932\u094d\u0939\u0928 \u0932\u0939\u0902\u0917\u0947\u0964",
-      "image_url": "/src/assets/images/bridal_lehenga_collection_1790317477737.jpg",
+      "image_url": "/images/bridal_lehenga_collection_1790317477737.jpg",
       "sort_order": 1,
       "is_active": 1,
       "created_at": "2026-09-25 06:33:28"
@@ -19,7 +19,7 @@
       "slug": "designer-sarees",
       "description": "Pure Banarasi, Kanjivaram, Chanderi, Organza, and festive party-wear sarees.",
       "description_hi": "\u0935\u093f\u0936\u0941\u0926\u094d\u0927 \u092c\u0928\u093e\u0930\u0938\u0940, \u0915\u093e\u0902\u091c\u0940\u0935\u0930\u092e, \u091a\u0902\u0926\u0947\u0930\u0940 \u0914\u0930 \u092a\u093e\u0930\u094d\u091f\u0940 \u0935\u093f\u092f\u0930 \u0938\u093e\u0921\u093c\u093f\u092f\u093e\u0901\u0964",
-      "image_url": "/src/assets/images/designer_banarasi_saree_1790317467169.jpg",
+      "image_url": "/images/designer_banarasi_saree_1790317467169.jpg",
       "sort_order": 2,
       "is_active": 1,
       "created_at": "2026-09-25 06:33:28"
@@ -31,7 +31,7 @@
       "slug": "groom-sherwanis",
       "description": "Regal handcrafted sherwanis, Indo-western bandhgalas, and designer kurta sets.",
       "description_hi": "\u0930\u093e\u091c\u092a\u0942\u0924\u093e\u0928\u093e \u0935 \u091c\u094b\u0927\u092a\u0941\u0930\u0940 \u0936\u0947\u0930\u0935\u093e\u0928\u0940, \u0907\u0902\u0921\u094b-\u0935\u0947\u0938\u094d\u091f\u0930\u094d\u0928 \u0914\u0930 \u0921\u093f\u091c\u093e\u0907\u0928\u0930 \u0915\u0941\u0930\u094d\u0924\u0947\u0964",
-      "image_url": "/src/assets/images/groom_royal_sherwani_1790317453744.jpg",
+      "image_url": "/images/groom_royal_sherwani_1790317453744.jpg",
       "sort_order": 3,
       "is_active": 1,
       "created_at": "2026-09-25 06:33:28"
@@ -43,7 +43,7 @@
       "slug": "pure-cotton-sarees",
       "description": "Authentic breathable pure cotton sarees trusted for generations in Jabalpur.",
       "description_hi": "\u091c\u092c\u0932\u092a\u0941\u0930 \u0915\u093e \u0938\u092c\u0938\u0947 \u092d\u0930\u094b\u0938\u0947\u092e\u0902\u0926 \u0967\u0966\u0966% \u0936\u0941\u0926\u094d\u0927 \u0915\u0949\u091f\u0928 \u0938\u093e\u0921\u093c\u0940 \u0915\u0932\u0947\u0915\u094d\u0936\u0928\u0964",
-      "image_url": "/src/assets/images/designer_banarasi_saree_1790317467169.jpg",
+      "image_url": "/images/designer_banarasi_saree_1790317467169.jpg",
       "sort_order": 4,
       "is_active": 1,
       "created_at": "2026-09-25 06:33:28"
@@ -55,7 +55,7 @@
       "slug": "salwar-suits",
       "description": "Designer party suits, Pakistani cuts, and flared bridal anarkalis.",
       "description_hi": "\u092a\u093e\u0930\u094d\u091f\u0940 \u0935\u093f\u092f\u0930 \u0930\u0947\u0921\u0940\u092e\u0947\u0921 \u090f\u0935\u0902 \u0905\u0928\u0938\u094d\u091f\u093f\u091a\u094d\u0921 \u0921\u093f\u091c\u093c\u093e\u0907\u0928\u0930 \u0938\u0932\u0935\u093e\u0930 \u0938\u0942\u091f\u094d\u0938\u0964",
-      "image_url": "/src/assets/images/hero_bridal_wedding_1790317438926.jpg",
+      "image_url": "/images/hero_bridal_wedding_1790317438926.jpg",
       "sort_order": 5,
       "is_active": 1,
       "created_at": "2026-09-25 06:33:28"
@@ -67,7 +67,7 @@
       "slug": "family-festive-wear",
       "description": "Coordinated ensembles for the entire wedding party, Haldi, and Sangeet.",
       "description_hi": "\u0939\u0932\u094d\u0926\u0940, \u092e\u0947\u0939\u0902\u0926\u0940 \u090f\u0935\u0902 \u092a\u0942\u0930\u0947 \u092a\u0930\u093f\u0935\u093e\u0930 \u0915\u0947 \u0932\u093f\u090f \u092e\u0948\u091a\u093f\u0902\u0917 \u092b\u0947\u0938\u094d\u091f\u093f\u0935 \u092a\u0930\u093f\u0927\u093e\u0928\u0964",
-      "image_url": "/src/assets/images/showroom_interior_ambiance_1790317495781.jpg",
+      "image_url": "/images/showroom_interior_ambiance_1790317495781.jpg",
       "sort_order": 6,
       "is_active": 1,
       "created_at": "2026-09-25 06:33:28"
@@ -279,8 +279,8 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/hero_bridal_wedding_1790317438926.jpg",
-        "/src/assets/images/bridal_lehenga_collection_1790317477737.jpg"
+        "/images/hero_bridal_wedding_1790317438926.jpg",
+        "/images/bridal_lehenga_collection_1790317477737.jpg"
       ],
       "created_at": "2026-09-25 06:33:28",
       "gender": "female",
@@ -312,8 +312,8 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/bridal_lehenga_collection_1790317477737.jpg",
-        "/src/assets/images/hero_bridal_wedding_1790317438926.jpg"
+        "/images/bridal_lehenga_collection_1790317477737.jpg",
+        "/images/hero_bridal_wedding_1790317438926.jpg"
       ],
       "created_at": "2026-09-25 06:33:28",
       "gender": "female",
@@ -345,7 +345,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/designer_banarasi_saree_1790317467169.jpg"
+        "/images/designer_banarasi_saree_1790317467169.jpg"
       ],
       "created_at": "2026-09-25 06:33:28",
       "gender": "female",
@@ -377,7 +377,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/groom_royal_sherwani_1790317453744.jpg"
+        "/images/groom_royal_sherwani_1790317453744.jpg"
       ],
       "created_at": "2026-09-25 06:33:28",
       "gender": "female",
@@ -409,7 +409,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/designer_banarasi_saree_1790317467169.jpg"
+        "/images/designer_banarasi_saree_1790317467169.jpg"
       ],
       "created_at": "2026-09-25 06:33:28",
       "gender": "female",
@@ -441,7 +441,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/hero_bridal_wedding_1790317438926.jpg"
+        "/images/hero_bridal_wedding_1790317438926.jpg"
       ],
       "created_at": "2026-09-25 06:33:28",
       "gender": "female",
@@ -473,8 +473,8 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/bridal_lehenga_collection_1790317477737.jpg",
-        "/src/assets/images/hero_bridal_wedding_1790317438926.jpg"
+        "/images/bridal_lehenga_collection_1790317477737.jpg",
+        "/images/hero_bridal_wedding_1790317438926.jpg"
       ],
       "created_at": "2026-09-25 06:52:21",
       "gender": "female",
@@ -506,7 +506,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/bridal_lehenga_collection_1790317477737.jpg"
+        "/images/bridal_lehenga_collection_1790317477737.jpg"
       ],
       "created_at": "2026-09-25 06:52:21",
       "gender": "female",
@@ -538,7 +538,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/groom_royal_sherwani_1790317453744.jpg"
+        "/images/groom_royal_sherwani_1790317453744.jpg"
       ],
       "created_at": "2026-09-26 15:38:13",
       "gender": "female",
@@ -570,7 +570,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/groom_royal_sherwani_1790317453744.jpg"
+        "/images/groom_royal_sherwani_1790317453744.jpg"
       ],
       "created_at": "2026-09-26 15:38:13",
       "gender": "female",
@@ -602,7 +602,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/groom_royal_sherwani_1790317453744.jpg"
+        "/images/groom_royal_sherwani_1790317453744.jpg"
       ],
       "created_at": "2026-09-26 15:38:13",
       "gender": "female",
@@ -634,7 +634,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/groom_royal_sherwani_1790317453744.jpg"
+        "/images/groom_royal_sherwani_1790317453744.jpg"
       ],
       "created_at": "2026-09-26 15:38:13",
       "gender": "female",
@@ -666,7 +666,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/groom_royal_sherwani_1790317453744.jpg"
+        "/images/groom_royal_sherwani_1790317453744.jpg"
       ],
       "created_at": "2026-09-26 15:38:13",
       "gender": "female",
@@ -698,7 +698,7 @@
       "is_active": 1,
       "stock_status": "In Stock",
       "images": [
-        "/src/assets/images/groom_royal_sherwani_1790317453744.jpg"
+        "/images/groom_royal_sherwani_1790317453744.jpg"
       ],
       "created_at": "2026-09-26 15:38:13",
       "gender": "female",
