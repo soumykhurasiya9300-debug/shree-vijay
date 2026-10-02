@@ -15,7 +15,29 @@ import {
 } from './server/auth.ts';
 
 const app = express();
-const PORT = parseInt(process.env.PORT || '3000', 10);
+function getTargetPort(): number {
+  const argvPortIndex = process.argv.indexOf('--port');
+  if (argvPortIndex !== -1 && process.argv[argvPortIndex + 1]) {
+    const parsed = parseInt(process.argv[argvPortIndex + 1], 10);
+    if (!isNaN(parsed) && parsed > 0) return parsed;
+  }
+
+  if (process.env.PORT) {
+    const parsed = parseInt(process.env.PORT, 10);
+    if (!isNaN(parsed) && parsed > 0) {
+      return parsed;
+    }
+  }
+
+  return 3000;
+}
+
+const PORT = getTargetPort();
+
+// Immediate container health checks for Cloud Run and Nginx
+app.get('/_healthz', (_req, res) => res.status(200).send('OK'));
+app.get('/healthz', (_req, res) => res.status(200).send('OK'));
+app.get('/api/health', (_req, res) => res.status(200).json({ status: 'ok', uptime: process.uptime() }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -1670,20 +1692,7 @@ async function startServer() {
   // 2. Serve static public assets (audio, video, images) with full HTTP Range request support
   app.use(express.static(path.resolve(process.cwd(), 'public')));
 
-  const server = http.createServer(app);
-
-  // 3. Start listening immediately so Cloud Run container health checks pass without delay
-  server.listen(PORT, '0.0.0.0', () => {
-    console.log(`✓ Shree Vijay Showroom server running on http://0.0.0.0:${PORT}`);
-  });
-
-  // 4. Initialize database asynchronously in background without blocking server startup
-  getDb().then(() => {
-    console.log('✓ SQLite database initialized and ready at data/shree_vijay.db');
-  }).catch((err) => {
-    console.error('Non-fatal error initializing database:', err);
-  });
-
+  // 3. Mount production static files or Vite dev middleware
   const isDevScript = process.env.npm_lifecycle_event === 'dev';
   const isCloudRun = Boolean(process.env.K_SERVICE || process.env.K_REVISION);
   const distDir = path.resolve(process.cwd(), 'dist');
@@ -1743,6 +1752,38 @@ async function startServer() {
         vite.ssrFixStacktrace(e as Error);
         next(e);
       }
+    });
+  }
+
+  // 4. Initialize database asynchronously in background without blocking server startup
+  getDb().then(() => {
+    console.log('✓ SQLite database initialized and ready at data/shree_vijay.db');
+  }).catch((err) => {
+    console.error('Non-fatal error initializing database:', err);
+  });
+
+  // 5. Dual-Port Listen:
+  // - In Google Cloud Run: PORT is set (typically 8080) and Cloud Run probes port 8080.
+  // - In AI Studio Dev: Nginx listens on 8080 and reverse-proxies to 3000.
+  // Listening on both (with EADDRINUSE handled gracefully) guarantees immediate readiness in both environments.
+  const portsToListen = new Set<number>();
+  if (!isNaN(PORT) && PORT > 0) {
+    portsToListen.add(PORT);
+  }
+  portsToListen.add(3000);
+
+  for (const port of portsToListen) {
+    const srv = http.createServer(app);
+    srv.on('error', (err: any) => {
+      if (err.code === 'EADDRINUSE') {
+        console.log(`[Server] Port ${port} is currently bound by another process (handled gracefully).`);
+      } else {
+        console.error(`[Server] Error on port ${port}:`, err);
+      }
+    });
+
+    srv.listen(port, '0.0.0.0', () => {
+      console.log(`✓ Shree Vijay Showroom server running on http://0.0.0.0:${port}`);
     });
   }
 }

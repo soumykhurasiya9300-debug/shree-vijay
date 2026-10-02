@@ -10,6 +10,8 @@ interface HeaderProps {
   settings?: WebsiteSettings;
   onOpenAdmin: () => void;
   onOpenEnquiry: () => void;
+  isPlaying?: boolean;
+  onToggleSound?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -18,6 +20,8 @@ export const Header: React.FC<HeaderProps> = ({
   settings,
   onOpenAdmin,
   onOpenEnquiry,
+  isPlaying = false,
+  onToggleSound,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [directoryOpen, setDirectoryOpen] = useState(false);
@@ -161,6 +165,50 @@ export const Header: React.FC<HeaderProps> = ({
               <Compass className="w-3.5 h-3.5 text-[#B89A5A]" />
               <span>{lang === 'hi' ? 'निर्देशिका' : 'Directory'}</span>
             </button>
+
+            {/* Ambient Sound Toggle Switch - Uiverse.io by faxriddin20 */}
+            <div className="flex items-center">
+              <input
+                id="checkboxInput"
+                type="checkbox"
+                checked={!isPlaying}
+                onChange={onToggleSound}
+                aria-label={isPlaying ? 'Mute ambient sound' : 'Unmute ambient sound'}
+              />
+              <label
+                className="toggleSwitch"
+                htmlFor="checkboxInput"
+                title={isPlaying ? (lang === 'hi' ? 'संगीत बंद करें' : 'Mute music') : (lang === 'hi' ? 'संगीत चालू करें' : 'Play ambient music')}
+              >
+                <div className="speaker">
+                  <svg viewBox="0 0 75 75" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      style={{ stroke: '#fff', strokeWidth: 5, strokeLinejoin: 'round', fill: '#fff' }}
+                      d="M39.389,13.769 L22.235,28.606 L6,28.606 L6,47.699 L21.989,47.699 L39.389,62.75 L39.389,13.769z"
+                    />
+                    <path
+                      style={{ fill: 'none', stroke: '#fff', strokeWidth: 5, strokeLinecap: 'round' }}
+                      d="M48,27.6a19.5,19.5 0 0 1 0,21.4M55.1,20.5a30,30 0 0 1 0,35.6M61.6,14a38.8,38.8 0 0 1 0,48.6"
+                    />
+                  </svg>
+                </div>
+
+                <div className="mute-speaker">
+                  <svg strokeWidth="5" stroke="#fff" viewBox="0 0 75 75" version="1.0">
+                    <path
+                      strokeLinejoin="round"
+                      fill="#fff"
+                      d="m39,14-17,15H6V48H22l17,15z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      fill="#fff"
+                      d="m49,26 20,24m0-24-20,24"
+                    />
+                  </svg>
+                </div>
+              </label>
+            </div>
 
             {/* Language Switcher */}
             <div className="flex items-center rounded-none p-0.5 text-[11px] font-semibold border bg-[#121011] border-white/10 text-[#F4EEE4]">

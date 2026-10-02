@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { ArrowDown, ArrowRight, Volume2, VolumeX } from 'lucide-react';
+import React, { useRef, useEffect } from 'react';
+import { ArrowDown, ArrowRight } from 'lucide-react';
 import { Language } from '../lib/translations.ts';
 import { WebsiteSettings } from '../types/index.ts';
 import heroImg from '../assets/images/hero_bridal_wedding_1790317438926.jpg';
@@ -11,65 +11,14 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ lang, settings, onOpenEnquiry }) => {
-  const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    const audio = audioRef.current;
     const video = videoRef.current;
-    if (!audio) return;
-
-    // Ensure rich, audible volume
-    audio.volume = 0.9;
-
-    // Ensure background visual video loops smoothly without audio collisions
     if (video) {
       video.muted = true;
       video.play().catch(() => {});
     }
-
-    // Attempt automatic playback as soon as the site opens
-    const tryAutoplay = () => {
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch(() => {
-            // Browser blocked unmuted autoplay prior to user interaction
-            setIsPlaying(false);
-
-            const startAudioOnFirstInteraction = () => {
-              if (audioRef.current) {
-                audioRef.current
-                  .play()
-                  .then(() => {
-                    setIsPlaying(true);
-                    cleanup();
-                  })
-                  .catch(() => {});
-              }
-            };
-
-            const cleanup = () => {
-              document.removeEventListener('click', startAudioOnFirstInteraction, true);
-              document.removeEventListener('pointerdown', startAudioOnFirstInteraction, true);
-              document.removeEventListener('touchstart', startAudioOnFirstInteraction, true);
-              document.removeEventListener('keydown', startAudioOnFirstInteraction, true);
-            };
-
-            // Capture phase listeners so any tap/click on Brand Intro or page immediately starts audio
-            document.addEventListener('click', startAudioOnFirstInteraction, { capture: true, once: true });
-            document.addEventListener('pointerdown', startAudioOnFirstInteraction, { capture: true, once: true });
-            document.addEventListener('touchstart', startAudioOnFirstInteraction, { capture: true, once: true });
-            document.addEventListener('keydown', startAudioOnFirstInteraction, { capture: true, once: true });
-          });
-      }
-    };
-
-    tryAutoplay();
 
     // Loop background video seamlessly
     const handleEnded = () => {
@@ -85,40 +34,11 @@ export const Hero: React.FC<HeroProps> = ({ lang, settings, onOpenEnquiry }) => 
     };
   }, []);
 
-  const toggleSound = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-    } else {
-      audio
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch((err) => {
-          console.error('Audio play error:', err);
-        });
-    }
-  };
-
   return (
     <section
       id="home"
       className="relative min-h-[90vh] lg:min-h-[94vh] flex items-end justify-center overflow-hidden bg-[#0A0909] text-[#F4EEE4]"
     >
-      {/* Dedicated Luxury Ambient Audio Element */}
-      <audio
-        ref={audioRef}
-        src="/audio/hero_music.mp3"
-        loop
-        preload="auto"
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-      />
-
       {/* Immersive Full-Frame Continuous Background Video */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video
@@ -151,43 +71,6 @@ export const Hero: React.FC<HeroProps> = ({ lang, settings, onOpenEnquiry }) => 
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0909] via-[#0A0909]/45 to-black/40 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A0909]/70 via-transparent to-[#0A0909]/50 pointer-events-none" />
         <div className="absolute inset-0 bg-[#351019]/20 mix-blend-multiply pointer-events-none" />
-      </div>
-
-      {/* Ambient Audio Toggle */}
-      <div className="absolute top-28 right-4 sm:right-8 z-20">
-        <button
-          onClick={toggleSound}
-          type="button"
-          className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs backdrop-blur-md transition-all duration-300 cursor-pointer shadow-xl active:scale-95 ${
-            !isPlaying
-              ? 'bg-[#181516]/85 hover:bg-[#201C1E] border border-white/20 text-[#BDB3A5] hover:border-[#B89A5A]/50 hover:text-[#F4EEE4]'
-              : 'bg-[#351019]/90 hover:bg-[#4A1724] border border-[#D1B875] text-[#F4EEE4] ring-1 ring-[#D1B875]/50 shadow-[0_0_20px_rgba(209,184,117,0.35)]'
-          }`}
-          title={isPlaying ? (lang === 'hi' ? 'संगीत बंद करें' : 'Turn Sound Off') : (lang === 'hi' ? 'संगीत चालू करें' : 'Turn Sound On')}
-          aria-label={isPlaying ? 'Turn Sound Off' : 'Turn Sound On'}
-        >
-          {!isPlaying ? (
-            <>
-              <VolumeX className="w-3.5 h-3.5 text-[#B89A5A]" />
-              <span className="text-[11px] font-medium tracking-wider uppercase text-[#BDB3A5]">
-                {lang === 'hi' ? 'संगीत बंद' : 'Sound Off'}
-              </span>
-            </>
-          ) : (
-            <>
-              <Volume2 className="w-3.5 h-3.5 text-[#D1B875] animate-pulse" />
-              {/* Animated audio equalizer wave */}
-              <div className="flex items-center gap-0.5 h-3 px-0.5">
-                <span className="w-0.5 bg-[#D1B875] h-3 rounded-full animate-pulse" />
-                <span className="w-0.5 bg-[#D1B875] h-2 rounded-full animate-pulse [animation-delay:150ms]" />
-                <span className="w-0.5 bg-[#D1B875] h-3.5 rounded-full animate-pulse [animation-delay:300ms]" />
-              </div>
-              <span className="text-[11px] font-bold tracking-wider uppercase text-[#F4EEE4]">
-                {lang === 'hi' ? 'संगीत चालू' : 'Sound On'}
-              </span>
-            </>
-          )}
-        </button>
       </div>
 
       {/* Main Content Layer */}

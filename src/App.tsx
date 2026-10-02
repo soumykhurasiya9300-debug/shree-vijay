@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Header } from './components/Header.tsx';
 import { Hero } from './components/Hero.tsx';
 import { ShowroomFloor } from './components/ShowroomFloor.tsx';
@@ -47,6 +47,63 @@ export default function App() {
   const [enquiringProduct, setEnquiringProduct] = useState<Product | null>(null);
   const [enquiringVariant, setEnquiringVariant] = useState<string | undefined>(undefined);
   const [enquiringQuantity, setEnquiringQuantity] = useState<number>(1);
+
+  // Background Ambient Audio Control
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = 0.9;
+
+    const tryAutoplay = () => {
+      audio
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {
+          setIsPlaying(false);
+          const startAudioOnFirstInteraction = () => {
+            if (audioRef.current) {
+              audioRef.current
+                .play()
+                .then(() => {
+                  setIsPlaying(true);
+                  cleanup();
+                })
+                .catch(() => {});
+            }
+          };
+          const cleanup = () => {
+            document.removeEventListener('click', startAudioOnFirstInteraction, true);
+            document.removeEventListener('pointerdown', startAudioOnFirstInteraction, true);
+            document.removeEventListener('touchstart', startAudioOnFirstInteraction, true);
+            document.removeEventListener('keydown', startAudioOnFirstInteraction, true);
+          };
+          document.addEventListener('click', startAudioOnFirstInteraction, { capture: true, once: true });
+          document.addEventListener('pointerdown', startAudioOnFirstInteraction, { capture: true, once: true });
+          document.addEventListener('touchstart', startAudioOnFirstInteraction, { capture: true, once: true });
+          document.addEventListener('keydown', startAudioOnFirstInteraction, { capture: true, once: true });
+        });
+    };
+
+    tryAutoplay();
+  }, []);
+
+  const toggleSound = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.error('Audio play error:', err));
+    }
+  };
 
   // Admin Portal State
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
@@ -136,6 +193,16 @@ export default function App() {
         />
       )}
 
+      {/* Ambient Audio Element for continuous background experience */}
+      <audio
+        ref={audioRef}
+        src="/audio/hero_music.mp3"
+        loop
+        preload="auto"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
+
       {/* 2. Editorial Top Navigation Bar & Showroom Directory */}
       <Header
         lang={lang}
@@ -149,6 +216,8 @@ export default function App() {
           }
         }}
         onOpenEnquiry={handleOpenGeneralEnquiry}
+        isPlaying={isPlaying}
+        onToggleSound={toggleSound}
       />
 
       <main className="flex-1">
